@@ -1,95 +1,66 @@
-import { off, onValue, ref, remove, set, update } from 'firebase/database';
-import { Brain, CheckCircle, Clock, HelpCircle, Lightbulb, Sparkles, Users } from 'lucide-react-native';
-import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { off, onValue, push, ref, remove, set, update } from 'firebase/database';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { database } from './firebaseConfig';
 
-// ============================================================
-// HIKAYE VERİLERİ
-// ============================================================
-const stories = {
-  kolay: [
-    {
-      id: 1,
-      baslik: "Kayıp Yüzük",
-      baslangic: "Bir kadın evinde kaybettiği değerli yüzüğü arıyor. Yüzük bulunduğunda kadın çok mutlu oluyor ama hemen ardından polisi arıyor.",
-      cevap: "Yüzük bulaşık makinesinde bulunmuştur. Kadın yüzüğü çıkarırken makinede bir el parmağı görür ve kocasının başına bir şey geldiğini anlar.",
-      ipuclari: [
-        "Yüzük bir ev aletinin içinde bulundu",
-        "Kadın yüzükle birlikte başka bir şey de buldu",
-        "Bulunan şey kadını korkuttu"
-      ]
-    },
-    {
-      id: 2,
-      baslik: "Garip Teslimat",
-      baslangic: "Bir adam her gün aynı saatte kapısına gelen kurye karşısında şok olur ve polisi arar.",
-      cevap: "Adam ölü kardeşinin organlarını bağışlamıştı. Kurye her gün kan tahlili için geliyordu ama adam kurye çantasında kardeşinin ismini görünce kurye çantasında kardeşinin organlarının geldiğini sanmıştı.",
-      ipuclari: [
-        "Kurye bir sağlık kuruluşundan geliyordu",
-        "Adam yakın zamanda birini kaybetmişti",
-        "Kargoda bir isim etiketi vardı"
-      ]
-    }
-  ],
-  orta: [
-    {
-      id: 3,
-      baslik: "Geceyarısı Telefonu",
-      baslangic: "Bir adam her gece saat 3'te telefonu çaldığında açıyor, hiçbir şey söylemiyor ve kapıyor. Bu durum 3 gün sürdükten sonra polise gidiyor.",
-      cevap: "Adam bir kalp nakli olmuştu. Telefon eden kişi, kalbini bağışlayan kişinin eşiydi. Kalbin hala attığını duymak için arayıp sadece dinliyordu.",
-      ipuclari: [
-        "Adam yakın zamanda büyük bir ameliyat geçirmişti",
-        "Arayan kişi birini kaybetmişti",
-        "Telefonda ses yoktu ama bir şeyi 'duymak' istiyordu"
-      ]
-    }
-  ],
-  zor: [
-    {
-      id: 4,
-      baslik: "İntihar Eden Adam",
-      baslangic: "Bir adam bir otelin 10. katındaki odasında intihar etti. Cesedi binanın tam önünde bulundu. Odasında açık bir pencere vardı ama adam pencereden atlamadı.",
-      cevap: "Adam odasında bir tabanca ile kendini vurdu. Ama kurşun kör bir kurşundu (boş). Adam bunun şok etkisiyle yine de geri tepti ve açık pencereden düştü.",
-      ipuclari: [
-        "Adam bir silah kullandı",
-        "Silah ölümcül değildi",
-        "Adamın tepkisi onu pencereden düşürdü"
-      ]
-    }
-  ]
-};
+// HARİCİ HİKAYE DOSYASI
+import { stories } from './data/stories';
+
+// Font ve İkon Paketleri
+import { SpecialElite_400Regular, useFonts } from '@expo-google-fonts/special-elite';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 // ============================================================
-// YARDIMCI FONKSİYONLAR
+// 🔑 API ANAHTARI
 // ============================================================
-const generateRoomCode = () => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-};
+const GEMINI_API_KEY = 'AIzaSyBsurKcsjlwTr1hWBoW1HyLhfQehf6f-H8';
 
 // ============================================================
-// ANA KOMPONENT
+// 🌐 GEMINI API HELPER
 // ============================================================
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+const callGemini = async (promptText) => {
+  const response = await fetch(GEMINI_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: promptText }] }],
+      generationConfig: { temperature: 0.1, maxOutputTokens: 100 }
+    })
+  });
+
+  if (!response.ok) {
+    const errData = await response.json();
+    throw new Error(errData?.error?.message || `HTTP ${response.status}`);
+  }
+
+  const data = await response.json();
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+  if (!text) throw new Error('Boş yanıt geldi');
+  return text;
+};
+
+const generateRoomCode = () => Math.floor(100000 + Math.random() * 900000).toString();
+
 const DetectiveGame = () => {
-  // --- Genel State ---
+  let [fontsLoaded] = useFonts({ 'SpecialElite': SpecialElite_400Regular });
+
   const [gameState, setGameState] = useState('menu');
   const [gameMode, setGameMode] = useState(null);
   const [difficulty, setDifficulty] = useState(null);
   const [currentStory, setCurrentStory] = useState(null);
-
-  // --- AI Modu State ---
   const [messages, setMessages] = useState([]);
   const [questionInput, setQuestionInput] = useState('');
   const [answerInput, setAnswerInput] = useState('');
   const [hintsUsed, setHintsUsed] = useState(0);
-  const [questionsAsked, setQuestionsAsked] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [startTime, setStartTime] = useState(null);
-
-  // --- Reader Modu State ---
+  const [now, setNow] = useState(Date.now());
   const [showAnswer, setShowAnswer] = useState(false);
-
-  // --- Online Mod State ---
   const [playerName, setPlayerName] = useState('');
   const [roomCode, setRoomCode] = useState('');
   const [inputRoomCode, setInputRoomCode] = useState('');
@@ -101,1100 +72,303 @@ const DetectiveGame = () => {
   const [onlineHintsUsed, setOnlineHintsUsed] = useState(0);
   const [joinError, setJoinError] = useState('');
   const [onlineDifficulty, setOnlineDifficulty] = useState(null);
+  const [guestList, setGuestList] = useState([]);
 
-  // --- Refs ---
   const scrollViewRef = useRef(null);
   const roomListenerRef = useRef(null);
   const messagesListenerRef = useRef(null);
 
-  // ============================================================
-  // CLEANUP
-  // ============================================================
-  const removeListeners = () => {
-    if (roomListenerRef.current) {
-      off(roomListenerRef.current);
-      roomListenerRef.current = null;
-    }
-    if (messagesListenerRef.current) {
-      off(messagesListenerRef.current);
-      messagesListenerRef.current = null;
-    }
-  };
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) await SplashScreen.hideAsync();
+  }, [fontsLoaded]);
 
   useEffect(() => {
-    return () => removeListeners();
-  }, []);
+    let interval = null;
+    if (gameState === 'playing' || gameState === 'online_playing') {
+      interval = setInterval(() => { setNow(Date.now()); }, 1000);
+    } else { clearInterval(interval); }
+    return () => clearInterval(interval);
+  }, [gameState]);
 
-  // ============================================================
-  // ONLINE MOD: Firebase Dinleme
-  // ============================================================
-  const startListening = (code) => {
-    removeListeners();
-
-    const roomRefPath = ref(database, `rooms/${code}`);
-    roomListenerRef.current = roomRefPath;
-
-    onValue(roomRefPath, (snapshot) => {
-      const data = snapshot.val();
-      if (!data) {
-        // Oda silindi
-        removeListeners();
-        setGameState('menu');
-        return;
-      }
-      setRoomData(data);
-      setCurrentStory(data.story);
-      setDifficulty(data.difficulty);
-      setOnlineHintsUsed(data.hintsUsed || 0);
-
-      if (data.status === 'playing') {
-        setGameState('online_playing');
-      } else if (data.status === 'solved') {
-        setGameState('online_solved');
-      }
-    });
-
-    const messagesRefPath = ref(database, `rooms/${code}/messages`);
-    messagesListenerRef.current = messagesRefPath;
-
-    onValue(messagesRefPath, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const msgArray = Object.values(data).sort((a, b) => a.timestamp - b.timestamp);
-        setOnlineMessages(msgArray);
-      } else {
-        setOnlineMessages([]);
-      }
-    });
-  };
-
-  // ============================================================
-  // ONLINE MOD: Oda Oluştur (Host)
-  // ============================================================
-  const createRoom = async () => {
-    if (!playerName.trim() || !onlineDifficulty) return;
-
-    const code = generateRoomCode();
-    const storyList = stories[onlineDifficulty];
-    const randomStory = storyList[Math.floor(Math.random() * storyList.length)];
-
-    setRoomCode(code);
-    setIsHost(true);
-    setCurrentStory(randomStory);
-    setOnlineMessages([]);
-    setOnlineHintsUsed(0);
-
-    await set(ref(database, `rooms/${code}`), {
-      host: playerName.trim(),
-      guest: null,
-      status: 'waiting',
-      difficulty: onlineDifficulty,
-      story: randomStory,
-      hintsUsed: 0,
-      createdAt: Date.now()
-    });
-
-    await set(ref(database, `rooms/${code}/messages/msg_0`), {
-      type: 'story',
-      content: randomStory.baslangic,
-      timestamp: Date.now()
-    });
-
-    setGameState('waiting');
-    startListening(code);
-  };
-
-  // ============================================================
-  // ONLINE MOD: Odaya Katıl (Guest)
-  // ============================================================
-  const joinRoom = async () => {
-    if (!playerName.trim() || inputRoomCode.length !== 6) return;
-    setJoinError('');
-    setIsLoading(true);
-
-    const code = inputRoomCode.trim();
-
-    onValue(ref(database, `rooms/${code}`), (snapshot) => {
-      const data = snapshot.val();
-
-      if (!data) {
-        setJoinError('Oda bulunamadı. Kodu kontrol et.');
-        setIsLoading(false);
-        return;
-      }
-
-      if (data.guest) {
-        setJoinError('Oda dolu. Başka bir oda dene.');
-        setIsLoading(false);
-        return;
-      }
-
-      // Odaya katıl
-      setIsHost(false);
-      setRoomCode(code);
-      setCurrentStory(data.story);
-      setDifficulty(data.difficulty);
-      setOnlineMessages([]);
-      setOnlineHintsUsed(0);
-
-      update(ref(database, `rooms/${code}`), {
-        guest: playerName.trim(),
-        status: 'playing'
-      });
-
-      setIsLoading(false);
-      setGameState('waiting');
-      startListening(code);
-    }, { once: true });
-  };
-
-  // ============================================================
-  // ONLINE MOD: Soru Gönder (Guest)
-  // ============================================================
-  const sendOnlineQuestion = async () => {
-    if (!onlineQuestionInput.trim()) return;
-
-    const msgKey = `msg_${Date.now()}`;
-    await set(ref(database, `rooms/${roomCode}/messages/${msgKey}`), {
-      type: 'question',
-      content: onlineQuestionInput.trim(),
-      sender: playerName,
-      timestamp: Date.now()
-    });
-
-    setOnlineQuestionInput('');
-  };
-
-  // ============================================================
-  // ONLINE MOD: Cevap Ver (Host)
-  // ============================================================
-  const sendOnlineAnswer = async (answer) => {
-    const msgKey = `msg_${Date.now()}`;
-    await set(ref(database, `rooms/${roomCode}/messages/${msgKey}`), {
-      type: 'answer',
-      content: answer,
-      sender: playerName,
-      timestamp: Date.now()
-    });
-  };
-
-  // ============================================================
-  // ONLINE MOD: İpucu Ver (Host)
-  // ============================================================
-  const sendOnlineHint = async () => {
-    if (!currentStory || onlineHintsUsed >= currentStory.ipuclari.length) return;
-
-    const msgKey = `msg_${Date.now()}`;
-    await set(ref(database, `rooms/${roomCode}/messages/${msgKey}`), {
-      type: 'hint',
-      content: currentStory.ipuclari[onlineHintsUsed],
-      timestamp: Date.now()
-    });
-
-    const newHints = onlineHintsUsed + 1;
-    setOnlineHintsUsed(newHints);
-    await update(ref(database, `rooms/${roomCode}`), { hintsUsed: newHints });
-  };
-
-  // ============================================================
-  // ONLINE MOD: Cevabı Kontrol Et (Guest)
-  // ============================================================
-  const checkOnlineAnswer = async () => {
-    if (!onlineAnswerInput.trim() || isLoading) return;
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          messages: [{
-            role: 'user',
-            content: `Gerçek cevap: ${currentStory.cevap}\n\nOyuncunun cevabı: ${onlineAnswerInput}\n\nOyuncunun cevabı hikayenin özünü yakalamış mı? Sadece "DOĞRU" veya "YANLIŞ" yaz. Eğer ana fikir aynıysa (kelime kelime aynı olması gerekmiyor) DOĞRU yaz.`
-          }]
-        })
-      });
-
-      const data = await response.json();
-      const result = data.content[0].text.trim();
-
-      if (result.includes('DOĞRU')) {
-        const msgKey = `msg_${Date.now()}`;
-        await set(ref(database, `rooms/${roomCode}/messages/${msgKey}`), {
-          type: 'solved',
-          content: `🎉 "${onlineAnswerInput.trim()}" - Doğru cevap!`,
-          sender: playerName,
-          timestamp: Date.now()
-        });
-        await update(ref(database, `rooms/${roomCode}`), { status: 'solved' });
-      } else {
-        const msgKey = `msg_${Date.now()}`;
-        await set(ref(database, `rooms/${roomCode}/messages/${msgKey}`), {
-          type: 'wrong',
-          content: `❌ "${onlineAnswerInput.trim()}" - Yanlış, tekrar dene!`,
-          timestamp: Date.now()
-        });
-      }
-    } catch (error) {
-      const msgKey = `msg_${Date.now()}`;
-      await set(ref(database, `rooms/${roomCode}/messages/${msgKey}`), {
-        type: 'wrong',
-        content: 'Bir hata oluştu, tekrar dene.',
-        timestamp: Date.now()
-      });
-    }
-
-    setIsLoading(false);
-    setOnlineAnswerInput('');
-  };
-
-  // ============================================================
-  // ONLINE MOD: Odadan Çıkış
-  // ============================================================
-  const leaveRoom = async () => {
-    removeListeners();
-
-    if (isHost && roomCode) {
-      await remove(ref(database, `rooms/${roomCode}`));
-    }
-
-    setRoomCode('');
-    setInputRoomCode('');
-    setRoomData(null);
-    setOnlineMessages([]);
-    setOnlineHintsUsed(0);
-    setCurrentStory(null);
-    setIsHost(false);
-    setJoinError('');
-    setGameState('menu');
-    setGameMode(null);
-  };
-
-  // ============================================================
-  // AI MOD: Oyun başlatma
-  // ============================================================
-  const startGame = (diff, mode = 'ai') => {
-    const storyList = stories[diff];
-    const randomStory = storyList[Math.floor(Math.random() * storyList.length)];
-
-    setDifficulty(diff);
-    setCurrentStory(randomStory);
-    setGameMode(mode);
-
-    if (mode === 'reader') {
-      setGameState('reader_playing');
-      setShowAnswer(false);
-    } else {
-      setGameState('playing');
-      setMessages([{ type: 'story', content: randomStory.baslangic }]);
-    }
-
-    setStartTime(Date.now());
-    setQuestionsAsked(0);
-    setHintsUsed(0);
-  };
-
-  // ============================================================
-  // AI MOD: Soru Sor
-  // ============================================================
-  const askQuestion = async () => {
-    if (!questionInput.trim() || isLoading) return;
-
-    const newMessages = [...messages, { type: 'question', content: questionInput }];
-    setMessages(newMessages);
-    setQuestionsAsked(prev => prev + 1);
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          messages: [{
-            role: 'user',
-            content: `Sen bir hikaye tamamlama oyununda yardımcı yapay zekasın. İşte hikaye:\n\nBaşlangıç: ${currentStory.baslangic}\nGerçek Cevap: ${currentStory.cevap}\n\nOyuncu şu soruyu sordu: "${questionInput}"\n\nBu soruya sadece şu şekillerde cevap ver:\n- "Evet" (soru doğru bir yöne gidiyorsa)\n- "Hayır" (soru yanlış yönde)\n- "Alakasız" (soru hikayle alakalı değil)\n\nSADECE bu üç kelimeden birini yaz, başka hiçbir şey ekleme.`
-          }]
-        })
-      });
-
-      const data = await response.json();
-      const aiResponse = data.content[0].text.trim();
-      setMessages([...newMessages, { type: 'answer', content: aiResponse }]);
-    } catch (error) {
-      setMessages([...newMessages, { type: 'answer', content: 'Hayır' }]);
-    }
-
-    setIsLoading(false);
-    setQuestionInput('');
-  };
-
-  // ============================================================
-  // AI MOD: İpucu
-  // ============================================================
-  const getHint = () => {
-    if (hintsUsed >= currentStory?.ipuclari.length) return;
-    setMessages([...messages, { type: 'hint', content: currentStory.ipuclari[hintsUsed] }]);
-    setHintsUsed(prev => prev + 1);
-  };
-
-  // ============================================================
-  // AI MOD: Cevap Kontrol
-  // ============================================================
-  const checkAnswer = async () => {
-    if (!answerInput.trim() || isLoading) return;
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          messages: [{
-            role: 'user',
-            content: `Gerçek cevap: ${currentStory.cevap}\n\nOyuncunun cevabı: ${answerInput}\n\nOyuncunun cevabı hikayenin özünü yakalamış mı? Sadece "DOĞRU" veya "YANLIŞ" yaz. Eğer ana fikir aynıysa (kelime kelime aynı olması gerekmiyor) DOĞRU yaz.`
-          }]
-        })
-      });
-
-      const data = await response.json();
-      const result = data.content[0].text.trim();
-
-      if (result.includes('DOĞRU')) {
-        setGameState('solved');
-      } else {
-        setMessages([...messages, { type: 'wrong', content: 'Yanlış cevap! Tekrar dene veya daha fazla soru sor.' }]);
-      }
-    } catch (error) {
-      setMessages([...messages, { type: 'wrong', content: 'Bir hata oluştu, tekrar dene.' }]);
-    }
-
-    setIsLoading(false);
-    setAnswerInput('');
-  };
-
-  // ============================================================
-  // Süre formatı
-  // ============================================================
   const formatTime = () => {
     if (!startTime) return '0:00';
-    const seconds = Math.floor((Date.now() - startTime) / 1000);
+    const seconds = Math.floor((now - startTime) / 1000);
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   // ============================================================
-  // EKRANLAR
+  // YAPAY ZEKA (GEMINI)
   // ============================================================
 
-  // --- ANA MENU ---
+  const askGemini = async (userQuestion) => {
+    try {
+      const prompt = `Sen bir dedektiflik oyununun moderatörüsün. Hikaye: "${currentStory.baslangic}". Gerçek Çözüm: "${currentStory.cevap}". Oyuncunun Sorusu: "${userQuestion}". Görevin: Bu soruya sadece hikayenin gerçek çözümüne dayanarak "Evet", "Hayır" veya "Alakasız" cevabını ver. Asla çözümü söyleme. Sadece bu üç kelimeden birini yaz.`;
+      return await callGemini(prompt);
+    } catch (error) {
+      console.error('askGemini hatası:', error.message);
+      return `Bağlantı Hatası: ${error.message}`;
+    }
+  };
+
+  const checkGeminiAnswer = async (userGuess) => {
+    try {
+      const prompt = `Hikaye Çözümü: "${currentStory.cevap}". Oyuncunun Tahmini: "${userGuess}". Bu tahmin hikayenin çözümünü doğru bir şekilde açıklıyor mu? Eğer ana fikir doğruysa sadece "DOĞRU" yaz. Eğer yanlışsa sadece "YANLIŞ" yaz. Başka hiçbir şey yazma.`;
+      return await callGemini(prompt);
+    } catch (error) {
+      console.error('checkGeminiAnswer hatası:', error.message);
+      return 'YANLIŞ';
+    }
+  };
+
+  const askQuestion = async () => {
+    if (!questionInput.trim() || isLoading) return;
+    const newMessages = [...messages, { type: 'question', content: questionInput }];
+    setMessages(newMessages); setIsLoading(true); setQuestionInput(''); 
+    const aiResponse = await askGemini(questionInput);
+    setMessages(curr => [...curr, { type: 'answer', content: aiResponse }]);
+    setIsLoading(false);
+  };
+
+  const checkAnswer = async () => {
+    if (!answerInput.trim() || isLoading) return;
+    setIsLoading(true);
+    const result = await checkGeminiAnswer(answerInput);
+    if (result.includes("DOĞRU")) { setGameState('solved'); } 
+    else { setMessages(curr => [...curr, { type: 'wrong', content: `❌ "${answerInput}" yanlış cevap.` }]); }
+    setIsLoading(false); setAnswerInput('');
+  };
+
+  // ... (Firebase Functions) ...
+  const createRoom = async () => {
+    if (!playerName.trim() || !onlineDifficulty) return;
+    const code = generateRoomCode();
+    const storyList = stories[onlineDifficulty];
+    const randomStory = storyList[Math.floor(Math.random() * storyList.length)];
+    setRoomCode(code); setIsHost(true); setCurrentStory(randomStory);
+    setOnlineMessages([]); setOnlineHintsUsed(0); setGuestList([]);
+    await set(ref(database, `rooms/${code}`), { host: playerName.trim(), guests: {}, status: 'waiting', difficulty: onlineDifficulty, story: randomStory, hintsUsed: 0, createdAt: Date.now() });
+    await set(ref(database, `rooms/${code}/messages/msg_0`), { type: 'story', content: randomStory.baslangic, timestamp: Date.now() });
+    setGameState('waiting'); startListening(code);
+  };
+
+  const joinRoom = async () => {
+    if (!playerName.trim() || inputRoomCode.length !== 6) return;
+    setJoinError(''); setIsLoading(true);
+    const code = inputRoomCode.trim();
+    onValue(ref(database, `rooms/${code}`), async (snapshot) => {
+      const data = snapshot.val();
+      if (!data) { setJoinError('Dosya bulunamadı.'); setIsLoading(false); return; }
+      setIsHost(false); setRoomCode(code); setCurrentStory(data.story);
+      setDifficulty(data.difficulty); setOnlineMessages([]); setOnlineHintsUsed(0);
+      const newGuestRef = push(ref(database, `rooms/${code}/guests`));
+      await set(newGuestRef, { name: playerName.trim(), joinedAt: Date.now() });
+      setIsLoading(false); setGameState('waiting'); startListening(code);
+    }, { once: true });
+  };
+
+  const startListening = (code) => {
+    removeListeners();
+    const roomRefPath = ref(database, `rooms/${code}`);
+    roomListenerRef.current = roomRefPath;
+    onValue(roomRefPath, (snapshot) => {
+      const data = snapshot.val();
+      if (!data) { removeListeners(); setGameState('menu'); return; }
+      setRoomData(data); setCurrentStory(data.story); setDifficulty(data.difficulty); setOnlineHintsUsed(data.hintsUsed || 0);
+      if (data.guests) setGuestList(Object.values(data.guests)); else setGuestList([]);
+      if (data.status === 'playing' && gameState !== 'online_playing') { setGameState('online_playing'); if (!startTime) setStartTime(Date.now()); }
+      else if (data.status === 'solved') setGameState('online_solved');
+    });
+    const messagesRefPath = ref(database, `rooms/${code}/messages`);
+    messagesListenerRef.current = messagesRefPath;
+    onValue(messagesRefPath, (snapshot) => {
+      const data = snapshot.val();
+      if (data) setOnlineMessages(Object.values(data).sort((a, b) => a.timestamp - b.timestamp)); else setOnlineMessages([]);
+    });
+  };
+
+  const startOnlineGame = async () => { if (isHost) await update(ref(database, `rooms/${roomCode}`), { status: 'playing' }); };
+  const sendOnlineQuestion = async () => { if(!onlineQuestionInput.trim()) return; await set(ref(database, `rooms/${roomCode}/messages/msg_${Date.now()}`), { type: 'question', content: onlineQuestionInput.trim(), sender: playerName, timestamp: Date.now() }); setOnlineQuestionInput(''); };
+  const sendOnlineAnswer = async (ans) => { await set(ref(database, `rooms/${roomCode}/messages/msg_${Date.now()}`), { type: 'answer', content: ans, sender: playerName, timestamp: Date.now() }); };
+  const sendOnlineHint = async () => { if (!currentStory || onlineHintsUsed >= currentStory.ipuclari.length) return; await set(ref(database, `rooms/${roomCode}/messages/msg_${Date.now()}`), { type: 'hint', content: currentStory.ipuclari[onlineHintsUsed], timestamp: Date.now() }); await update(ref(database, `rooms/${roomCode}`), { hintsUsed: onlineHintsUsed + 1 }); };
+  
+  const checkOnlineAnswer = async () => {
+    if (!onlineAnswerInput.trim() || isLoading) return;
+    setIsLoading(true);
+    const result = await checkGeminiAnswer(onlineAnswerInput);
+    const msgKey = `msg_${Date.now()}`;
+    if (result.includes("DOĞRU")) {
+        await set(ref(database, `rooms/${roomCode}/messages/${msgKey}`), { type: 'solved', content: `🎉 "${onlineAnswerInput.trim()}" - Doğru cevap!`, sender: playerName, timestamp: Date.now() });
+        await update(ref(database, `rooms/${roomCode}`), { status: 'solved' });
+    } else {
+        await set(ref(database, `rooms/${roomCode}/messages/${msgKey}`), { type: 'wrong', content: `❌ "${onlineAnswerInput.trim()}" - Yanlış, tekrar dene!`, timestamp: Date.now() });
+    }
+    setIsLoading(false); setOnlineAnswerInput('');
+  };
+
+  const removeListeners = () => { if (roomListenerRef.current) off(roomListenerRef.current); if (messagesListenerRef.current) off(messagesListenerRef.current); };
+  const leaveRoom = async () => { removeListeners(); if (isHost && roomCode) await remove(ref(database, `rooms/${roomCode}`)); setRoomCode(''); setInputRoomCode(''); setRoomData(null); setOnlineMessages([]); setOnlineHintsUsed(0); setCurrentStory(null); setIsHost(false); setGuestList([]); setGameState('menu'); setGameMode(null); setStartTime(null); };
+  const confirmLeave = () => { Alert.alert("Vakayı Terk Et?", "Dosyayı kapatırsan ilerlemen kaybolacak.", [{ text: "Vazgeç", style: "cancel" }, { text: "Evet, Çık", onPress: leaveRoom, style: "destructive" }]); };
+  
+  const startGame = (diff, mode = 'ai') => {
+    const list = stories[diff];
+    const story = list[Math.floor(Math.random() * list.length)];
+    setDifficulty(diff); setCurrentStory(story); setGameMode(mode);
+    if (mode === 'reader') { setGameState('reader_playing'); setShowAnswer(false); } 
+    else { setGameState('playing'); setMessages([{ type: 'story', content: story.baslangic }]); }
+    setStartTime(Date.now()); setNow(Date.now()); setHintsUsed(0);
+  };
+  const getHint = () => { if (hintsUsed >= currentStory?.ipuclari.length) return; if (gameState === 'playing') setMessages([...messages, { type: 'hint', content: currentStory.ipuclari[hintsUsed] }]); setHintsUsed(prev => prev + 1); };
+
+  if (!fontsLoaded) return null;
+
+  // ============================================================
+  // RENDER
+  // ============================================================
   if (gameState === 'menu') {
     return (
-      <SafeAreaView className="flex-1 bg-amber-50">
-        <ScrollView className="flex-1" contentContainerStyle={{ padding: 16, justifyContent: 'center', minHeight: '100%' }}>
-          <View className="items-center mb-10">
-            <View className="flex-row items-center gap-3 mb-4">
-              <Brain color="#92400e" size={56} strokeWidth={1.5} />
-              <Text className="text-5xl font-bold text-amber-900" style={{ fontFamily: 'serif' }}>
-                Dedektif
-              </Text>
-            </View>
-            <Text className="text-lg text-amber-800 text-center leading-relaxed" style={{ fontFamily: 'serif' }}>
-              Gizemli hikayeleri çöz, sorular sor, gerçeği ortaya çıkar
-            </Text>
-          </View>
-
-          <View className="bg-white/80 rounded-3xl p-5 mb-4">
-            <Text className="text-xl font-semibold text-amber-900 mb-4" style={{ fontFamily: 'serif' }}>
-              Oyun Modu Seç
-            </Text>
-
-            <TouchableOpacity
-              onPress={() => { setGameMode('ai'); setGameState('difficulty'); }}
-              className="bg-purple-600 p-5 rounded-xl mb-3 shadow-md"
-            >
-              <View className="flex-row items-center gap-3">
-                <Sparkles color="white" size={28} />
-                <View className="flex-1">
-                  <Text className="text-lg font-bold text-white">🤖 Yapay Zeka Modu</Text>
-                  <Text className="text-xs text-purple-100 mt-0.5">Tek başına AI ile oyna</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => { setGameMode('reader'); setGameState('reader_difficulty'); }}
-              className="bg-amber-600 p-5 rounded-xl mb-3 shadow-md"
-            >
-              <View className="flex-row items-center gap-3">
-                <Brain color="white" size={28} />
-                <View className="flex-1">
-                  <Text className="text-lg font-bold text-white">📖 Hikaye Okuyucu</Text>
-                  <Text className="text-xs text-amber-100 mt-0.5">Arkadaşlarına oku, yüz yüze oyna</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => { setGameMode('online'); setGameState('online_menu'); }}
-              className="bg-blue-600 p-5 rounded-xl shadow-md"
-            >
-              <View className="flex-row items-center gap-3">
-                <Users color="white" size={28} />
-                <View className="flex-1">
-                  <Text className="text-lg font-bold text-white">🌐 Online Çok Oyunculu</Text>
-                  <Text className="text-xs text-blue-100 mt-0.5">Arkadaşla oda aç veya kodla katıl</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
+      <SafeAreaView style={d.container} onLayout={onLayoutRootView}>
+        <ScrollView contentContainerStyle={d.scrollContent}>
+          <View style={d.header}><MaterialCommunityIcons name="incognito" color="#E0E0E0" size={80} /><Text style={d.title}>Dedektif</Text><Text style={d.sub}>Gizemli hikayeleri çöz, gerçeği ortaya çıkar.</Text></View>
+          <View style={d.cardWrapper}>
+            <Text style={d.cardHeader}>OYUN MODU SEÇ</Text>
+            <TouchableOpacity style={d.card} onPress={() => { setGameMode('ai'); setGameState('difficulty'); }}><View style={[d.iconBox, {backgroundColor:'#1A237E'}]}><MaterialCommunityIcons name="robot" size={24} color="#90CAF9" /></View><View style={{ flex: 1, marginLeft: 15 }}><Text style={d.cardTitle}>Yapay Zeka Modu</Text><Text style={d.cardSub}>AI ile tek başına oyna</Text></View><MaterialCommunityIcons name="chevron-right" size={24} color="#757575" /></TouchableOpacity>
+            <TouchableOpacity style={d.card} onPress={() => { setGameMode('reader'); setGameState('reader_difficulty'); }}><View style={[d.iconBox, {backgroundColor:'#3E2723'}]}><MaterialCommunityIcons name="book-open-page-variant" size={24} color="#FFCC80" /></View><View style={{ flex: 1, marginLeft: 15 }}><Text style={d.cardTitle}>Hikaye Okuyucu</Text><Text style={d.cardSub}>Yüz yüze oyna</Text></View><MaterialCommunityIcons name="chevron-right" size={24} color="#757575" /></TouchableOpacity>
+            <TouchableOpacity style={d.card} onPress={() => setGameState('online_menu')}><View style={[d.iconBox, {backgroundColor:'#1B5E20'}]}><MaterialCommunityIcons name="account-group" size={24} color="#A5D6A7" /></View><View style={{ flex: 1, marginLeft: 15 }}><Text style={d.cardTitle}>Online Çok Oyunculu</Text><Text style={d.cardSub}>Arkadaşla oda aç veya katıl</Text></View><MaterialCommunityIcons name="chevron-right" size={24} color="#757575" /></TouchableOpacity>
           </View>
         </ScrollView>
       </SafeAreaView>
     );
   }
 
-  // --- ONLINE MENU ---
   if (gameState === 'online_menu') {
     return (
-      <SafeAreaView className="flex-1 bg-blue-50">
-        <ScrollView className="flex-1 p-4">
-          <View className="items-center mb-6 mt-6">
-            <Users color="#1d4ed8" size={48} />
-            <Text className="text-3xl font-bold text-blue-900 mt-3" style={{ fontFamily: 'serif' }}>
-              Online Mod
-            </Text>
-            <Text className="text-blue-700 text-center mt-1 text-sm">Oda oluştur veya mevcut odaya katıl</Text>
+      <SafeAreaView style={d.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{flex:1}}>
+        <ScrollView contentContainerStyle={d.scrollContent}>
+          <View style={{width:'100%', flexDirection:'row', alignItems:'center', marginBottom:20}}><TouchableOpacity onPress={() => setGameState('menu')} style={{padding:10, marginRight:10}}><MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" /></TouchableOpacity><View style={{alignItems:'center', flex:1, marginRight:38}}><MaterialCommunityIcons name="typewriter" size={40} color="#90CAF9" /><Text style={[d.titleSmall, {color:'#90CAF9', marginTop:5, fontSize:24}]}>Online Mod</Text></View></View>
+          <View style={d.cardWrapper}>
+            <Text style={d.vintageLabel}>Adın</Text><TextInput style={d.modernInput} value={playerName} onChangeText={setPlayerName} placeholder="Adını yaz..." placeholderTextColor="#757575" /><View style={d.divider} />
+            <View><View style={{flexDirection:'row', alignItems:'center', gap:8, marginBottom:4}}><MaterialCommunityIcons name="home-outline" size={20} color="#B0B0B0" /><Text style={d.cardHeader}>Oda Oluştur</Text></View><Text style={[d.cardSub, {marginBottom:15}]}>Sen anlatıcı olursun, arkadaşın soru sorar</Text><Text style={[d.vintageLabel, {fontSize:12, color:'#B0B0B0'}]}>Zorluk Seviyesi</Text>
+              <View style={{ flexDirection: 'row', gap: 10, marginBottom: 15 }}>{['kolay', 'orta', 'zor'].map(d_key => (<TouchableOpacity key={d_key} onPress={() => setOnlineDifficulty(d_key)} style={[d.chipBtn, onlineDifficulty === d_key && d.chipBtnActive, d_key==='zor' && onlineDifficulty===d_key && {backgroundColor:'#C62828', borderColor:'#C62828'}, d_key==='orta' && onlineDifficulty===d_key && {backgroundColor:'#F9A825', borderColor:'#F9A825'}, d_key==='kolay' && onlineDifficulty===d_key && {backgroundColor:'#2E7D32', borderColor:'#2E7D32'}]}><View style={[d.dot, {backgroundColor: d_key==='kolay'?'#2E7D32':d_key==='orta'?'#F9A825':'#C62828'}, onlineDifficulty === d_key && {backgroundColor:'white'}]} /><Text style={[d.chipText, onlineDifficulty === d_key && {color:'white'}]}>{d_key.charAt(0).toUpperCase() + d_key.slice(1)}</Text></TouchableOpacity>))}</View>
+              <TouchableOpacity style={[d.actionBtn, {backgroundColor:'#1565C0'}]} onPress={createRoom}><Text style={d.actionBtnText}>Oda Oluştur</Text></TouchableOpacity>
+            </View><View style={d.divider} />
+            <View><View style={{flexDirection:'row', alignItems:'center', gap:8, marginBottom:4}}><MaterialCommunityIcons name="link-variant" size={20} color="#B0B0B0" /><Text style={d.cardHeader}>Odaya Katıl</Text></View><Text style={[d.cardSub, {marginBottom:15}]}>Arkadaşın oda kodunu yaz</Text><Text style={d.vintageLabel}>Oda Kodu</Text><TextInput style={d.modernInput} value={inputRoomCode} onChangeText={setInputRoomCode} placeholder="123456" placeholderTextColor="#757575" keyboardType="numeric" maxLength={6} /><TouchableOpacity style={[d.actionBtn, { backgroundColor: '#2E7D32', marginTop:10 }]} onPress={joinRoom}><Text style={d.actionBtnText}>Odaya Katıl</Text></TouchableOpacity>{joinError ? <Text style={{ color: '#EF9A9A', fontSize: 12, marginTop: 10, textAlign:'center', fontFamily:'SpecialElite' }}>{joinError}</Text> : null}</View>
           </View>
-
-          {/* İsim */}
-          <View className="bg-white rounded-2xl p-5 mb-4 shadow-sm">
-            <Text className="text-sm font-semibold text-blue-800 mb-2">Adın</Text>
-            <TextInput
-              value={playerName}
-              onChangeText={setPlayerName}
-              placeholder="Adını yaz..."
-              placeholderTextColor="#93c5fd"
-              className="px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-blue-900 text-base"
-            />
-          </View>
-
-          {/* Oda Oluştur */}
-          <View className="bg-white rounded-2xl p-5 mb-4 shadow-sm">
-            <Text className="text-lg font-bold text-blue-900 mb-1">🏠 Oda Oluştur</Text>
-            <Text className="text-xs text-blue-600 mb-3">Sen anlatıcı olursun, arkadaşın soru sorar</Text>
-
-            <Text className="text-sm font-semibold text-blue-800 mb-2">Zorluk Seviyesi</Text>
-            <View className="flex-row gap-2 mb-4">
-              {['kolay', 'orta', 'zor'].map((diff) => (
-                <TouchableOpacity
-                  key={diff}
-                  onPress={() => setOnlineDifficulty(diff)}
-                  className={`flex-1 py-2 rounded-lg border ${
-                    onlineDifficulty === diff ? 'bg-blue-600 border-blue-600' : 'bg-blue-50 border-blue-200'
-                  }`}
-                >
-                  <Text className={`text-center text-xs font-semibold ${onlineDifficulty === diff ? 'text-white' : 'text-blue-800'}`}>
-                    {diff === 'kolay' ? '🟢 Kolay' : diff === 'orta' ? '🟡 Orta' : '🔴 Zor'}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            <TouchableOpacity
-              onPress={createRoom}
-              disabled={!playerName.trim() || !onlineDifficulty}
-              className={`py-3 rounded-xl ${playerName.trim() && onlineDifficulty ? 'bg-blue-600' : 'bg-blue-300'}`}
-            >
-              <Text className="text-white font-semibold text-center">Oda Oluştur</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Odaya Katıl */}
-          <View className="bg-white rounded-2xl p-5 mb-4 shadow-sm">
-            <Text className="text-lg font-bold text-blue-900 mb-1">🔗 Odaya Katıl</Text>
-            <Text className="text-xs text-blue-600 mb-3">Arkadaşın oda kodunu yaz</Text>
-
-            <Text className="text-sm font-semibold text-blue-800 mb-2">Oda Kodu</Text>
-            <TextInput
-              value={inputRoomCode}
-              onChangeText={(text) => { setInputRoomCode(text); setJoinError(''); }}
-              placeholder="123456"
-              placeholderTextColor="#93c5fd"
-              keyboardType="numeric"
-              maxLength={6}
-              className="px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl text-blue-900 text-base mb-3"
-            />
-
-            {joinError ? (
-              <Text className="text-red-600 text-sm mb-3">{joinError}</Text>
-            ) : null}
-
-            <TouchableOpacity
-              onPress={joinRoom}
-              disabled={!playerName.trim() || inputRoomCode.length !== 6 || isLoading}
-              className={`py-3 rounded-xl ${playerName.trim() && inputRoomCode.length === 6 ? 'bg-green-600' : 'bg-green-300'}`}
-            >
-              <Text className="text-white font-semibold text-center">
-                {isLoading ? 'Katılıyor...' : 'Odaya Katıl'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity onPress={() => setGameState('menu')} className="py-3">
-            <Text className="text-blue-700 text-center font-medium">← Ana Menü</Text>
-          </TouchableOpacity>
-        </ScrollView>
+        </ScrollView></KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
 
-  // --- BEKLEME EKRANI ---
   if (gameState === 'waiting') {
     return (
-      <SafeAreaView className="flex-1 bg-blue-50">
-        <ScrollView className="flex-1 p-4" contentContainerStyle={{ justifyContent: 'center', flexGrow: 1 }}>
-          <View className="bg-white rounded-3xl p-8 shadow-sm">
-            <View className="items-center mb-6">
-              <ActivityIndicator size="large" color="#2563eb" />
-              <Text className="text-2xl font-bold text-blue-900 mt-4" style={{ fontFamily: 'serif' }}>
-                {isHost ? 'Oda Hazır!' : 'Katılım Bekliyor...'}
-              </Text>
-            </View>
-
-            {/* Oda Kodu */}
-            <View className="bg-blue-50 rounded-2xl p-4 mb-5 items-center">
-              <Text className="text-sm text-blue-600 mb-1">Oda Kodu</Text>
-              <Text className="text-4xl font-bold text-blue-900 tracking-widest">{roomCode}</Text>
-              <Text className="text-xs text-blue-500 mt-1">Arkadaşına bu kodu ver</Text>
-            </View>
-
-            {/* Oyuncular */}
-            <View className="mb-5">
-              <View className="flex-row items-center gap-3 py-3 border-b border-blue-100">
-                <View className="w-8 h-8 bg-blue-600 rounded-full items-center justify-center">
-                  <Text className="text-white text-sm font-bold">H</Text>
-                </View>
-                <Text className="text-blue-900 font-semibold flex-1">{roomData?.host || playerName}</Text>
-                <Text className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Anlatıcı</Text>
-              </View>
-
-              <View className="flex-row items-center gap-3 py-3">
-                {roomData?.guest ? (
-                  <>
-                    <View className="w-8 h-8 bg-green-600 rounded-full items-center justify-center">
-                      <Text className="text-white text-sm font-bold">G</Text>
-                    </View>
-                    <Text className="text-blue-900 font-semibold flex-1">{roomData.guest}</Text>
-                    <Text className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Dedektif</Text>
-                  </>
-                ) : (
-                  <View className="flex-row items-center gap-3">
-                    <View className="w-8 h-8 bg-gray-300 rounded-full items-center justify-center">
-                      <Text className="text-gray-500 text-sm">?</Text>
-                    </View>
-                    <Text className="text-gray-400 flex-1">Beklendiyor...</Text>
-                  </View>
-                )}
-              </View>
-            </View>
-
-            {/* Zorluk */}
-            <View className="bg-blue-50 rounded-xl p-3 mb-5 flex-row items-center justify-between">
-              <Text className="text-blue-700 text-sm">Zorluk</Text>
-              <Text className="text-blue-900 font-semibold text-sm">
-                {roomData?.difficulty === 'kolay' ? '🟢 Kolay' : roomData?.difficulty === 'orta' ? '🟡 Orta' : '🔴 Zor'}
-              </Text>
-            </View>
-
-            <TouchableOpacity onPress={leaveRoom} className="py-3 border border-red-300 rounded-xl">
-              <Text className="text-red-600 font-semibold text-center">Odadan Çıkış</Text>
-            </TouchableOpacity>
+      <SafeAreaView style={d.container}>
+        <View style={d.scrollContent}>
+           <View style={{width:'100%', flexDirection:'row', alignItems:'center', marginBottom:20}}><TouchableOpacity onPress={confirmLeave} style={{padding:10}}><MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" /></TouchableOpacity><Text style={[d.titleSmall, {flex:1, textAlign:'center', marginRight:30}]}>Bekleme Salonu</Text></View>
+          <View style={d.cardWrapper}>
+            <Text style={{textAlign:'center', color:'#B0B0B0', marginBottom:5}}>VAKA DOSYASI NO</Text><Text style={[d.titleSmall, {textAlign:'center', fontSize:36, color:'#90CAF9'}]}>{roomCode}</Text><View style={{borderBottomWidth:1, borderColor:'#333', marginVertical:15}} /><Text style={d.vintageLabel}>EKİP ({guestList.length + 1})</Text>
+            <View style={{height: 200}}><ScrollView nestedScrollEnabled><View style={d.playerRow}><MaterialCommunityIcons name="account-tie" size={24} color="#90CAF9" /><Text style={d.playerText}>{roomData?.host || playerName} (Anlatıcı)</Text><MaterialCommunityIcons name="crown" size={16} color="#FFD700" style={{marginLeft:'auto'}} /></View>{guestList.length > 0 ? guestList.map((guest, index) => (<View key={index} style={d.playerRow}><MaterialCommunityIcons name="magnify" size={24} color="#A5D6A7" /><Text style={d.playerText}>{guest.name}</Text></View>)) : (<Text style={{color:'#555', fontStyle:'italic', marginTop:10, textAlign:'center'}}>Dedektifler bekleniyor...</Text>)}</ScrollView></View>
+            {isHost ? (<TouchableOpacity onPress={startOnlineGame} style={[d.actionBtn, { backgroundColor: '#2E7D32', marginTop:20 }]}><Text style={d.actionBtnText}>Vakayı Başlat</Text></TouchableOpacity>) : (<View style={{marginTop:20, padding:10, backgroundColor:'#252525', borderRadius:8}}><Text style={{color:'#B0B0B0', textAlign:'center', fontStyle:'italic'}}>Anlatıcının dosyayı açması bekleniyor...</Text></View>)}
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
-  // --- ONLINE OYUN EKRANI ---
-  if (gameState === 'online_playing') {
-    return (
-      <SafeAreaView className="flex-1 bg-slate-900">
-        <View className="flex-1 p-3">
-          {/* Header */}
-          <View className="bg-blue-900/40 rounded-2xl p-3 mb-3">
-            <View className="flex-row items-center justify-between mb-1">
-              <Text className="text-base font-bold text-blue-100 flex-1" style={{ fontFamily: 'serif' }}>
-                {currentStory?.baslik}
-              </Text>
-              <View className="px-2 py-1 bg-blue-800/50 rounded-full">
-                <Text className="text-blue-100 text-xs font-semibold">
-                  {isHost ? '🏠 Anlatıcı' : '🔍 Dedektif'}
-                </Text>
-              </View>
-            </View>
-            <View className="flex-row gap-3">
-              <Text className="text-blue-300 text-xs">
-                {difficulty === 'kolay' ? '🟢 Kolay' : difficulty === 'orta' ? '🟡 Orta' : '🔴 Zor'}
-              </Text>
-              <Text className="text-blue-300 text-xs">👥 {roomData?.host} vs {roomData?.guest}</Text>
-            </View>
-          </View>
-
-          {/* Mesajlar */}
-          <ScrollView
-            ref={scrollViewRef}
-            className="flex-1 bg-slate-800/50 rounded-2xl p-3 mb-3"
-            onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
-          >
-            {onlineMessages.map((msg, idx) => (
-              <View
-                key={idx}
-                className={`mb-2 p-3 rounded-xl ${
-                  msg.type === 'story' ? 'bg-blue-900/40 border-l-4 border-blue-500'
-                  : msg.type === 'question' ? 'bg-green-900/30 border-l-4 border-green-500'
-                  : msg.type === 'answer' ? 'bg-amber-900/30 border-l-4 border-amber-500'
-                  : msg.type === 'hint' ? 'bg-yellow-900/30 border-l-4 border-yellow-500'
-                  : msg.type === 'wrong' ? 'bg-red-900/30 border-l-4 border-red-500'
-                  : msg.type === 'solved' ? 'bg-green-900/40 border-l-4 border-green-400'
-                  : 'bg-slate-700/30'
-                }`}
-              >
-                {msg.sender && msg.type !== 'story' && (
-                  <Text className="text-xs text-slate-400 mb-0.5">{msg.sender}</Text>
-                )}
-                <Text className="text-slate-100 text-sm leading-relaxed">{msg.content}</Text>
-              </View>
-            ))}
-          </ScrollView>
-
-          {/* Input */}
-          <View className="bg-slate-800/60 rounded-2xl p-3 mb-2">
-            {isHost ? (
-              <>
-                <Text className="text-blue-200 text-xs mb-2 font-semibold">Cevabını Ver:</Text>
-                <View className="flex-row gap-2 mb-2">
-                  <TouchableOpacity onPress={() => sendOnlineAnswer('Evet')} className="flex-1 py-2.5 bg-green-600 rounded-lg">
-                    <Text className="text-white font-bold text-center text-sm">✅ Evet</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => sendOnlineAnswer('Hayır')} className="flex-1 py-2.5 bg-red-600 rounded-lg">
-                    <Text className="text-white font-bold text-center text-sm">❌ Hayır</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => sendOnlineAnswer('Alakasız')} className="flex-1 py-2.5 bg-gray-600 rounded-lg">
-                    <Text className="text-white font-bold text-center text-sm">➡️ A/S</Text>
-                  </TouchableOpacity>
-                </View>
-                <TouchableOpacity
-                  onPress={sendOnlineHint}
-                  disabled={onlineHintsUsed >= (currentStory?.ipuclari.length || 0)}
-                  className={`py-2 rounded-lg border ${
-                    onlineHintsUsed >= (currentStory?.ipuclari.length || 0) ? 'border-gray-600 bg-gray-800' : 'border-yellow-600 bg-yellow-900/30'
-                  }`}
-                >
-                  <Text className={`font-semibold text-center text-sm ${
-                    onlineHintsUsed >= (currentStory?.ipuclari.length || 0) ? 'text-gray-500' : 'text-yellow-200'
-                  }`}>
-                    💡 İpucu Ver ({onlineHintsUsed}/{currentStory?.ipuclari.length || 0})
-                  </Text>
-                </TouchableOpacity>
-              </>
-            ) : (
-              <>
-                <Text className="text-green-200 text-xs mb-1.5 font-semibold">Soru Sor:</Text>
-                <View className="flex-row gap-2 mb-2">
-                  <TextInput
-                    value={onlineQuestionInput}
-                    onChangeText={setOnlineQuestionInput}
-                    placeholder="Evet/Hayır sorusu yaz..."
-                    placeholderTextColor="#64748b"
-                    className="flex-1 px-3 py-2.5 bg-slate-700/60 border border-slate-600 rounded-lg text-slate-100 text-sm"
-                    onSubmitEditing={sendOnlineQuestion}
-                  />
-                  <TouchableOpacity onPress={sendOnlineQuestion} className="px-4 py-2.5 bg-green-600 rounded-lg">
-                    <Text className="text-white font-semibold text-sm">Sor</Text>
-                  </TouchableOpacity>
-                </View>
-
-                <Text className="text-amber-200 text-xs mb-1.5 font-semibold">Cevabını Yaz:</Text>
-                <View className="flex-row gap-2">
-                  <TextInput
-                    value={onlineAnswerInput}
-                    onChangeText={setOnlineAnswerInput}
-                    placeholder="Hikayenin cevabını yaz..."
-                    placeholderTextColor="#64748b"
-                    className="flex-1 px-3 py-2.5 bg-slate-700/60 border border-slate-600 rounded-lg text-slate-100 text-sm"
-                    onSubmitEditing={checkOnlineAnswer}
-                  />
-                  <TouchableOpacity onPress={checkOnlineAnswer} disabled={isLoading} className="px-4 py-2.5 bg-amber-600 rounded-lg">
-                    <Text className="text-white font-semibold text-sm">{isLoading ? '...' : '✓'}</Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            )}
-          </View>
-
-          <TouchableOpacity onPress={leaveRoom} className="py-2 border border-red-800 rounded-lg">
-            <Text className="text-red-400 font-semibold text-center text-sm">← Odadan Çıkış</Text>
-          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
   }
 
-  // --- ONLINE ÇÖZÜLDÜ ---
-  if (gameState === 'online_solved') {
+  if (gameState === 'playing' || gameState === 'online_playing') {
+    const activeMessages = gameState === 'playing' ? messages : onlineMessages;
     return (
-      <SafeAreaView className="flex-1 bg-green-50">
-        <ScrollView className="flex-1 p-4" contentContainerStyle={{ justifyContent: 'center', flexGrow: 1 }}>
-          <View className="bg-white/90 rounded-3xl p-8 shadow-sm">
-            <View className="items-center mb-6">
-              <CheckCircle color="#16a34a" size={80} strokeWidth={1.5} />
-              <Text className="text-3xl font-bold text-green-900 mt-3" style={{ fontFamily: 'serif' }}>Tebrikler! 🎉</Text>
-              <Text className="text-base text-green-800 mt-1 text-center">Hikaye başarıyla çözüldü!</Text>
+      <SafeAreaView style={d.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{flex:1}}>
+            <View style={d.gameHeader}><View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}><TouchableOpacity onPress={confirmLeave} style={{padding:5}}><MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" /></TouchableOpacity><Text style={d.gameTitle}>{difficulty?.toUpperCase()} DOSYASI</Text><View style={{width:24}} /> </View><Text style={d.storyTitle}>{currentStory?.baslik}</Text><Text style={d.timerText}>{formatTime()}</Text></View>
+            <ScrollView ref={scrollViewRef} style={d.chatArea} contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}>{activeMessages.map((msg, idx) => (<View key={idx} style={[d.msgBox, msg.type === 'question' ? d.msgUser : msg.type === 'answer' ? d.msgAi : msg.type === 'hint' ? d.msgHint : msg.type === 'story' ? d.msgStory : d.msgAi]}>{msg.sender && msg.type !== 'story' && <Text style={d.senderName}>{msg.sender}</Text>}<Text style={[d.msgContent, (msg.type === 'question' || msg.type === 'story') && {color: '#E0E0E0'}]}>{msg.content}</Text></View>))}{isLoading && <Text style={{textAlign:'center', fontStyle:'italic', color:'#757575', margin:10, fontFamily:'serif'}}>Dedektif düşünüyor...</Text>}</ScrollView>
+            <View style={d.inputSection}>
+              {gameState === 'online_playing' && isHost ? (
+                <View style={{width: '100%'}}><Text style={{textAlign:'center', marginBottom:5, fontSize:12, color:'#B0B0B0', fontFamily:'SpecialElite'}}>CEVAP VER:</Text><View style={{ flexDirection: 'row', gap: 10 }}><TouchableOpacity onPress={() => sendOnlineAnswer('Evet')} style={[d.stampBtn, { borderColor: '#2E7D32', backgroundColor:'#1B5E20' }]}><Text style={{ color: '#A5D6A7', fontFamily:'SpecialElite' }}>EVET</Text></TouchableOpacity><TouchableOpacity onPress={() => sendOnlineAnswer('Hayır')} style={[d.stampBtn, { borderColor: '#C62828', backgroundColor:'#B71C1C' }]}><Text style={{ color: '#EF9A9A', fontFamily:'SpecialElite' }}>HAYIR</Text></TouchableOpacity><TouchableOpacity onPress={() => sendOnlineAnswer('Alakasız')} style={[d.stampBtn, { borderColor: '#757575', backgroundColor:'#424242' }]}><Text style={{ color: '#BDBDBD', fontFamily:'SpecialElite' }}>A/S</Text></TouchableOpacity></View></View>
+              ) : (
+                <View style={{ width: '100%', gap: 12 }}><View style={{ flexDirection: 'row', gap: 10, alignItems:'center' }}><TextInput style={d.largeInput} value={gameState === 'online_playing' ? onlineQuestionInput : questionInput} onChangeText={gameState === 'online_playing' ? setOnlineQuestionInput : setQuestionInput} placeholder="Bir soru sor..." placeholderTextColor="#757575" /><TouchableOpacity style={d.sendIconBtn} onPress={gameState === 'online_playing' ? sendOnlineQuestion : askQuestion}><MaterialCommunityIcons name="send" size={24} color="#121212" /></TouchableOpacity></View><View style={{ flexDirection: 'row', gap: 10, alignItems:'center' }}><TextInput style={[d.largeInput, {borderColor: '#2E7D32', backgroundColor:'#1B5E20'}]} value={gameState === 'online_playing' ? onlineAnswerInput : answerInput} onChangeText={gameState === 'online_playing' ? setOnlineAnswerInput : setAnswerInput} placeholder="Cevabı tahmin et..." placeholderTextColor="#A5D6A7" /><TouchableOpacity style={[d.sendIconBtn, {backgroundColor: '#2E7D32'}]} onPress={gameState === 'online_playing' ? checkOnlineAnswer : checkAnswer}><MaterialCommunityIcons name="check-bold" size={24} color="#121212" /></TouchableOpacity></View></View>
+              )}
+               {(gameState !== 'online_playing' || isHost) && (<TouchableOpacity onPress={gameState === 'online_playing' ? sendOnlineHint : getHint} disabled={gameState === 'online_playing' ? onlineHintsUsed >= (currentStory?.ipuclari.length || 0) : hintsUsed >= (currentStory?.ipuclari.length || 0)} style={d.hintButton}><MaterialCommunityIcons name="lightbulb-on-outline" size={20} color="#FFCC80" /><Text style={{color:'#FFCC80', fontFamily:'SpecialElite', marginLeft:5}}>İpucu Al ({gameState === 'online_playing' ? onlineHintsUsed : hintsUsed}/{currentStory?.ipuclari.length})</Text></TouchableOpacity>)}
             </View>
-
-            <View className="bg-green-50 rounded-2xl p-4 mb-4">
-              <View className="flex-row items-center justify-between mb-2">
-                <Text className="text-green-800 font-semibold text-sm">Anlatıcı</Text>
-                <Text className="text-green-900 font-bold">{roomData?.host}</Text>
-              </View>
-              <View className="flex-row items-center justify-between">
-                <Text className="text-green-800 font-semibold text-sm">Dedektif</Text>
-                <Text className="text-green-900 font-bold">{roomData?.guest}</Text>
-              </View>
-            </View>
-
-            <View className="bg-amber-50 rounded-2xl p-5 mb-5 border border-amber-200">
-              <Text className="font-bold text-amber-900 mb-2">📖 Tam Hikaye:</Text>
-              <Text className="text-amber-800 leading-relaxed text-sm">{currentStory?.cevap}</Text>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => { leaveRoom(); }}
-              className="bg-green-600 py-3 rounded-xl mb-3"
-            >
-              <Text className="text-white font-semibold text-center">Ana Menü</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
 
-  // --- ZORLUK SEÇİMİ (AI) ---
-  if (gameState === 'difficulty') {
-    return (
-      <SafeAreaView className="flex-1 bg-amber-50">
-        <ScrollView className="flex-1 p-4">
-          <View className="items-center mb-8 mt-8">
-            <Text className="text-3xl font-bold text-amber-900 mb-2" style={{ fontFamily: 'serif' }}>Zorluk Seç</Text>
-            <Text className="text-amber-700 text-sm">Hangi seviyede oynamak istersin?</Text>
-          </View>
-
-          {[
-            { key: 'kolay', label: '🟢 Kolay', sub: 'Başlangıç seviyesi', border: 'border-green-400', textMain: 'text-green-900', textSub: 'text-green-700' },
-            { key: 'orta', label: '🟡 Orta', sub: 'Biraz düşünmen gerekecek', border: 'border-orange-400', textMain: 'text-orange-900', textSub: 'text-orange-700' },
-            { key: 'zor', label: '🔴 Zor', sub: 'Gerçek dedektifler için', border: 'border-red-400', textMain: 'text-red-900', textSub: 'text-red-700' }
-          ].map((item) => (
-            <TouchableOpacity
-              key={item.key}
-              onPress={() => startGame(item.key, 'ai')}
-              className={`bg-white p-5 rounded-2xl mb-3 border-2 ${item.border}`}
-            >
-              <View className="flex-row items-center justify-between">
-                <View>
-                  <Text className={`text-xl font-bold ${item.textMain}`}>{item.label}</Text>
-                  <Text className={`text-sm mt-0.5 ${item.textSub}`}>{item.sub}</Text>
-                </View>
-                <Text className="text-3xl text-gray-400">→</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-
-          <TouchableOpacity onPress={() => setGameState('menu')} className="mt-4 p-3">
-            <Text className="text-amber-700 text-center font-medium">← Geri Dön</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </SafeAreaView>
-    );
+  if (gameState === 'solved' || gameState === 'online_solved') {
+      return (
+        <SafeAreaView style={d.container}>
+            <ScrollView contentContainerStyle={d.scrollContent}><View style={d.cardWrapper}><MaterialCommunityIcons name="checkbox-marked-circle-outline" size={80} color="#2E7D32" style={{alignSelf:'center', marginBottom:10}} /><Text style={[d.titleSmall, {color: '#2E7D32', textAlign:'center'}]}>VAKA ÇÖZÜLDÜ!</Text><Text style={[d.sub, {marginBottom:20}]}>Harika iş çıkardınız dedektif.</Text><View style={{backgroundColor:'#252525', padding:20, borderRadius:12, borderWidth:1, borderColor:'#333333'}}><Text style={d.cardHeader}>📜 Gerçek Hikaye:</Text><Text style={[d.msgContent, {marginTop:5}]}>{currentStory?.cevap}</Text></View><TouchableOpacity onPress={leaveRoom} style={[d.actionBtn, {marginTop:30, backgroundColor:'#1565C0'}]}><Text style={d.actionBtnText}>Dosyayı Kapat</Text></TouchableOpacity></View></ScrollView>
+        </SafeAreaView>
+      );
   }
 
-  // --- ZORLUK SEÇİMİ (Reader) ---
-  if (gameState === 'reader_difficulty') {
-    return (
-      <SafeAreaView className="flex-1 bg-amber-50">
-        <ScrollView className="flex-1 p-4">
-          <View className="items-center mb-8 mt-8">
-            <Text className="text-3xl font-bold text-amber-900 mb-2" style={{ fontFamily: 'serif' }}>Zorluk Seç</Text>
-            <Text className="text-amber-700 text-center text-sm">Arkadaşların için hangi zorlukta hikaye?</Text>
-          </View>
-
-          {[
-            { key: 'kolay', label: '🟢 Kolay', sub: 'Başlangıç seviyesi', border: 'border-green-400', textMain: 'text-green-900', textSub: 'text-green-700' },
-            { key: 'orta', label: '🟡 Orta', sub: 'Biraz düşünmeleri gerekecek', border: 'border-orange-400', textMain: 'text-orange-900', textSub: 'text-orange-700' },
-            { key: 'zor', label: '🔴 Zor', sub: 'Gerçek dedektifler için', border: 'border-red-400', textMain: 'text-red-900', textSub: 'text-red-700' }
-          ].map((item) => (
-            <TouchableOpacity
-              key={item.key}
-              onPress={() => startGame(item.key, 'reader')}
-              className={`bg-white p-5 rounded-2xl mb-3 border-2 ${item.border}`}
-            >
-              <View className="flex-row items-center justify-between">
-                <View>
-                  <Text className={`text-xl font-bold ${item.textMain}`}>{item.label}</Text>
-                  <Text className={`text-sm mt-0.5 ${item.textSub}`}>{item.sub}</Text>
-                </View>
-                <Text className="text-3xl text-gray-400">→</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-
-          <TouchableOpacity onPress={() => setGameState('menu')} className="mt-4 p-3">
-            <Text className="text-amber-700 text-center font-medium">← Geri Dön</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
-  // --- HİKAYE OKUYUCU ---
   if (gameState === 'reader_playing') {
-    return (
-      <SafeAreaView className="flex-1 bg-amber-50">
-        <ScrollView className="flex-1 p-4">
-          <View className="bg-white/80 rounded-3xl p-5 mb-4">
-            <View className="flex-row items-center justify-between mb-3">
-              <Text className="text-xl font-bold text-amber-900 flex-1" style={{ fontFamily: 'serif' }}>
-                📖 {currentStory?.baslik}
-              </Text>
-              <View className="px-2 py-1 bg-amber-600 rounded-full">
-                <Text className="text-white font-semibold text-xs">
-                  {difficulty === 'kolay' ? '🟢 Kolay' : difficulty === 'orta' ? '🟡 Orta' : '🔴 Zor'}
-                </Text>
-              </View>
-            </View>
-            <Text className="text-amber-700 text-sm">Aşağıdaki hikayeyi arkadaşlarına oku!</Text>
-          </View>
-
-          <View className="bg-amber-100 rounded-3xl p-5 mb-4 border-2 border-amber-300">
-            <Text className="text-3xl mb-2">📜</Text>
-            <Text className="text-base font-bold text-amber-900 mb-2">Hikaye:</Text>
-            <Text className="text-amber-900 text-sm leading-relaxed">{currentStory?.baslangic}</Text>
-          </View>
-
-          <View className="bg-white/80 rounded-3xl p-5 mb-4">
-            <View className="flex-row items-center justify-between mb-3">
-              <Text className="text-base font-bold text-amber-900">🔒 Gizli Cevap</Text>
-              <TouchableOpacity onPress={() => setShowAnswer(!showAnswer)} className="px-3 py-1.5 bg-amber-600 rounded-lg">
-                <Text className="text-white font-semibold text-sm">{showAnswer ? '🙈 Gizle' : '👁️ Göster'}</Text>
-              </TouchableOpacity>
-            </View>
-
-            {showAnswer ? (
-              <View className="bg-amber-50 rounded-2xl p-4 border-2 border-amber-300">
-                <Text className="text-amber-900 text-sm leading-relaxed mb-3">{currentStory?.cevap}</Text>
-                <View className="mt-3 pt-3 border-t border-amber-200">
-                  <Text className="font-bold text-amber-900 mb-2 text-sm">💡 İpuçları:</Text>
-                  {currentStory?.ipuclari.map((ipucu, idx) => (
-                    <Text key={idx} className="text-amber-800 text-sm mb-1">{idx + 1}. {ipucu}</Text>
-                  ))}
-                </View>
-              </View>
-            ) : (
-              <View className="bg-amber-900 rounded-2xl p-6">
-                <Text className="text-amber-100 text-center text-sm">👆 Cevabı görmek için "Göster" butonuna tıkla</Text>
-              </View>
-            )}
-          </View>
-
-          <View className="bg-blue-50 rounded-2xl p-4 mb-4 border border-blue-200">
-            <Text className="font-bold text-blue-900 mb-2 text-sm">📝 Nasıl Oynanır?</Text>
-            <Text className="text-blue-800 text-sm mb-1">1️⃣ Hikayeyi arkadaşlarına sesli oku</Text>
-            <Text className="text-blue-800 text-sm mb-1">2️⃣ Evet/Hayır soruları soracaklar</Text>
-            <Text className="text-blue-800 text-sm mb-1">3️⃣ Sen cevaba bakıp yanıtla</Text>
-            <Text className="text-blue-800 text-sm">4️⃣ Gerekirse ipuçlarını kullan</Text>
-          </View>
-
-          <View className="flex-row gap-2 mb-4">
-            <TouchableOpacity
-              onPress={() => { setGameState('reader_difficulty'); setCurrentStory(null); setShowAnswer(false); }}
-              className="flex-1 bg-green-600 p-3 rounded-xl"
-            >
-              <Text className="text-white font-semibold text-center text-sm">🔄 Yeni Hikaye</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => { setGameState('menu'); setCurrentStory(null); setShowAnswer(false); }}
-              className="px-5 py-3 bg-amber-600 rounded-xl"
-            >
-              <Text className="text-white font-semibold text-sm">← Menü</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
+      return (
+        <SafeAreaView style={d.container}>
+            <ScrollView contentContainerStyle={d.scrollContent}><View style={{width:'100%', flexDirection:'row', alignItems:'center', marginBottom:20}}><TouchableOpacity onPress={() => {setGameState('menu'); setCurrentStory(null);}} style={{padding:10, marginRight:10}}><MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" /></TouchableOpacity><Text style={[d.titleSmall, {flex:1, textAlign:'center', marginRight:38, fontSize:22}]}>Hikaye Okuyucu</Text></View><View style={d.cardWrapper}><Text style={d.cardHeader}>📖 {currentStory?.baslik}</Text><View style={{flexDirection:'row', alignItems:'center', gap:5, marginBottom:15}}><View style={[d.dot, {backgroundColor: difficulty==='kolay'?'#2E7D32':difficulty==='orta'?'#F9A825':'#C62828'}]} /><Text style={d.gameSub}>{difficulty?.toUpperCase()}</Text></View><View style={{backgroundColor:'#252525', padding:20, borderRadius:12, borderWidth:1, borderColor:'#333333', marginBottom:20}}><Text style={[d.msgContent, {fontStyle:'italic', fontSize:16}]}>{currentStory?.baslangic}</Text></View><View style={{borderTopWidth:1, borderColor:'#333333', paddingTop:20}}><TouchableOpacity onPress={() => setShowAnswer(!showAnswer)} style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', backgroundColor:'#1E1E1E', padding:10, borderRadius:8}}><Text style={d.cardTitle}>🔒 Gizli Cevap</Text><MaterialCommunityIcons name={showAnswer ? "eye-off" : "eye"} size={24} color="#B0B0B0" /></TouchableOpacity>{showAnswer && (<View style={{marginTop:15, padding:10}}><Text style={d.msgContent}>{currentStory?.cevap}</Text><Text style={[d.cardHeader, {marginTop:15, fontSize:14}]}>İpuçları:</Text>{currentStory?.ipuclari.map((hint, i) => (<Text key={i} style={d.cardSub}>• {hint}</Text>))}</View>)}</View></View></ScrollView>
+        </SafeAreaView>
+      );
   }
 
-  // --- AI OYUN EKRANI ---
-  if (gameState === 'playing') {
+  if (gameState === 'difficulty' || gameState === 'reader_difficulty') {
     return (
-      <SafeAreaView className="flex-1 bg-slate-900">
-        <View className="flex-1 p-3">
-          <View className="bg-amber-800/40 rounded-2xl p-3 mb-3">
-            <View className="flex-row items-center justify-between mb-2">
-              <Text className="text-lg font-bold text-amber-100 flex-1" style={{ fontFamily: 'serif' }}>
-                {currentStory?.baslik}
-              </Text>
-              <View className="px-2 py-1 bg-amber-700/50 rounded-full">
-                <Text className="text-amber-100 font-semibold text-xs">
-                  {difficulty === 'kolay' ? '🟢' : difficulty === 'orta' ? '🟡' : '🔴'}
-                </Text>
-              </View>
-            </View>
-            <View className="flex-row gap-3">
-              <View className="flex-row items-center gap-1">
-                <HelpCircle color="#fef3c7" size={14} />
-                <Text className="text-amber-200 text-xs">{questionsAsked} soru</Text>
-              </View>
-              <View className="flex-row items-center gap-1">
-                <Lightbulb color="#fef3c7" size={14} />
-                <Text className="text-amber-200 text-xs">{hintsUsed}/{currentStory?.ipuclari.length}</Text>
-              </View>
-              <View className="flex-row items-center gap-1">
-                <Clock color="#fef3c7" size={14} />
-                <Text className="text-amber-200 text-xs">{formatTime()}</Text>
-              </View>
-            </View>
-          </View>
-
-          <ScrollView className="flex-1 bg-stone-900/50 rounded-2xl p-3 mb-3">
-            {messages.map((msg, idx) => (
-              <View
-                key={idx}
-                className={`mb-2 p-3 rounded-xl ${
-                  msg.type === 'question' ? 'bg-amber-700/30 border-l-4 border-amber-500'
-                  : msg.type === 'answer' ? 'bg-stone-800/50 border-l-4 border-orange-500'
-                  : msg.type === 'hint' ? 'bg-yellow-900/30 border-l-4 border-yellow-500'
-                  : msg.type === 'wrong' ? 'bg-red-900/30 border-l-4 border-red-500'
-                  : 'bg-amber-800/20 border-l-4 border-amber-600'
-                }`}
-              >
-                <Text className="text-amber-50 text-sm leading-relaxed">{msg.content}</Text>
-              </View>
-            ))}
-            {isLoading && <Text className="text-amber-300 text-center text-sm">⚙️ Düşünüyor...</Text>}
-          </ScrollView>
-
-          <View className="bg-stone-900/50 rounded-2xl p-3 mb-2">
-            <Text className="text-amber-200 mb-1.5 font-semibold text-xs">Soru Sor:</Text>
-            <View className="flex-row gap-2 mb-2">
-              <TextInput
-                value={questionInput}
-                onChangeText={setQuestionInput}
-                placeholder="Olay bir evde mi geçti?"
-                placeholderTextColor="#78350f"
-                className="flex-1 px-3 py-2.5 bg-stone-800/50 border border-amber-700/30 rounded-xl text-amber-100 text-sm"
-                onSubmitEditing={askQuestion}
-              />
-              <TouchableOpacity onPress={askQuestion} disabled={isLoading} className="px-4 py-2.5 bg-amber-600 rounded-xl">
-                <Text className="text-white font-semibold text-sm">Sor</Text>
-              </TouchableOpacity>
-            </View>
-
-            <Text className="text-amber-200 mb-1.5 font-semibold text-xs">Cevabını Yaz:</Text>
-            <View className="flex-row gap-2">
-              <TextInput
-                value={answerInput}
-                onChangeText={setAnswerInput}
-                placeholder="Cevabını yaz..."
-                placeholderTextColor="#78350f"
-                className="flex-1 px-3 py-2.5 bg-stone-800/50 border border-amber-700/30 rounded-xl text-amber-100 text-sm"
-                onSubmitEditing={checkAnswer}
-              />
-              <TouchableOpacity onPress={checkAnswer} disabled={isLoading} className="px-4 py-2.5 bg-green-600 rounded-xl">
-                <Text className="text-white font-semibold text-sm">✓</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <View className="flex-row gap-2">
-            <TouchableOpacity
-              onPress={getHint}
-              disabled={hintsUsed >= currentStory?.ipuclari.length}
-              className="flex-1 py-2.5 bg-yellow-700/30 rounded-xl border border-yellow-600/30"
-            >
-              <Text className="text-yellow-100 font-semibold text-center text-sm">
-                💡 İpucu ({hintsUsed}/{currentStory?.ipuclari.length})
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => { setGameState('menu'); setMessages([]); setCurrentStory(null); }}
-              className="px-4 py-2.5 bg-stone-800/50 rounded-xl border border-amber-700/30"
-            >
-              <Text className="text-amber-200 font-semibold text-sm">← Çıkış</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-  // --- AI ÇÖZÜLDÜ ---
-  if (gameState === 'solved') {
-    return (
-      <SafeAreaView className="flex-1 bg-green-50">
-        <ScrollView className="flex-1 p-4" contentContainerStyle={{ justifyContent: 'center', flexGrow: 1 }}>
-          <View className="bg-white/90 rounded-3xl p-8 shadow-sm">
-            <View className="items-center mb-6">
-              <CheckCircle color="#16a34a" size={80} strokeWidth={1.5} />
-              <Text className="text-3xl font-bold text-green-900 mt-3" style={{ fontFamily: 'serif' }}>Tebrikler! 🎉</Text>
-              <Text className="text-base text-green-800 mt-1">Hikayeyi başarıyla çözdün!</Text>
-            </View>
-
-            <View className="bg-green-50 rounded-2xl p-5 mb-4">
-              <View className="flex-row items-center justify-between mb-2">
-                <Text className="font-semibold text-green-900 text-sm">Sorduğun Soru:</Text>
-                <Text className="text-xl font-bold text-green-900">{questionsAsked}</Text>
-              </View>
-              <View className="flex-row items-center justify-between mb-2">
-                <Text className="font-semibold text-green-900 text-sm">Kullanılan İpucu:</Text>
-                <Text className="text-xl font-bold text-green-900">{hintsUsed}</Text>
-              </View>
-              <View className="flex-row items-center justify-between">
-                <Text className="font-semibold text-green-900 text-sm">Süre:</Text>
-                <Text className="text-xl font-bold text-green-900">{formatTime()}</Text>
-              </View>
-            </View>
-
-            <View className="bg-amber-50 rounded-2xl p-5 mb-5 border border-amber-200">
-              <Text className="font-bold text-amber-900 mb-2">📖 Tam Hikaye:</Text>
-              <Text className="text-amber-800 leading-relaxed text-sm">{currentStory?.cevap}</Text>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => { setGameState('difficulty'); setMessages([]); setCurrentStory(null); }}
-              className="bg-green-600 py-3 rounded-xl mb-3"
-            >
-              <Text className="text-white font-semibold text-center">Yeni Oyun</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => { setGameState('menu'); setMessages([]); setCurrentStory(null); }}
-              className="py-2"
-            >
-              <Text className="text-green-700 font-medium text-center">Ana Menü</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+      <SafeAreaView style={d.container}>
+        <View style={d.scrollContent}><View style={{width:'100%', flexDirection:'row', alignItems:'center', marginBottom:20}}><TouchableOpacity onPress={() => setGameState('menu')} style={{padding:10}}><MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" /></TouchableOpacity><Text style={[d.titleSmall, {flex:1, textAlign:'center', marginRight:30}]}>Zorluk Seç</Text></View>{['kolay', 'orta', 'zor'].map(d_key => (<TouchableOpacity key={d_key} style={d.card} onPress={() => startGame(d_key, gameMode)}><View style={[d.iconBox, d_key==='kolay' ? {backgroundColor:'#1B5E20'} : d_key==='orta' ? {backgroundColor:'#F57F17'} : {backgroundColor:'#B71C1C'}]}><View style={[d.dot, {width:16, height:16, backgroundColor: d_key==='kolay' ? '#2E7D32' : d_key==='orta' ? '#F9A825' : '#C62828'}]} /></View><View style={{ flex: 1, marginLeft: 15 }}><Text style={d.cardTitle}>{d_key.charAt(0).toUpperCase() + d_key.slice(1)}</Text><Text style={d.cardSub}>{d_key === 'kolay' ? 'Başlangıç seviyesi' : d_key === 'orta' ? 'Biraz düşünmen gerekecek' : 'Gerçek dedektifler için'}</Text></View><MaterialCommunityIcons name="arrow-right" size={24} color="#757575" /></TouchableOpacity>))}</View>
       </SafeAreaView>
     );
   }
 
   return null;
 };
+
+// ============================================================
+// DARK NOIR STYLE SHEET
+// ============================================================
+const d = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#121212' },
+  scrollContent: { padding: 20, alignItems: 'center', justifyContent: 'center', minHeight: '100%' },
+  header: { alignItems: 'center', marginBottom: 40 },
+  title: { fontFamily: 'SpecialElite', fontSize: 48, color: '#E0E0E0', marginTop:10 },
+  titleSmall: { fontFamily: 'SpecialElite', fontSize: 28, color: '#E0E0E0', marginBottom: 20 },
+  sub: { fontFamily: 'serif', fontSize: 14, color: '#B0B0B0', textAlign: 'center', marginTop:5 },
+  cardWrapper: { backgroundColor: '#1E1E1E', borderRadius: 16, padding: 24, width: '100%', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 10, elevation: 4, borderWidth:1, borderColor:'#333' },
+  cardHeader: { fontFamily: 'SpecialElite', fontSize: 16, color: '#E0E0E0', fontWeight:'bold' },
+  card: { flexDirection: 'row', alignItems: 'center', padding: 16, backgroundColor: '#252525', borderRadius: 12, borderWidth: 1, borderColor: '#333333', marginBottom: 12 },
+  cardTitle: { fontSize: 16, fontWeight: '700', color: '#FFFFFF', fontFamily:'SpecialElite' }, 
+  cardSub: { fontSize: 12, color: '#B0B0B0', marginTop:2, fontFamily:'serif' },
+  iconBox: { width:40, height:40, borderRadius:10, alignItems:'center', justifyContent:'center' },
+  dot: { width:10, height:10, borderRadius:5 },
+  vintageLabel: { fontSize: 14, color: '#B0B0B0', marginBottom: 8, marginTop:5, fontFamily: 'SpecialElite' },
+  modernInput: { backgroundColor: '#2C2C2C', borderRadius: 10, padding: 15, fontSize: 15, color: '#E0E0E0', borderWidth:1, borderColor:'#333333', fontFamily:'serif' },
+  largeInput: { flex: 1, height: 60, backgroundColor: '#2C2C2C', borderRadius: 12, paddingHorizontal: 15, borderWidth: 1, borderColor: '#333333', fontFamily: 'serif', color: '#E0E0E0' },
+  divider: { height:1, backgroundColor:'#333333', width:'100%', marginVertical:20 },
+  chipBtn: { flex: 1, paddingVertical: 10, paddingHorizontal:5, borderRadius: 20, borderWidth: 1, borderColor: '#444444', alignItems: 'center', justifyContent:'center', flexDirection:'row', gap:6, backgroundColor:'#252525' },
+  chipBtnActive: { borderColor: 'transparent' },
+  chipText: { fontSize: 12, color: '#B0B0B0', fontWeight:'bold', fontFamily:'SpecialElite' },
+  actionBtn: { padding: 16, borderRadius: 12, alignItems: 'center', justifyContent:'center', width:'100%' },
+  actionBtnText: { color: '#121212', fontWeight: 'bold', fontSize:15, fontFamily:'SpecialElite' }, 
+  backBtn: { marginTop: 20 },
+  backText: { color: '#B0B0B0', fontSize:14, fontWeight:'500', fontFamily:'SpecialElite' },
+  gameHeader: { padding: 20, backgroundColor: '#1E1E1E', borderBottomWidth: 1, borderBottomColor: '#333333' },
+  gameTitle: { fontFamily: 'SpecialElite', fontSize: 14, color: '#B0B0B0', textAlign: 'center', letterSpacing:1 },
+  storyTitle: { fontFamily: 'SpecialElite', fontSize: 20, color: '#E0E0E0', textAlign: 'center', marginTop:5 },
+  timerText: { textAlign:'center', marginTop:5, color:'#EF9A9A', fontFamily:'SpecialElite' },
+  chatArea: { flex: 1, padding: 15, backgroundColor:'#121212' },
+  msgBox: { padding: 14, borderRadius: 16, marginBottom: 10, maxWidth: '85%' },
+  msgStory: { backgroundColor: '#423716', alignSelf: 'center', width: '100%', borderRadius:8, borderLeftWidth:4, borderLeftColor:'#FFC107' },
+  msgAi: { alignSelf: 'flex-start', backgroundColor: '#1E1E1E', borderBottomLeftRadius:2, borderWidth:1, borderColor:'#333333' },
+  msgUser: { alignSelf: 'flex-end', backgroundColor: '#37474F', borderBottomRightRadius:2 },
+  msgHint: { alignSelf: 'center', backgroundColor: '#1A237E', paddingVertical:8, paddingHorizontal:15, borderRadius:20 },
+  msgContent: { fontSize: 15, lineHeight: 22, fontFamily:'serif', color:'#E0E0E0' },
+  senderName: { fontSize: 10, color: '#B0B0B0', marginBottom: 2, fontWeight:'bold', fontFamily:'SpecialElite' },
+  inputSection: { padding: 15, backgroundColor: '#1E1E1E', borderTopWidth: 1, borderTopColor: '#333333', gap:10 },
+  sendIconBtn: { width: 60, height: 60, backgroundColor: '#E0E0E0', alignItems: 'center', justifyContent: 'center', borderRadius: 12 },
+  stampBtn: { flex: 1, height: 45, borderWidth: 2, alignItems: 'center', justifyContent: 'center', borderRadius: 8 },
+  hintButton: { alignSelf:'center', flexDirection:'row', alignItems:'center', padding:10, backgroundColor:'#263238', borderRadius:20, borderWidth:1, borderColor:'#37474F', marginTop:5 },
+  playerRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#333333' },
+  playerText: { fontSize: 16, color: '#E0E0E0', fontWeight:'600', fontFamily:'SpecialElite', marginLeft:10 },
+});
 
 export default DetectiveGame;

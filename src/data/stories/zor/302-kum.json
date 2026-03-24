@@ -1,0 +1,41 @@
+{
+  "id": 302,
+  "baslik": "Kumda İzler",
+  "baslangic": "Bir adam sahilde yürüyordu. Arkasına baktığında sadece tek ayak izi gördü. Neden?",
+  "cevap": "Adam bacağını kaybetmiş bir gaziydi. Protez bacak kullanıyordu. Sahilde yürürken protez bacağı kuma batmıyordu çünkü çok hafifti. Sadece gerçek bacağının izi kalıyordu. Arkasına bakınca tek ayak izi gördü ve travması tetiklendi.",
+  "ipuclari": [
+    "Adamın iki bacağı vardı ama biri farklıydı",
+    "Ağırlık farkı vardı",
+    "Geçmişte bir şey kaybetmişti"
+  ],
+  "sorular": {
+    "sahil": {
+      "keywords": ["sahil", "plaj", "deniz"],
+      "answer": "Evet"
+    },
+    "kum": {
+      "keywords": ["kum", "toprak", "zemin"],
+      "answer": "Evet"
+    },
+    "bacak": {
+      "keywords": ["bacak", "ayak", "uzuv"],
+      "answer": "Evet"
+    },
+    "protez": {
+      "keywords": ["protez", "takma", "yapay"],
+      "answer": "Evet"
+    },
+    "gazi": {
+      "keywords": ["gazi", "savaş", "asker"],
+      "answer": "Evet"
+    },
+    "hafif": {
+      "keywords": ["hafif", "ağırlık", "bat"],
+      "answer": "Evet"
+    },
+    "travma": {
+      "keywords": ["travma", "hatıra", "acı"],
+      "answer": "Evet"
+    }
+  }
+}

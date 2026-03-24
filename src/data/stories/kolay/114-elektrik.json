@@ -1,0 +1,37 @@
+{
+  "id": 114,
+  "baslik": "Karanlıkta Okuma",
+  "baslangic": "Elektrikler kesildi ama adam kitap okumaya devam etti. Mum veya fener kullanmadı. Nasıl?",
+  "cevap": "Adam körydü ve Braille alfabesiyle dokunarak okuyordu. Işığa ihtiyacı yoktu.",
+  "ipuclari": [
+    "Adam görmüyordu",
+    "Farklı bir okuma yöntemi kullanıyordu",
+    "Dokunma duyusu önemliydi"
+  ],
+  "sorular": {
+    "elektrik": {
+      "keywords": ["elektrik", "ışık", "karanlık"],
+      "answer": "Evet"
+    },
+    "kor": {
+      "keywords": ["kör", "görme", "görmez"],
+      "answer": "Evet"
+    },
+    "braille": {
+      "keywords": ["braille", "kabartma", "nokta"],
+      "answer": "Evet"
+    },
+    "dokun": {
+      "keywords": ["dokun", "el", "parmak"],
+      "answer": "Evet"
+    },
+    "mum": {
+      "keywords": ["mum", "fener", "ışık"],
+      "answer": "Hayır"
+    },
+    "oku": {
+      "keywords": ["oku", "kitap"],
+      "answer": "Evet"
+    }
+  }
+}

@@ -1,50 +1,112 @@
-# Welcome to your Expo app 👋
+# 🕵️ Dedektif Oyunu
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Gizemli hikayeleri çöz, gerçeği ortaya çıkar! Lateral düşünme bulmacaları ile dolu bir dedektiflik oyunu.
 
-## Get started
+## 📱 Özellikler
 
-1. Install dependencies
+- **Tek Oyunculu Mod**: Sorular sor, ipuçları al, gizemi çöz
+- **Hikaye Okuyucu Modu**: Arkadaşlarınla yüz yüze oyna
+- **Online Çok Oyunculu**: Gerçek zamanlı oda sistemi ile arkadaşlarınla oyna
+- **3 Zorluk Seviyesi**: Kolay, Orta, Zor
+- **Offline Çalışır**: İnternet bağlantısı gerektirmez (online mod hariç)
 
-   ```bash
-   npm install
-   ```
+## 🏗️ Mimari
 
-2. Start the app
+Proje **Feature-Based Architecture** kullanır:
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+src/
+├── features/
+│   ├── game/           # Oyun mantığı
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   └── utils/
+│   ├── online/         # Online multiplayer
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   └── services/
+│   └── menu/           # Ana menü
+├── shared/             # Paylaşılan kod
+│   ├── components/
+│   ├── hooks/
+│   └── utils/
+├── data/
+│   └── stories/        # JSON hikayeler (lazy loading)
+│       ├── kolay/
+│       ├── orta/
+│       ├── zor/
+│       └── storyLoader.js
+└── config/             # Konfigürasyon
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Hikaye Sistemi
 
-## Learn more
+Hikayeler **JSON dosyaları** olarak saklanır ve **lazy loading** ile yüklenir:
 
-To learn more about developing your project with Expo, look at the following resources:
+- ✅ Her hikaye ayrı dosya
+- ✅ Sadece seçilen hikaye yüklenir (memory efficient)
+- ✅ Yeni hikaye eklemek kolay
+- ✅ Git friendly (conflict yok)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+**Yeni hikaye eklemek için:**
+```bash
+# 1. JSON dosyası oluştur
+src/data/stories/kolay/107-yeni-hikaye.json
 
-## Join the community
+# 2. storyLoader.js'e metadata ekle
+{ id: 107, file: 'kolay/107-yeni-hikaye.json' }
+```
 
-Join our community of developers creating universal apps.
+## 🚀 Kurulum
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+# Bağımlılıkları yükle
+npm install
+
+# Geliştirme sunucusunu başlat
+npm start
+
+# Android
+npm run android
+
+# iOS
+npm run ios
+```
+
+## 🔧 Gereksinimler
+
+- Node.js 18+
+- Expo CLI
+- React Native development environment
+
+## 📦 Teknolojiler
+
+- React Native
+- Expo
+- Firebase Realtime Database
+- NativeWind (Tailwind CSS)
+- Custom Hooks
+- Feature-Based Architecture
+
+## 🎮 Nasıl Oynanır?
+
+### Tek Oyunculu Mod
+1. Zorluk seviyesi seç
+2. Hikaye başlangıcını oku
+3. Evet/Hayır soruları sor
+4. İpuçlarını kullan
+5. Gizemi çöz!
+
+### Online Mod
+1. Oda oluştur veya katıl
+2. Anlatıcı hikayeyi bilir, diğerleri soru sorar
+3. Anlatıcı Evet/Hayır cevapları verir
+4. Birlikte gizemi çözün!
+
+## 📝 Lisans
+
+MIT
+
+## 👨‍💻 Geliştirici
+
+Sümeyye

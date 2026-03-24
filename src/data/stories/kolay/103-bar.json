@@ -1,0 +1,19 @@
+{
+  "id": 103,
+  "baslik": "Barda Tek Kurşun",
+  "baslangic": "Bir kadın bara girip içki istedi. Barmen ona içki vermek yerine silahını çekip kadını vurdu. Neden?",
+  "cevap": "Tezgahtaki adam barmen değil, o sırada barı soyan bir hırsızdı. Kadın onu barmen sanıp sipariş verince, hırsız panikledi ve tek görgü tanığını öldürdü.",
+  "ipuclari": [
+    "Adam aslında orada çalışmıyordu",
+    "Kadın yanlış zamanda yanlış yerdeydi",
+    "Adamın amacı hizmet etmek değildi"
+  ],
+  "sorular": {
+    "bar": { "keywords": ["bar", "içki"], "answer": "Evet" },
+    "barmen": { "keywords": ["barmen"], "answer": "Hayır" },
+    "hirsiz": { "keywords": ["hırsız", "soygun", "soy"], "answer": "Evet" },
+    "silah": { "keywords": ["silah", "tabanca", "vur"], "answer": "Evet" },
+    "tanik": { "keywords": ["tanık", "gör"], "answer": "Evet" },
+    "calisan": { "keywords": ["çalış", "personel"], "answer": "Hayır" }
+  }
+}

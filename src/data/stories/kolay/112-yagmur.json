@@ -1,0 +1,37 @@
+{
+  "id": 112,
+  "baslik": "Yağmurda Kuru",
+  "baslangic": "Bir adam şemsiyesiz yağmurda 10 dakika yürüdü ama hiç ıslanmadı. Nasıl?",
+  "cevap": "Yağmur yağıyordu ama adam bir tünel veya üstü kapalı yolda yürüyordu. Dışarıda yağmur vardı ama adam korunaklı alandaydı.",
+  "ipuclari": [
+    "Adam dışarıdaydı",
+    "Üstü kapalı bir yerdeydi",
+    "Yağmur gerçekten yağıyordu"
+  ],
+  "sorular": {
+    "yagmur": {
+      "keywords": ["yağmur", "yağ"],
+      "answer": "Evet"
+    },
+    "semsiye": {
+      "keywords": ["şemsiye", "şemsiyesiz"],
+      "answer": "Hayır"
+    },
+    "tunel": {
+      "keywords": ["tünel", "geçit", "köprü"],
+      "answer": "Evet"
+    },
+    "koru": {
+      "keywords": ["korun", "kapat", "üstü kapalı"],
+      "answer": "Evet"
+    },
+    "disarda": {
+      "keywords": ["dışarı", "dış", "açık"],
+      "answer": "Evet"
+    },
+    "islanma": {
+      "keywords": ["ıslan", "ıslak"],
+      "answer": "Hayır"
+    }
+  }
+}

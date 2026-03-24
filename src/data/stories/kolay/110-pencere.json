@@ -1,0 +1,37 @@
+{
+  "id": 110,
+  "baslik": "Açık Pencere",
+  "baslangic": "Bir kadın 20. kattan düştü ama yaralanmadı. Nasıl oldu?",
+  "cevap": "Kadın pencere temizlikçisiydi ve dışarıdan güvenlik halatıyla çalışıyordu. Düştüğünde halat onu tuttu ve sadece birkaç metre aşağı indi.",
+  "ipuclari": [
+    "Kadının bir mesleği vardı",
+    "Güvenlik önlemi almıştı",
+    "Çok aşağı düşmedi"
+  ],
+  "sorular": {
+    "pencere": {
+      "keywords": ["pencere", "cam"],
+      "answer": "Evet"
+    },
+    "temizlik": {
+      "keywords": ["temizlik", "temizle", "temizlikçi"],
+      "answer": "Evet"
+    },
+    "halat": {
+      "keywords": ["halat", "ip", "güvenlik"],
+      "answer": "Evet"
+    },
+    "yaralanma": {
+      "keywords": ["yaralanma", "yaralan", "acı"],
+      "answer": "Hayır"
+    },
+    "yere_dusty": {
+      "keywords": ["yere düş", "zemin", "yer"],
+      "answer": "Hayır"
+    },
+    "meslek": {
+      "keywords": ["meslek", "iş", "çalış"],
+      "answer": "Evet"
+    }
+  }
+}

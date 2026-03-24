@@ -1,0 +1,41 @@
+{
+  "id": 208,
+  "baslik": "Kazı Alanı",
+  "baslangic": "Arkeologlar bir mezar kazdılar ve içinde hiçbir kemik bulamadılar. Mezar boş değildi. Ne buldular?",
+  "cevap": "Mezarda yakılmış bir cesedin külleri vardı. Antik çağda bazı kültürler ölülerini yakardı (kremasyon). Kemik yerine kül buldular.",
+  "ipuclari": [
+    "Ceset farklı şekilde işlenmişti",
+    "Ateş kullanılmıştı",
+    "Antik bir gelenek"
+  ],
+  "sorular": {
+    "mezar": {
+      "keywords": ["mezar", "kabir", "gömü"],
+      "answer": "Evet"
+    },
+    "kemik": {
+      "keywords": ["kemik", "iskelet"],
+      "answer": "Hayır"
+    },
+    "ates": {
+      "keywords": ["ateş", "yak", "yakma"],
+      "answer": "Evet"
+    },
+    "kul": {
+      "keywords": ["kül", "yanık"],
+      "answer": "Evet"
+    },
+    "kremasyon": {
+      "keywords": ["kremasyon", "yakma", "yakmak"],
+      "answer": "Evet"
+    },
+    "bos": {
+      "keywords": ["boş", "yok"],
+      "answer": "Hayır"
+    },
+    "antik": {
+      "keywords": ["antik", "eski", "gelenek"],
+      "answer": "Evet"
+    }
+  }
+}

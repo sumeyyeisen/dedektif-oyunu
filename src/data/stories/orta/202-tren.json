@@ -1,0 +1,41 @@
+{
+  "id": 202,
+  "baslik": "Tren Yolculuğu",
+  "baslangic": "Bir adam trene bindi, tünele girdi ve çığlık attı. Tünelden çıktığında ölmüştü. Ne oldu?",
+  "cevap": "Adam kör değildi ama göz ameliyatı olmuştu ve gözleri sargılıydı. Doktor 'Yarın sargıları açacağız, görebileceksin' demişti. Tünele girince karanlık oldu. Adam sargıların açıldığını ve hala göremediğini sandı. Şok geçirip kalp krizi geçirdi.",
+  "ipuclari": [
+    "Adam gerçekten kör değildi",
+    "Ameliyat olmuştu",
+    "Karanlığı yanlış yorumladı"
+  ],
+  "sorular": {
+    "tren": {
+      "keywords": ["tren", "vagon", "ray"],
+      "answer": "Evet"
+    },
+    "tunel": {
+      "keywords": ["tünel", "karanlık", "geçit"],
+      "answer": "Evet"
+    },
+    "kor": {
+      "keywords": ["kör", "görme", "göz"],
+      "answer": "Evet"
+    },
+    "ameliyat": {
+      "keywords": ["ameliyat", "operasyon", "doktor"],
+      "answer": "Evet"
+    },
+    "sargi": {
+      "keywords": ["sargı", "bandaj", "bağ"],
+      "answer": "Evet"
+    },
+    "yanlis": {
+      "keywords": ["yanlış", "sand", "düşün"],
+      "answer": "Evet"
+    },
+    "kalp": {
+      "keywords": ["kalp", "krizi", "şok"],
+      "answer": "Evet"
+    }
+  }
+}

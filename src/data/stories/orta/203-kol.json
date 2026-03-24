@@ -1,0 +1,41 @@
+{
+  "id": 203,
+  "baslik": "Kopan Kol",
+  "baslangic": "Bir adam ormanda yürürken kolunu kesti ve kaçtı. Neden?",
+  "cevap": "Adam dağcılıktayken kolu kayalara sıkıştı. Günlerce kimse gelmedi. Susuzluktan ölmek üzereyken kolunu keserek kurtuldu. Hayatta kalmak için tek seçenekti.",
+  "ipuclari": [
+    "Hayatta kalmak için yaptı",
+    "Kolu sıkışmıştı",
+    "Yardım gelmiyordu"
+  ],
+  "sorular": {
+    "orman": {
+      "keywords": ["orman", "ağaç", "doğa"],
+      "answer": "Evet"
+    },
+    "kol": {
+      "keywords": ["kol", "el", "uzuv"],
+      "answer": "Evet"
+    },
+    "sikis": {
+      "keywords": ["sıkış", "kısıl", "tutul"],
+      "answer": "Evet"
+    },
+    "kaya": {
+      "keywords": ["kaya", "taş", "kayalık"],
+      "answer": "Evet"
+    },
+    "dagcilik": {
+      "keywords": ["dağcılık", "tırman", "dağ"],
+      "answer": "Evet"
+    },
+    "hayatta": {
+      "keywords": ["hayatta", "kurtar", "yaşa"],
+      "answer": "Evet"
+    },
+    "yardim": {
+      "keywords": ["yardım", "kurtar", "gelme"],
+      "answer": "Hayır"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": 105,
+  "baslik": "Sessiz Telefon",
+  "baslangic": "Bir kadın telefonla konuştu ve hemen ardından öldü. Telefonda kimse konuşmadı. Nasıl oldu?",
+  "cevap": "Kadın uçaktaydı. Pilot kabinden aradı ve 'Acil durum, herkes telefonunu kapatın' dedi. Kadın telefonunu kapatmadı. Telefon sinyali uçağın sistemlerini bozdu ve uçak düştü.",
+  "ipuclari": [
+    "Olay bir ulaşım aracındaydı",
+    "Telefon sinyali tehlikeliydi",
+    "Uyarıya uymadı"
+  ],
+  "sorular": {
+    "telefon": {
+      "keywords": ["telefon", "ara", "konuş"],
+      "answer": "Evet"
+    },
+    "ucak": {
+      "keywords": ["uçak", "uçuş", "havayolu"],
+      "answer": "Evet"
+    },
+    "pilot": {
+      "keywords": ["pilot", "kaptan"],
+      "answer": "Evet"
+    },
+    "sinyal": {
+      "keywords": ["sinyal", "dalga", "frekans"],
+      "answer": "Evet"
+    },
+    "kaza": {
+      "keywords": ["kaza", "düş", "çarp"],
+      "answer": "Evet"
+    },
+    "uyari": {
+      "keywords": ["uyarı", "söyle", "bildir"],
+      "answer": "Evet"
+    },
+    "cinayet": {
+      "keywords": ["cinayet", "öldür", "katil"],
+      "answer": "Hayır"
+    }
+  }
+}

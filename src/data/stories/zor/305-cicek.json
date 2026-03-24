@@ -1,0 +1,41 @@
+{
+  "id": 305,
+  "baslik": "Solmuş Çiçek",
+  "baslangic": "Bir adam çiçeğe baktı ve ağlamaya başladı. Çiçek solmuştu. Neden ağladı?",
+  "cevap": "Adam komadaki karısını her gün ziyaret ederdi. Odasına taze çiçek bırakırdı. Bir gün hastaneye gittiğinde çiçek solmuştu. Bu karısının öldüğü ve kimsenin çiçeği değiştirmediği anlamına geliyordu. Hemşireler ona söylemeyi unutmuştu.",
+  "ipuclari": [
+    "Çiçek bir işaretti",
+    "Birisi hastanedeydi",
+    "Çiçek değiştirilmeliydi"
+  ],
+  "sorular": {
+    "cicek": {
+      "keywords": ["çiçek", "bitki", "gül"],
+      "answer": "Evet"
+    },
+    "solmus": {
+      "keywords": ["solmuş", "kurumuş", "ölmüş"],
+      "answer": "Evet"
+    },
+    "hastane": {
+      "keywords": ["hastane", "klinik", "sağlık"],
+      "answer": "Evet"
+    },
+    "koma": {
+      "keywords": ["koma", "bilinçsiz", "uyuyor"],
+      "answer": "Evet"
+    },
+    "kari": {
+      "keywords": ["karı", "eş", "kadın"],
+      "answer": "Evet"
+    },
+    "ziyaret": {
+      "keywords": ["ziyaret", "gel", "gör"],
+      "answer": "Evet"
+    },
+    "oldu": {
+      "keywords": ["öldü", "vefat", "kaybetti"],
+      "answer": "Evet"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": 306,
+  "baslik": "Kayıp Anahtar",
+  "baslangic": "Bir adam anahtarını bulamadı ve intihar etti. Anahtar evdeydi. Neden öldü?",
+  "cevap": "Adam bir denizaltı kaptanıydı. Nükleer füze fırlatma anahtarını kaybetmişti. Düşman saldırısı sırasında füzeleri ateşleyemedi. Binlerce insan öldü. Suçluluk duygusuyla intihar etti. Anahtar evinde çekmecedeydi, yanlışlıkla almayı unutmuştu.",
+  "ipuclari": [
+    "Anahtar çok önemliydi",
+    "Askeri bir görevdi",
+    "Çok insan öldü"
+  ],
+  "sorular": {
+    "anahtar": {
+      "keywords": ["anahtar", "kilit", "açar"],
+      "answer": "Evet"
+    },
+    "denizalti": {
+      "keywords": ["denizaltı", "gemi", "deniz"],
+      "answer": "Evet"
+    },
+    "nukleer": {
+      "keywords": ["nükleer", "füze", "silah"],
+      "answer": "Evet"
+    },
+    "saldiri": {
+      "keywords": ["saldırı", "savaş", "düşman"],
+      "answer": "Evet"
+    },
+    "sucluluk": {
+      "keywords": ["suçluluk", "pişman", "vicdan"],
+      "answer": "Evet"
+    },
+    "ev": {
+      "keywords": ["ev", "evde", "çekmece"],
+      "answer": "Evet"
+    },
+    "unut": {
+      "keywords": ["unut", "bırak", "al"],
+      "answer": "Evet"
+    }
+  }
+}

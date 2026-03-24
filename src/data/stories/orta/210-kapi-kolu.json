@@ -1,0 +1,41 @@
+{
+  "id": 210,
+  "baslik": "Sıcak Kapı Kolu",
+  "baslangic": "Bir adam eve geldi, kapı koluna dokundu ve hemen itfaiyeyi aradı. Kapı kolu çok sıcaktı. Neden?",
+  "cevap": "İçeride yangın vardı. Metal kapı kolu ısınmıştı. Adam kapıyı açmadı çünkü yangında kapı açılırsa oksijen girer ve alevler büyür.",
+  "ipuclari": [
+    "İçeride tehlike vardı",
+    "Sıcaklık önemliydi",
+    "Kapıyı açmamalıydı"
+  ],
+  "sorular": {
+    "yangin": {
+      "keywords": ["yangın", "ateş", "alev"],
+      "answer": "Evet"
+    },
+    "sicak": {
+      "keywords": ["sıcak", "ısın", "sıcaklık"],
+      "answer": "Evet"
+    },
+    "metal": {
+      "keywords": ["metal", "demir", "kol"],
+      "answer": "Evet"
+    },
+    "itfaiye": {
+      "keywords": ["itfaiye", "yangın", "ara"],
+      "answer": "Evet"
+    },
+    "ac": {
+      "keywords": ["aç", "açma", "kapı"],
+      "answer": "Hayır"
+    },
+    "oksijen": {
+      "keywords": ["oksijen", "hava"],
+      "answer": "Evet"
+    },
+    "tehlike": {
+      "keywords": ["tehlike", "risk"],
+      "answer": "Evet"
+    }
+  }
+}

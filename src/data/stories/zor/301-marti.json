@@ -1,0 +1,37 @@
+{
+  "id": 301,
+  "baslik": "Martı Eti",
+  "baslangic": "Bir adam restoranda martı eti yedi, tadına baktı ve dışarı çıkıp intihar etti. Neden?",
+  "cevap": "Yıllar önce ıssız adada mahsur kalmışlardı. Arkadaşı ona 'martı eti' diye, ölen karısının etini yedirmişti. Gerçek martı etini tadınca gerçeği anladı.",
+  "ipuclari": [
+    "Geçmişte karanlık bir anı var",
+    "Daha önce yediği şey martı değildi",
+    "Yamyamlık söz konusu"
+  ],
+  "sorular": {
+    "marti": {
+      "keywords": ["martı", "kuş"],
+      "answer": "Evet"
+    },
+    "restoran": {
+      "keywords": ["restoran", "yemek"],
+      "answer": "Evet"
+    },
+    "ada": {
+      "keywords": ["ada", "mahsur"],
+      "answer": "Evet"
+    },
+    "kari": {
+      "keywords": ["karı", "eş"],
+      "answer": "Evet"
+    },
+    "yamyam": {
+      "keywords": ["yamyam", "insan eti"],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": ["zehir"],
+      "answer": "Hayır"
+    }
+  }
+}

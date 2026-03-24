@@ -1,0 +1,41 @@
+{
+  "id": 303,
+  "baslik": "Son Konser",
+  "baslangic": "Bir piyanist konser verdi, alkış aldı ve sahne arkasında öldü. Kimse onu öldürmedi. Ne oldu?",
+  "cevap": "Piyanist ölümcül bir hastalığı vardı ve son konseri veriyordu. Konserde son gücünü kullandı. Alkışları duydu ve mutlu bir şekilde öldü. Aslında konseri vermek için hastaneden kaçmıştı. Hayatının son anını sevdiği işi yaparak geçirmek istiyordu.",
+  "ipuclari": [
+    "Hasta olduğunu biliyordu",
+    "Son arzusuydu",
+    "Mutlu öldü"
+  ],
+  "sorular": {
+    "piyano": {
+      "keywords": ["piyano", "müzik", "enstrüman"],
+      "answer": "Evet"
+    },
+    "konser": {
+      "keywords": ["konser", "sahne", "gösteri"],
+      "answer": "Evet"
+    },
+    "hasta": {
+      "keywords": ["hasta", "hastalık", "rahatsız"],
+      "answer": "Evet"
+    },
+    "olumcul": {
+      "keywords": ["ölümcül", "terminal", "tedavi"],
+      "answer": "Evet"
+    },
+    "hastane": {
+      "keywords": ["hastane", "doktor", "tedavi"],
+      "answer": "Evet"
+    },
+    "kac": {
+      "keywords": ["kaç", "izinsiz", "gizli"],
+      "answer": "Evet"
+    },
+    "mutlu": {
+      "keywords": ["mutlu", "huzur", "barış"],
+      "answer": "Evet"
+    }
+  }
+}

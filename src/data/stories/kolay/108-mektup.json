@@ -1,0 +1,41 @@
+{
+  "id": 108,
+  "baslik": "Ölümcül Mektup",
+  "baslangic": "Bir kadın mektup aldı, okudu ve öldü. Mektupta sadece 'Seni seviyorum' yazıyordu. Nasıl öldü?",
+  "cevap": "Kadın eski sevgilisinden uzaklaşma emri almıştı. Mektup ondan geliyordu. Kadın mektubu okuyunca eski sevgilisinin hala peşinde olduğunu anladı ve korkudan kalp krizi geçirdi. Aslında adam evinin önündeydi.",
+  "ipuclari": [
+    "Mektup tehdit içermiyordu",
+    "Kadın korktu",
+    "Gönderen yakındaydı"
+  ],
+  "sorular": {
+    "mektup": {
+      "keywords": ["mektup", "yaz", "kağıt"],
+      "answer": "Evet"
+    },
+    "sevgili": {
+      "keywords": ["sevgili", "aşk", "erkek arkadaş"],
+      "answer": "Evet"
+    },
+    "korku": {
+      "keywords": ["korku", "kork", "panik"],
+      "answer": "Evet"
+    },
+    "kalp": {
+      "keywords": ["kalp", "krizi", "sağlık"],
+      "answer": "Evet"
+    },
+    "uzaklasma": {
+      "keywords": ["uzaklaşma", "yasak", "emri"],
+      "answer": "Evet"
+    },
+    "takip": {
+      "keywords": ["takip", "peşinde", "izle"],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": ["zehir", "toksik"],
+      "answer": "Hayır"
+    }
+  }
+}

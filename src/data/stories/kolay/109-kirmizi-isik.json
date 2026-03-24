@@ -1,0 +1,37 @@
+{
+  "id": 109,
+  "baslik": "Kırmızı Işık",
+  "baslangic": "Bir adam kırmızı ışıkta geçti ama polis onu durdurmadı. Neden?",
+  "cevap": "Adam yürüyerek karşıya geçiyordu. Kırmızı ışık araçlar içindi, yayalar için yeşil yanıyordu.",
+  "ipuclari": [
+    "Adam araç kullanmıyordu",
+    "Yaya geçidindeydi",
+    "Kural ihlali yoktu"
+  ],
+  "sorular": {
+    "arac": {
+      "keywords": ["araç", "araba", "otomobil", "sürücü"],
+      "answer": "Hayır"
+    },
+    "yaya": {
+      "keywords": ["yaya", "yürü", "yürüme", "yürüyor"],
+      "answer": "Evet"
+    },
+    "trafik": {
+      "keywords": ["trafik", "ışık", "sinyal"],
+      "answer": "Evet"
+    },
+    "kural": {
+      "keywords": ["kural", "ihlal", "suç", "yasak"],
+      "answer": "Hayır"
+    },
+    "polis": {
+      "keywords": ["polis", "memur"],
+      "answer": "Evet"
+    },
+    "yesil": {
+      "keywords": ["yeşil", "geç"],
+      "answer": "Evet"
+    }
+  }
+}

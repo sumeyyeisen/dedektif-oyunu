@@ -1,0 +1,37 @@
+{
+  "id": 201,
+  "baslik": "Asansördeki Adam",
+  "baslangic": "Bir adam 20. katta oturuyor. İşe giderken zemin kata iniyor ama eve dönerken asansörle 10. kata çıkıp gerisini yürüyor. Neden?",
+  "cevap": "Adam bir cüce. Boyu, asansör panelinde ancak 10. katın düğmesine kadar yetişebiliyor. 20. kata basamadığı için kalanını yürümek zorunda kalıyor.",
+  "ipuclari": [
+    "Asansör bozuk değil",
+    "Yağmurlu günlerde şemsiyesiyle basabiliyor",
+    "Sorun adamın fiziksel özelliği"
+  ],
+  "sorular": {
+    "asansor": {
+      "keywords": ["asansör", "lift"],
+      "answer": "Evet"
+    },
+    "cuce": {
+      "keywords": ["cüce", "kısa", "boy"],
+      "answer": "Evet"
+    },
+    "dugme": {
+      "keywords": ["düğme", "buton", "bas"],
+      "answer": "Evet"
+    },
+    "yuru": {
+      "keywords": ["yürü", "merdiven"],
+      "answer": "Evet"
+    },
+    "semsiye": {
+      "keywords": ["şemsiye", "yağmur"],
+      "answer": "Evet"
+    },
+    "bozuk": {
+      "keywords": ["bozuk", "arıza"],
+      "answer": "Hayır"
+    }
+  }
+}

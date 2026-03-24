@@ -1,0 +1,53 @@
+{
+  "rules": {
+    "rooms": {
+      "$roomId": {
+        ".read": true,
+        ".write": "!data.exists()",
+        
+        "host": {
+          ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 20"
+        },
+        
+        "status": {
+          ".write": "data.parent().child('host').val() === auth.token.name || root.child('rooms').child($roomId).child('host').val() === newData.parent().child('host').val()",
+          ".validate": "newData.val() === 'waiting' || newData.val() === 'playing' || newData.val() === 'solved'"
+        },
+        
+        "difficulty": {
+          ".validate": "newData.val() === 'kolay' || newData.val() === 'orta' || newData.val() === 'zor'"
+        },
+        
+        "story": {
+          ".validate": "newData.hasChildren(['id', 'baslik', 'baslangic', 'cevap', 'ipuclari'])"
+        },
+        
+        "hintsUsed": {
+          ".write": true,
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        },
+        
+        "messages": {
+          ".read": true,
+          "$messageId": {
+            ".write": true,
+            ".validate": "newData.hasChildren(['type', 'content', 'timestamp']) && newData.child('timestamp').isNumber()"
+          }
+        },
+        
+        "guests": {
+          ".read": true,
+          "$guestId": {
+            ".write": true,
+            ".validate": "newData.hasChildren(['name', 'joinedAt']) && newData.child('name').isString() && newData.child('joinedAt').isNumber()"
+          }
+        }
+      }
+    }
+  }
+}
+

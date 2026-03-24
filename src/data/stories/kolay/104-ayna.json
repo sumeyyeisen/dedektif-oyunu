@@ -1,0 +1,41 @@
+{
+  "id": 104,
+  "baslik": "Kırık Ayna",
+  "baslangic": "Bir adam aynaya baktı ve kendini öldürdü. Neden?",
+  "cevap": "Adam bir denizaltı kaptanıydı. Periskoptaki aynaya baktığında düşman gemisinin tam üstlerinde olduğunu gördü. Torpido atmak zorunda kaldı ama bu onun en iyi arkadaşının gemisiydi. Suçluluk duygusuyla intihar etti.",
+  "ipuclari": [
+    "Ayna normal bir ev aynası değildi",
+    "Adam askeri bir görevdeydi",
+    "Gördüğü şey onu çok üzdü"
+  ],
+  "sorular": {
+    "ayna": {
+      "keywords": ["ayna", "yansıma", "görüntü"],
+      "answer": "Evet"
+    },
+    "ev": {
+      "keywords": ["ev", "banyo", "oda"],
+      "answer": "Hayır"
+    },
+    "denizalti": {
+      "keywords": ["denizaltı", "gemi", "deniz"],
+      "answer": "Evet"
+    },
+    "periskop": {
+      "keywords": ["periskop"],
+      "answer": "Evet"
+    },
+    "dusman": {
+      "keywords": ["düşman", "savaş", "askeri"],
+      "answer": "Evet"
+    },
+    "arkadas": {
+      "keywords": ["arkadaş", "dost", "tanıdık"],
+      "answer": "Evet"
+    },
+    "sucluluk": {
+      "keywords": ["suç", "pişman", "üzgün"],
+      "answer": "Evet"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": 205,
+  "baslik": "Yanlış Ayakkabı",
+  "baslangic": "Bir adam ayakkabılarını giydi ve öldü. Ayakkabılar zehirli değildi. Ne oldu?",
+  "cevap": "Adam bir paraşütçüydü. Yanlışlıkla ağır botlarını giydi. Paraşütle atladığında botların ağırlığı yüzünden paraşüt açılmadı ve yere çakıldı. Normal ayakkabılarını giyseyd paraşüt açılacaktı.",
+  "ipuclari": [
+    "Ayakkabılar çok ağırdı",
+    "Adam havadaydı",
+    "Ağırlık önemliydi"
+  ],
+  "sorular": {
+    "ayakkabi": {
+      "keywords": ["ayakkabı", "bot", "ayak"],
+      "answer": "Evet"
+    },
+    "agir": {
+      "keywords": ["ağır", "kilo", "ağırlık"],
+      "answer": "Evet"
+    },
+    "parasut": {
+      "keywords": ["paraşüt", "atla", "uç"],
+      "answer": "Evet"
+    },
+    "acilma": {
+      "keywords": ["açıl", "aç", "çalış"],
+      "answer": "Hayır"
+    },
+    "dus": {
+      "keywords": ["düş", "yer", "çak"],
+      "answer": "Evet"
+    },
+    "yanlis": {
+      "keywords": ["yanlış", "hata", "karış"],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": ["zehir", "toksik"],
+      "answer": "Hayır"
+    }
+  }
+}

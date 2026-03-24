@@ -1,0 +1,41 @@
+{
+  "id": 204,
+  "baslik": "Duran Saat",
+  "baslangic": "Bir kadın saatine baktı ve kocasının öldüğünü anladı. Saat çalışıyordu. Nasıl anladı?",
+  "cevap": "Kocası denizde balıkçılıktaydı. Her gün aynı saatte eve dönerdi. Kadın saate baktığında kocasının dönmesi gereken saatten çok geçtiğini gördü. Fırtına vardı ve kocası dönmemişti. Geminin battığını anladı.",
+  "ipuclari": [
+    "Kocası düzenli bir rutini vardı",
+    "Geç kalmıştı",
+    "Hava kötüydü"
+  ],
+  "sorular": {
+    "saat": {
+      "keywords": ["saat", "zaman", "dakika"],
+      "answer": "Evet"
+    },
+    "koca": {
+      "keywords": ["koca", "eş", "adam"],
+      "answer": "Evet"
+    },
+    "deniz": {
+      "keywords": ["deniz", "okyanus", "su"],
+      "answer": "Evet"
+    },
+    "balikci": {
+      "keywords": ["balıkçı", "balık", "tekne"],
+      "answer": "Evet"
+    },
+    "firtina": {
+      "keywords": ["fırtına", "hava", "kötü"],
+      "answer": "Evet"
+    },
+    "gec": {
+      "keywords": ["geç", "gecik", "zaman"],
+      "answer": "Evet"
+    },
+    "rutin": {
+      "keywords": ["rutin", "düzenli", "her gün"],
+      "answer": "Evet"
+    }
+  }
+}

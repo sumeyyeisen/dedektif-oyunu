@@ -1,0 +1,37 @@
+{
+  "id": 118,
+  "baslik": "Aksesuar Saat",
+  "baslangic": "Bir adamın kol saati durdu ama adam saati tamir ettirmedi ve kullanmaya devam etti. Neden?",
+  "cevap": "Adam dijital saat yerine mekanik saat kullanıyordu ve pil bitmişti. Ama saati aksesuar olarak takıyordu, zaten telefonundan saate bakıyordu.",
+  "ipuclari": [
+    "Saat artık zaman göstermiyordu",
+    "Adam başka yerden saate bakıyordu",
+    "Saat aksesuar olmuştu"
+  ],
+  "sorular": {
+    "saat": {
+      "keywords": ["saat", "kol saati"],
+      "answer": "Evet"
+    },
+    "dur": {
+      "keywords": ["dur", "çalışmaz", "bozuk"],
+      "answer": "Evet"
+    },
+    "telefon": {
+      "keywords": ["telefon", "cep", "mobil"],
+      "answer": "Evet"
+    },
+    "aksesuar": {
+      "keywords": ["aksesuar", "süs", "takı"],
+      "answer": "Evet"
+    },
+    "tamir": {
+      "keywords": ["tamir", "onar"],
+      "answer": "Hayır"
+    },
+    "zaman": {
+      "keywords": ["zaman", "saat", "dakika"],
+      "answer": "Evet"
+    }
+  }
+}

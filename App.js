@@ -1,14 +1,16 @@
-import { AppRegistry } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { AppRegistry, View } from 'react-native';
 import DetectiveGame from './DetectiveGame';
-import { View } from 'react-native';
+import ErrorBoundary from './src/shared/components/ErrorBoundary';
 
 function App() {
   return (
-    <View style={{ flex: 1 }}>
-      <DetectiveGame />
-      <StatusBar style="auto" />
-    </View>
+    <ErrorBoundary>
+      <View style={{ flex: 1 }}>
+        <DetectiveGame />
+        <StatusBar style="auto" />
+      </View>
+    </ErrorBoundary>
   );
 }
 

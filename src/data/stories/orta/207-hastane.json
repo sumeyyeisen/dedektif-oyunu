@@ -1,0 +1,41 @@
+{
+  "id": 207,
+  "baslik": "Hastanede Ölüm",
+  "baslangic": "Bir doktor hastasını öldürdü ama kimse onu suçlamadı. Hatta ailesi teşekkür etti. Nasıl oldu?",
+  "cevap": "Hasta ölümcül bir hastalıktan acı çekiyordu ve yaşam desteğindeydi. Doktor, ailenin rızasıyla cihazları kapattı (ötanazi). Hasta zaten ölmek üzereydi ve acıdan kurtuldu.",
+  "ipuclari": [
+    "Hasta zaten ölüyordu",
+    "Aile karar vermişti",
+    "Yaşam desteği vardı"
+  ],
+  "sorular": {
+    "doktor": {
+      "keywords": ["doktor", "hekim"],
+      "answer": "Evet"
+    },
+    "hasta": {
+      "keywords": ["hasta", "hastalık"],
+      "answer": "Evet"
+    },
+    "yasam_destegi": {
+      "keywords": ["yaşam desteği", "cihaz", "makine"],
+      "answer": "Evet"
+    },
+    "aile": {
+      "keywords": ["aile", "yakın", "akraba"],
+      "answer": "Evet"
+    },
+    "aci": {
+      "keywords": ["acı", "ağrı", "çek"],
+      "answer": "Evet"
+    },
+    "suc": {
+      "keywords": ["suç", "cinayet", "ceza"],
+      "answer": "Hayır"
+    },
+    "otanazi": {
+      "keywords": ["ötanazi", "kapat", "son"],
+      "answer": "Evet"
+    }
+  }
+}

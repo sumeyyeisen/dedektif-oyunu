@@ -1,0 +1,37 @@
+{
+  "id": 115,
+  "baslik": "Kayıp Para",
+  "baslangic": "Bir adam 100 lira kaybetti ama mutlu oldu. Neden?",
+  "cevap": "Adam bahis oynamıştı ve 100 lira kaybetmişti. Ama arkadaşı 1000 lira kaybetmişti, bu yüzden kendini şanslı hissetti.",
+  "ipuclari": [
+    "Karşılaştırma yaptı",
+    "Başkası daha çok kaybetti",
+    "Bahis veya oyun vardı"
+  ],
+  "sorular": {
+    "para": {
+      "keywords": ["para", "lira", "para"],
+      "answer": "Evet"
+    },
+    "bahis": {
+      "keywords": ["bahis", "kumar", "oyun"],
+      "answer": "Evet"
+    },
+    "arkadas": {
+      "keywords": ["arkadaş", "başka", "diğer"],
+      "answer": "Evet"
+    },
+    "fazla": {
+      "keywords": ["fazla", "çok", "daha"],
+      "answer": "Evet"
+    },
+    "mutlu": {
+      "keywords": ["mutlu", "şanslı", "iyi"],
+      "answer": "Evet"
+    },
+    "buldu": {
+      "keywords": ["bul", "buldu", "geri"],
+      "answer": "Hayır"
+    }
+  }
+}

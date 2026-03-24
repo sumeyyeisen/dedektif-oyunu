@@ -1,0 +1,41 @@
+{
+  "id": 304,
+  "baslik": "Soğuk Kapı Kolu",
+  "baslangic": "Bir kadın eve geldi, kapı koluna dokundu ve kocasının öldüğünü anladı. Kapı kolu normaldi. Nasıl anladı?",
+  "cevap": "Kocası felçliydi ve evden çıkamazdı. Her gün evi ısıtırdı. Kadın kapı koluna dokunduğunda çok soğuktu. Bu evin ısıtılmadığı anlamına geliyordu. Kocası ölmüş olmalıydı çünkü hayatta olsaydı evi ısıtırdı. İçeri girdiğinde kocasını ölü buldu.",
+  "ipuclari": [
+    "Kocası evden çıkamazdı",
+    "Sıcaklık önemliydi",
+    "Günlük bir rutin vardı"
+  ],
+  "sorular": {
+    "kapi": {
+      "keywords": ["kapı", "giriş", "eşik"],
+      "answer": "Evet"
+    },
+    "kol": {
+      "keywords": ["kol", "tutacak", "sap"],
+      "answer": "Evet"
+    },
+    "soguk": {
+      "keywords": ["soğuk", "sıcaklık", "ısı"],
+      "answer": "Evet"
+    },
+    "felc": {
+      "keywords": ["felç", "engelli", "hareket"],
+      "answer": "Evet"
+    },
+    "isitma": {
+      "keywords": ["ısıtma", "kalorifer", "soba"],
+      "answer": "Evet"
+    },
+    "rutin": {
+      "keywords": ["rutin", "alışkanlık", "her gün"],
+      "answer": "Evet"
+    },
+    "cikamaz": {
+      "keywords": ["çıkamaz", "kala", "evde"],
+      "answer": "Evet"
+    }
+  }
+}

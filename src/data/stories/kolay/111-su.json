@@ -1,0 +1,37 @@
+{
+  "id": 111,
+  "baslik": "Susuz Ölüm",
+  "baslangic": "Bir adam çölde susuzluktan öldü. Yanında 5 litre su vardı ama içmedi. Neden?",
+  "cevap": "Su bidonunun kapağı çok sıkıydı ve adam açamadı. Elinde alet yoktu ve güçsüz düştükçe açamaz hale geldi.",
+  "ipuclari": [
+    "Su içilebilir durumdaydı",
+    "Fiziksel bir engel vardı",
+    "Adam zayıflamıştı"
+  ],
+  "sorular": {
+    "su": {
+      "keywords": ["su", "içecek"],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": ["zehir", "kirli", "bozuk"],
+      "answer": "Hayır"
+    },
+    "kapak": {
+      "keywords": ["kapak", "açma", "aç"],
+      "answer": "Evet"
+    },
+    "guc": {
+      "keywords": ["güç", "kuvvet", "zayıf"],
+      "answer": "Evet"
+    },
+    "alet": {
+      "keywords": ["alet", "araç", "bıçak"],
+      "answer": "Hayır"
+    },
+    "col": {
+      "keywords": ["çöl", "sıcak", "kum"],
+      "answer": "Evet"
+    }
+  }
+}

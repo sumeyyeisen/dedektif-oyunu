@@ -1,0 +1,37 @@
+{
+  "id": 117,
+  "baslik": "Soğuk Yemek",
+  "baslangic": "Bir kadın yemeği ısıtmadan soğuk yedi ve çok memnun kaldı. Yemek bozuk değildi. Neden?",
+  "cevap": "Kadın dondurma yiyordu. Dondurma zaten soğuk yenilmesi gereken bir yemektir.",
+  "ipuclari": [
+    "Yemek tatlıydı",
+    "Soğuk olması normaldi",
+    "Isıtılmaması gerekiyordu"
+  ],
+  "sorular": {
+    "yemek": {
+      "keywords": ["yemek", "ye"],
+      "answer": "Evet"
+    },
+    "tatli": {
+      "keywords": ["tatlı", "dondurma", "tatlı"],
+      "answer": "Evet"
+    },
+    "soguk": {
+      "keywords": ["soğuk", "donmuş"],
+      "answer": "Evet"
+    },
+    "isit": {
+      "keywords": ["ısıt", "sıcak"],
+      "answer": "Hayır"
+    },
+    "bozuk": {
+      "keywords": ["bozuk", "kötü"],
+      "answer": "Hayır"
+    },
+    "memnun": {
+      "keywords": ["memnun", "mutlu", "lezzetli"],
+      "answer": "Evet"
+    }
+  }
+}

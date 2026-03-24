@@ -1,0 +1,41 @@
+{
+  "id": 209,
+  "baslik": "Denizaltı Faciası",
+  "baslangic": "Bir denizaltıdaki tüm mürettebat boğularak öldü ama denizaltı hiç batmadı. Nasıl oldu?",
+  "cevap": "Denizaltı yüzeydeyken bir fırtınaya yakalandı ve devrildi. İçeri su doldu ama denizaltı batmadı, yan yattı. Mürettebat kaçamadı ve boğuldu.",
+  "ipuclari": [
+    "Denizaltı su yüzündeydi",
+    "Hava koşulları kötüydü",
+    "Denizaltı devrildi"
+  ],
+  "sorular": {
+    "denizalti": {
+      "keywords": ["denizaltı", "gemi"],
+      "answer": "Evet"
+    },
+    "bat": {
+      "keywords": ["bat", "batma", "dibe"],
+      "answer": "Hayır"
+    },
+    "firtina": {
+      "keywords": ["fırtına", "dalga", "hava"],
+      "answer": "Evet"
+    },
+    "devril": {
+      "keywords": ["devril", "yan yat", "ters"],
+      "answer": "Evet"
+    },
+    "su": {
+      "keywords": ["su", "dol", "içeri"],
+      "answer": "Evet"
+    },
+    "yuzey": {
+      "keywords": ["yüzey", "üst", "yukarı"],
+      "answer": "Evet"
+    },
+    "bogul": {
+      "keywords": ["boğul", "boğulma"],
+      "answer": "Evet"
+    }
+  }
+}

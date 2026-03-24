@@ -1,0 +1,37 @@
+{
+  "id": 113,
+  "baslik": "Okunamayan Kitap",
+  "baslangic": "Bir kadın kitabı aldı, okudu ve geri verdi. Ama hiçbir kelime okumadı. Nasıl olur?",
+  "cevap": "Kadın sesli kitap (audiobook) dinledi. Kitabı 'okudu' ama gözleriyle değil kulaklarıyla.",
+  "ipuclari": [
+    "Kitap farklı bir formattaydı",
+    "Kadın hikayeyi öğrendi",
+    "Ses ile ilgiliydi"
+  ],
+  "sorular": {
+    "kitap": {
+      "keywords": ["kitap", "roman"],
+      "answer": "Evet"
+    },
+    "gor": {
+      "keywords": ["gör", "bak", "göz"],
+      "answer": "Hayır"
+    },
+    "ses": {
+      "keywords": ["ses", "dinle", "duy"],
+      "answer": "Evet"
+    },
+    "audiobook": {
+      "keywords": ["sesli", "audio", "kayıt"],
+      "answer": "Evet"
+    },
+    "oku": {
+      "keywords": ["oku", "okuma"],
+      "answer": "Evet"
+    },
+    "anladi": {
+      "keywords": ["anla", "öğren", "hikaye"],
+      "answer": "Evet"
+    }
+  }
+}

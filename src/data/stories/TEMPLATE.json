@@ -1,0 +1,25 @@
+{
+  "id": 999,
+  "baslik": "Hikaye Başlığı",
+  "baslangic": "Hikayenin başlangıç metni. Gizemli bir durum tanımla.",
+  "cevap": "Hikayenin gerçek çözümü. Detaylı açıklama.",
+  "ipuclari": [
+    "İpucu 1 - Genel bir yönlendirme",
+    "İpucu 2 - Biraz daha spesifik",
+    "İpucu 3 - Çözüme yaklaştıran ipucu"
+  ],
+  "sorular": {
+    "anahtar_kelime_1": {
+      "keywords": ["kelime1", "eş anlamlı1", "ilgili kelime"],
+      "answer": "Evet"
+    },
+    "anahtar_kelime_2": {
+      "keywords": ["kelime2", "eş anlamlı2"],
+      "answer": "Hayır"
+    },
+    "alakasiz": {
+      "keywords": ["alakasız kelime"],
+      "answer": "Alakasız"
+    }
+  }
+}

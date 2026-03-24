@@ -1,0 +1,41 @@
+{
+  "id": 101,
+  "baslik": "Sivrisinek ve Kaza",
+  "baslangic": "Bir sivrisinek yüzünden onlarca insan hayatını kaybetti. Bu küçücük hayvan nasıl böyle bir felakete yol açtı?",
+  "cevap": "Bir turist otobüsü şoförü, odasındaki sivrisinek yüzünden gece boyu uyuyamamıştı. Ertesi gün direksiyon başında uykusuzluktan sızdı ve otobüs şarampole yuvarlandı.",
+  "ipuclari": [
+    "Olay bir araçta gerçekleşti",
+    "Sivrisinek kimseyi ısırmadı",
+    "Asıl sorun 'uykusuzluk'tu"
+  ],
+  "sorular": {
+    "sivrisinek": {
+      "keywords": ["sivrisinek", "böcek", "haşere"],
+      "answer": "Evet"
+    },
+    "sivrisinek_isirdi": {
+      "keywords": ["ısır", "sok"],
+      "answer": "Hayır"
+    },
+    "arac": {
+      "keywords": ["araç", "otobüs", "araba", "taşıt"],
+      "answer": "Evet"
+    },
+    "kaza": {
+      "keywords": ["kaza", "çarp", "devril"],
+      "answer": "Evet"
+    },
+    "sofor": {
+      "keywords": ["şoför", "sürücü", "kaptan"],
+      "answer": "Evet"
+    },
+    "uyku": {
+      "keywords": ["uyku", "uyu", "uyuma", "yorgun", "uykusuz"],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": ["zehir", "hastalık", "virüs"],
+      "answer": "Hayır"
+    }
+  }
+}

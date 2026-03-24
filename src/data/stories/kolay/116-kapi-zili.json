@@ -1,0 +1,37 @@
+{
+  "id": 116,
+  "baslik": "Çalmayan Zil",
+  "baslangic": "Bir adam kapı zilini çaldı ama ses çıkmadı. Zil bozuk değildi. Neden ses çıkmadı?",
+  "cevap": "Adam sağırdı ve zil sesini duyamadı. Zil çalıyordu ama adam işitemiyordu.",
+  "ipuclari": [
+    "Zil çalışıyordu",
+    "Sorun adamdaydı",
+    "Duyma ile ilgiliydi"
+  ],
+  "sorular": {
+    "zil": {
+      "keywords": ["zil", "kapı"],
+      "answer": "Evet"
+    },
+    "bozuk": {
+      "keywords": ["bozuk", "arıza", "çalışmaz"],
+      "answer": "Hayır"
+    },
+    "sagir": {
+      "keywords": ["sağır", "işit", "duy"],
+      "answer": "Evet"
+    },
+    "ses": {
+      "keywords": ["ses", "çal"],
+      "answer": "Evet"
+    },
+    "adam": {
+      "keywords": ["adam", "kişi"],
+      "answer": "Evet"
+    },
+    "duyma": {
+      "keywords": ["duyma", "duymaz", "işitme"],
+      "answer": "Evet"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": 107,
+  "baslik": "Son Fotoğraf",
+  "baslangic": "Bir adam fotoğrafını çekti, fotoğrafa baktı ve öldü. Fotoğrafta ne vardı?",
+  "cevap": "Adam bir astronottu. Uzay yürüyüşü sırasında selfie çekti. Fotoğrafta kaskının çatladığını gördü. Oksijeni bitmeden önce gemiye dönemedi.",
+  "ipuclari": [
+    "Fotoğraf hayati bir bilgi gösterdi",
+    "Adam uzayda değildi ama uzayla ilgiliydi",
+    "Ekipmanında sorun vardı"
+  ],
+  "sorular": {
+    "fotograf": {
+      "keywords": ["fotoğraf", "resim", "çek"],
+      "answer": "Evet"
+    },
+    "uzay": {
+      "keywords": ["uzay", "astronot", "roket"],
+      "answer": "Evet"
+    },
+    "kask": {
+      "keywords": ["kask", "başlık", "miğfer"],
+      "answer": "Evet"
+    },
+    "catlak": {
+      "keywords": ["çatlak", "kırık", "hasar"],
+      "answer": "Evet"
+    },
+    "oksijen": {
+      "keywords": ["oksijen", "hava", "nefes"],
+      "answer": "Evet"
+    },
+    "gemi": {
+      "keywords": ["gemi", "istasyon", "kapsül"],
+      "answer": "Evet"
+    },
+    "cinayet": {
+      "keywords": ["cinayet", "öldür"],
+      "answer": "Hayır"
+    }
+  }
+}

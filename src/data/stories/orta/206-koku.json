@@ -1,0 +1,41 @@
+{
+  "id": 206,
+  "baslik": "Tatlı Koku",
+  "baslangic": "Bir adam tatlı bir koku aldı ve hemen kaçmaya başladı. Neden?",
+  "cevap": "Adam bir madenciydi. Maden ocağında tatlı bir koku aldı. Bu gaz sızıntısının işaretiydi. Patlama olacağını biliyordu ve kaçmaya başladı. Birkaç saniye sonra maden patladı.",
+  "ipuclari": [
+    "Koku tehlikeliydi",
+    "Yeraltındaydı",
+    "Patlama olacaktı"
+  ],
+  "sorular": {
+    "koku": {
+      "keywords": ["koku", "koksun", "kokar"],
+      "answer": "Evet"
+    },
+    "maden": {
+      "keywords": ["maden", "ocak", "yeraltı"],
+      "answer": "Evet"
+    },
+    "gaz": {
+      "keywords": ["gaz", "sızıntı", "kaçak"],
+      "answer": "Evet"
+    },
+    "patlama": {
+      "keywords": ["patlama", "patla", "infilak"],
+      "answer": "Evet"
+    },
+    "tehlike": {
+      "keywords": ["tehlike", "risk", "uyarı"],
+      "answer": "Evet"
+    },
+    "kac": {
+      "keywords": ["kaç", "koş", "uzaklaş"],
+      "answer": "Evet"
+    },
+    "tatli": {
+      "keywords": ["tatlı", "güzel", "hoş"],
+      "answer": "Evet"
+    }
+  }
+}

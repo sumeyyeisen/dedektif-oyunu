@@ -1,0 +1,41 @@
+{
+  "id": 102,
+  "baslik": "Mutfaktaki Alevler",
+  "baslangic": "Kadın sadece yemek yapmak istiyordu. Ama su kullandığı için feci şekilde can verdi. Su onu neden öldürdü?",
+  "cevap": "Kadın kızartma yaparken yağ alev aldı. Panikle yanan yağın üzerine su döktü. Su, kızgın yağla temas edince devasa bir patlama yarattı.",
+  "ipuclari": [
+    "Olay mutfakta geçti",
+    "Yanan şey normal bir ateş değildi",
+    "Su yangını söndürmedi, büyüttü"
+  ],
+  "sorular": {
+    "mutfak": {
+      "keywords": ["mutfak", "yemek", "pişir"],
+      "answer": "Evet"
+    },
+    "su": {
+      "keywords": ["su"],
+      "answer": "Evet"
+    },
+    "yangin": {
+      "keywords": ["yangın", "ateş", "alev"],
+      "answer": "Evet"
+    },
+    "yag": {
+      "keywords": ["yağ", "kızart"],
+      "answer": "Evet"
+    },
+    "patlama": {
+      "keywords": ["patlama", "patla"],
+      "answer": "Evet"
+    },
+    "bogul": {
+      "keywords": ["boğul"],
+      "answer": "Hayır"
+    },
+    "zehir": {
+      "keywords": ["zehir"],
+      "answer": "Hayır"
+    }
+  }
+}

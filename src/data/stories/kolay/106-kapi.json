@@ -1,0 +1,41 @@
+{
+  "id": 106,
+  "baslik": "Kilitli Kapı",
+  "baslangic": "Bir adam odasına girdi, kapıyı içeriden kilitledi ve ertesi gün ölü bulundu. Oda hala içeriden kilitliydi. Nasıl öldü?",
+  "cevap": "Adam buzdan bir heykel yaptı ve onu tavana astı. Gece boyunca buz eridi ve sabah adamın üzerine düştü. Buz eridiği için delil kalmadı.",
+  "ipuclari": [
+    "Oda gerçekten içeriden kilitliydi",
+    "Katil yoktu",
+    "Delil eridi"
+  ],
+  "sorular": {
+    "kapi": {
+      "keywords": ["kapı", "kilit", "anahtar"],
+      "answer": "Evet"
+    },
+    "katil": {
+      "keywords": ["katil", "cinayet", "öldür"],
+      "answer": "Hayır"
+    },
+    "buz": {
+      "keywords": ["buz", "don", "soğuk"],
+      "answer": "Evet"
+    },
+    "eri": {
+      "keywords": ["eri", "çözül"],
+      "answer": "Evet"
+    },
+    "heykel": {
+      "keywords": ["heykel", "şekil", "obje"],
+      "answer": "Evet"
+    },
+    "tavan": {
+      "keywords": ["tavan", "yukarı", "üst"],
+      "answer": "Evet"
+    },
+    "intihar": {
+      "keywords": ["intihar", "kendini öldür"],
+      "answer": "Hayır"
+    }
+  }
+}

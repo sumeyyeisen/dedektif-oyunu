@@ -1,8 +1,9 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getAllStoryMetadata } from '../../../data/stories/storyLoader';
+import AppText from '../../../shared/components/AppText';
 import { getCompletedStories, getFavoriteStories, toggleFavoriteStory } from '../../../shared/utils/storageManager';
 import StoryCard from './StoryCard';
 
@@ -86,9 +87,9 @@ const StorySelectionScreen = ({ difficulty, onBack, onSelectStory, gameMode }) =
       <SafeAreaView style={styles.container}>
         <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
           <ActivityIndicator size="large" color={difficultyColor} />
-          <Text style={{ color: '#B0B0B0', marginTop: 16, fontFamily: 'serif' }}>
+          <AppText style={{ color: '#B0B0B0', marginTop: 16, fontFamily: 'serif' }}>
             Vakalar yükleniyor...
-          </Text>
+          </AppText>
         </View>
       </SafeAreaView>
     );
@@ -103,12 +104,12 @@ const StorySelectionScreen = ({ difficulty, onBack, onSelectStory, gameMode }) =
         </TouchableOpacity>
         
         <View style={styles.headerCenter}>
-          <Text style={styles.headerTitle}>
+          <AppText style={styles.headerTitle}>
             {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Vakalar
-          </Text>
-          <Text style={styles.headerSubtitle}>
+          </AppText>
+          <AppText style={styles.headerSubtitle}>
             {filteredStories.length} vaka mevcut
-          </Text>
+          </AppText>
         </View>
 
         <View style={styles.headerRight}>
@@ -127,9 +128,9 @@ const StorySelectionScreen = ({ difficulty, onBack, onSelectStory, gameMode }) =
             size={18} 
             color={selectedFilter === 'all' ? '#FFFFFF' : '#B0B0B0'} 
           />
-          <Text style={[styles.filterText, selectedFilter === 'all' && styles.filterTextActive]}>
+          <AppText style={[styles.filterText, selectedFilter === 'all' && styles.filterTextActive]}>
             Tümü
-          </Text>
+          </AppText>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -141,9 +142,9 @@ const StorySelectionScreen = ({ difficulty, onBack, onSelectStory, gameMode }) =
             size={18} 
             color={selectedFilter === 'favorites' ? '#FFD700' : '#B0B0B0'} 
           />
-          <Text style={[styles.filterText, selectedFilter === 'favorites' && styles.filterTextActive]}>
+          <AppText style={[styles.filterText, selectedFilter === 'favorites' && styles.filterTextActive]}>
             Favoriler
-          </Text>
+          </AppText>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -155,9 +156,9 @@ const StorySelectionScreen = ({ difficulty, onBack, onSelectStory, gameMode }) =
             size={18} 
             color={selectedFilter === 'completed' ? '#2E7D32' : '#B0B0B0'} 
           />
-          <Text style={[styles.filterText, selectedFilter === 'completed' && styles.filterTextActive]}>
+          <AppText style={[styles.filterText, selectedFilter === 'completed' && styles.filterTextActive]}>
             Çözülenler
-          </Text>
+          </AppText>
         </TouchableOpacity>
       </View>
 
@@ -182,13 +183,13 @@ const StorySelectionScreen = ({ difficulty, onBack, onSelectStory, gameMode }) =
         ) : (
           <View style={styles.emptyState}>
             <MaterialCommunityIcons name="folder-open" size={64} color="#555555" />
-            <Text style={styles.emptyText}>
+            <AppText style={styles.emptyText}>
               {selectedFilter === 'completed' 
                 ? 'Henüz çözülmüş vaka yok'
                 : selectedFilter === 'favorites'
                 ? 'Henüz favori vaka yok'
                 : 'Vaka bulunamadı'}
-            </Text>
+            </AppText>
           </View>
         )}
 
@@ -202,9 +203,9 @@ const StorySelectionScreen = ({ difficulty, onBack, onSelectStory, gameMode }) =
             }}
           >
             <MaterialCommunityIcons name="shuffle-variant" size={24} color={difficultyColor} />
-            <Text style={[styles.randomButtonText, { color: difficultyColor }]}>
+            <AppText style={[styles.randomButtonText, { color: difficultyColor }]}>
               Rastgele Vaka Seç
-            </Text>
+            </AppText>
           </TouchableOpacity>
         )}
       </ScrollView>

@@ -9,11 +9,8 @@ const firebaseConfig = {
   storageBucket: "dedektif-oyunu-36e13.firebasestorage.app",
   messagingSenderId: "140134422208",
   appId: "1:140134422208:web:c49b2989a4ca005c5d7f25",
-  measurementId: "G-BPQXF9YZEP"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-
 export { database };

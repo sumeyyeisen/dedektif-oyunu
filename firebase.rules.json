@@ -2,47 +2,38 @@
   "rules": {
     "rooms": {
       "$roomId": {
-        ".read": true,
+        ".read": "data.exists()",
         ".write": "!data.exists()",
-        
         "host": {
           ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 20"
         },
-        
         "status": {
-          ".write": "data.parent().child('host').val() === auth.token.name || root.child('rooms').child($roomId).child('host').val() === newData.parent().child('host').val()",
+          ".write": "data.exists()",
           ".validate": "newData.val() === 'waiting' || newData.val() === 'playing' || newData.val() === 'solved'"
         },
-        
         "difficulty": {
           ".validate": "newData.val() === 'kolay' || newData.val() === 'orta' || newData.val() === 'zor'"
         },
-        
         "story": {
+          ".write": "data.parent().exists()",
           ".validate": "newData.hasChildren(['id', 'baslik', 'baslangic', 'cevap', 'ipuclari'])"
         },
-        
         "hintsUsed": {
-          ".write": true,
+          ".write": "data.parent().exists()",
           ".validate": "newData.isNumber() && newData.val() >= 0"
         },
-        
         "createdAt": {
           ".validate": "newData.isNumber()"
         },
-        
         "messages": {
-          ".read": true,
           "$messageId": {
-            ".write": true,
-            ".validate": "newData.hasChildren(['type', 'content', 'timestamp']) && newData.child('timestamp').isNumber()"
+            ".write": "data.parent().parent().exists()",
+            ".validate": "newData.hasChildren(['type', 'content', 'timestamp']) && newData.child('timestamp').isNumber() && newData.child('content').isString() && newData.child('type').isString()"
           }
         },
-        
         "guests": {
-          ".read": true,
           "$guestId": {
-            ".write": true,
+            ".write": "data.parent().parent().exists()",
             ".validate": "newData.hasChildren(['name', 'joinedAt']) && newData.child('name').isString() && newData.child('joinedAt').isNumber()"
           }
         }
@@ -50,4 +41,3 @@
     }
   }
 }
-

@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import AppText from '../../../shared/components/AppText';
 
 /**
  * Soru Geçmişi Paneli
@@ -15,7 +16,7 @@ const QuestionHistoryPanel = ({ visible, onClose, messages }) => {
     if (messages[i].type === 'question') {
       const question = messages[i];
       const answer = messages[i + 1];
-      if (answer && answer.type === 'answer') {
+      if (answer && answer.type === 'answer' && answer.content) {
         questionPairs.push({ question, answer });
         i++; // Cevabı atla
       }
@@ -35,7 +36,7 @@ const QuestionHistoryPanel = ({ visible, onClose, messages }) => {
           <View style={styles.header}>
             <View style={styles.headerLeft}>
               <MaterialCommunityIcons name="history" size={24} color="#90CAF9" />
-              <Text style={styles.headerTitle}>Soru Geçmişi</Text>
+              <AppText style={styles.headerTitle}>Soru Geçmişi</AppText>
             </View>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
               <MaterialCommunityIcons name="close" size={24} color="#B0B0B0" />
@@ -48,33 +49,33 @@ const QuestionHistoryPanel = ({ visible, onClose, messages }) => {
               style={[styles.filterButton, filter === 'all' && styles.filterButtonActive]}
               onPress={() => setFilter('all')}
             >
-              <Text style={[styles.filterText, filter === 'all' && styles.filterTextActive]}>
+              <AppText style={[styles.filterText, filter === 'all' && styles.filterTextActive]}>
                 Tümü ({questionPairs.length})
-              </Text>
+              </AppText>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.filterButton, filter === 'yes' && styles.filterButtonActive]}
               onPress={() => setFilter('yes')}
             >
-              <Text style={[styles.filterText, filter === 'yes' && styles.filterTextActive]}>
+              <AppText style={[styles.filterText, filter === 'yes' && styles.filterTextActive]}>
                 Evet
-              </Text>
+              </AppText>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.filterButton, filter === 'no' && styles.filterButtonActive]}
               onPress={() => setFilter('no')}
             >
-              <Text style={[styles.filterText, filter === 'no' && styles.filterTextActive]}>
+              <AppText style={[styles.filterText, filter === 'no' && styles.filterTextActive]}>
                 Hayır
-              </Text>
+              </AppText>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.filterButton, filter === 'irrelevant' && styles.filterButtonActive]}
               onPress={() => setFilter('irrelevant')}
             >
-              <Text style={[styles.filterText, filter === 'irrelevant' && styles.filterTextActive]}>
+              <AppText style={[styles.filterText, filter === 'irrelevant' && styles.filterTextActive]}>
                 Alakasız
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
 
@@ -83,7 +84,7 @@ const QuestionHistoryPanel = ({ visible, onClose, messages }) => {
             {questionPairs.map((pair, index) => {
               // Filtre kontrolü
               if (filter !== 'all') {
-                const answerText = pair.answer.content.toLowerCase();
+                const answerText = ((pair.answer && typeof pair.answer.content === 'string' ? pair.answer.content : '') || '').toLowerCase();
                 if (filter === 'yes' && !answerText.includes('evet')) return null;
                 if (filter === 'no' && !answerText.includes('hayır')) return null;
                 if (filter === 'irrelevant' && !answerText.includes('alakasız')) return null;
@@ -93,23 +94,23 @@ const QuestionHistoryPanel = ({ visible, onClose, messages }) => {
                 <View key={index} style={styles.questionPair}>
                   <View style={styles.questionBox}>
                     <MaterialCommunityIcons name="comment-question" size={16} color="#90CAF9" />
-                    <Text style={styles.questionText}>{pair.question.content}</Text>
+                    <AppText style={styles.questionText}>{pair.question.content}</AppText>
                   </View>
                   <View style={styles.answerBox}>
                     <MaterialCommunityIcons 
                       name={
-                        pair.answer.content.toLowerCase().includes('evet') ? 'check-circle' :
-                        pair.answer.content.toLowerCase().includes('hayır') ? 'close-circle' :
+                        ((pair.answer && typeof pair.answer.content === 'string' ? pair.answer.content : '') || '').toLowerCase().includes('evet') ? 'check-circle' :
+                        ((pair.answer && typeof pair.answer.content === 'string' ? pair.answer.content : '') || '').toLowerCase().includes('hayır') ? 'close-circle' :
                         'help-circle'
                       }
                       size={16}
                       color={
-                        pair.answer.content.toLowerCase().includes('evet') ? '#2E7D32' :
-                        pair.answer.content.toLowerCase().includes('hayır') ? '#C62828' :
+                        ((pair.answer && typeof pair.answer.content === 'string' ? pair.answer.content : '') || '').toLowerCase().includes('evet') ? '#2E7D32' :
+                        ((pair.answer && typeof pair.answer.content === 'string' ? pair.answer.content : '') || '').toLowerCase().includes('hayır') ? '#C62828' :
                         '#757575'
                       }
                     />
-                    <Text style={styles.answerText}>{pair.answer.content}</Text>
+                    <AppText style={styles.answerText}>{(pair.answer && typeof pair.answer.content === 'string' ? pair.answer.content : '')}</AppText>
                   </View>
                 </View>
               );
@@ -117,7 +118,7 @@ const QuestionHistoryPanel = ({ visible, onClose, messages }) => {
             {questionPairs.length === 0 && (
               <View style={styles.emptyState}>
                 <MaterialCommunityIcons name="comment-question-outline" size={64} color="#555555" />
-                <Text style={styles.emptyText}>Henüz soru sorulmadı</Text>
+                <AppText style={styles.emptyText}>Henüz soru sorulmadı</AppText>
               </View>
             )}
           </ScrollView>

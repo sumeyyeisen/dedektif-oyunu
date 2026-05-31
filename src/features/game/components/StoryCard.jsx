@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import AppText from '../../../shared/components/AppText';
 
 /**
  * Hikaye Kartı Komponenti
@@ -56,16 +57,16 @@ const StoryCard = React.memo(({ story, difficulty, onPress, completed = false, f
         </View>
         
         <View style={styles.headerText}>
-          <Text style={styles.title} numberOfLines={2}>
+          <AppText style={styles.title} numberOfLines={2}>
             {story.baslik}
-          </Text>
+          </AppText>
           <View style={styles.categoryRow}>
             <MaterialCommunityIcons 
               name={getCategoryIcon()} 
               size={14} 
               color="#B0B0B0" 
             />
-            <Text style={styles.category}>{story.kategori}</Text>
+            <AppText style={styles.category}>{story.kategori}</AppText>
           </View>
         </View>
 
@@ -88,17 +89,17 @@ const StoryCard = React.memo(({ story, difficulty, onPress, completed = false, f
       </View>
 
       {/* Önizleme Metni */}
-      <Text style={styles.preview} numberOfLines={2}>
+      <AppText style={styles.preview} numberOfLines={2}>
         {story.onizleme}
-      </Text>
+      </AppText>
 
       {/* Alt Kısım - İstatistikler */}
       <View style={styles.footer}>
         {/* Zorluk Badge */}
         <View style={[styles.difficultyBadge, { backgroundColor: difficultyColor }]}>
-          <Text style={styles.difficultyText}>
+          <AppText style={styles.difficultyText}>
             {difficulty.toUpperCase()}
-          </Text>
+          </AppText>
         </View>
 
         {/* İstatistikler */}
@@ -106,13 +107,13 @@ const StoryCard = React.memo(({ story, difficulty, onPress, completed = false, f
           {/* Süre */}
           <View style={styles.statItem}>
             <MaterialCommunityIcons name="clock-outline" size={14} color="#B0B0B0" />
-            <Text style={styles.statText}>{story.tahminiSure}</Text>
+            <AppText style={styles.statText}>{story.tahminiSure}</AppText>
           </View>
 
           {/* Oyuncu Sayısı */}
           <View style={styles.statItem}>
             <MaterialCommunityIcons name="account-group" size={14} color="#B0B0B0" />
-            <Text style={styles.statText}>{formatPlayerCount(story.oynayanSayisi)}</Text>
+            <AppText style={styles.statText}>{formatPlayerCount(story.oynayanSayisi)}</AppText>
           </View>
         </View>
 

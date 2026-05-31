@@ -1,10 +1,8 @@
 import 'dotenv/config';
-
 export default ({ config }) => ({
   ...config,
   extra: {
     ...config.extra,
-    GEMINI_PROXY_URL: process.env.GEMINI_PROXY_URL || '',
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY || '',
   },
 });
-

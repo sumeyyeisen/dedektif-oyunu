@@ -1,27 +1,30 @@
 import { onValue, push, ref, remove, set, update } from 'firebase/database';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Alert, BackHandler, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, BackHandler, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { database } from './src/config/firebaseConfig';
-import { stories } from './src/data/stories';
-import { loadRandomStory, loadStory } from './src/data/stories/storyLoader';
-import AchievementsScreen from './src/features/achievements/components/AchievementsScreen';
-import NotesPanel from './src/features/game/components/NotesPanel';
-import QuestionHistoryPanel from './src/features/game/components/QuestionHistoryPanel';
-import StorySelectionScreen from './src/features/game/components/StorySelectionScreen';
-import SettingsScreen from './src/features/settings/components/SettingsScreen';
-import StatsScreen from './src/features/stats/components/StatsScreen';
-import AchievementNotification from './src/shared/components/AchievementNotification';
-import { checkAchievements } from './src/shared/utils/achievementManager';
-import { validatePlayerName, validateRoomCode } from './src/shared/utils/errorHandler';
-import { playAchievementSound, playErrorSound, playHintSound, playMessageSound, playSuccessSound } from './src/shared/utils/soundManager';
-import { getSettings, markStoryCompleted } from './src/shared/utils/storageManager';
+import { database } from '../../../config/firebaseConfig';
+import { stories } from '../../../data/stories';
+import { loadRandomStory, loadStory } from '../../../data/stories/storyLoader';
+import AchievementNotification from '../../../shared/components/AchievementNotification';
+import AppText from '../../../shared/components/AppText';
+import { checkAchievements } from '../../../shared/utils/achievementManager';
+import { validatePlayerName, validateRoomCode } from '../../../shared/utils/errorHandler';
+import { playAchievementSound, playErrorSound, playHintSound, playMessageSound, playSuccessSound } from '../../../shared/utils/soundManager';
+import { getSettings, markStoryCompleted } from '../../../shared/utils/storageManager';
+import AchievementsScreen from '../../achievements/components/AchievementsScreen';
+import SettingsScreen from '../../settings/components/SettingsScreen';
+import StatsScreen from '../../stats/components/StatsScreen';
+import NotesPanel from './NotesPanel';
+import QuestionHistoryPanel from './QuestionHistoryPanel';
+import StorySelectionScreen from './StorySelectionScreen';
 
 // Font ve İkon Paketleri
 import { SpecialElite_400Regular, useFonts } from '@expo-google-fonts/special-elite';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import * as SplashScreen from 'expo-splash-screen';
+import IntroScreen from './IntroScreen';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -62,6 +65,7 @@ const DetectiveGame = () => {
   const [newAchievement, setNewAchievement] = useState(null);
   const [showAchievementNotif, setShowAchievementNotif] = useState(false);
   const [questionsAsked, setQuestionsAsked] = useState(0);
+  const [inputMode, setInputMode] = useState('question'); // question | answer
   
   // Ayarlar state'i
   const [settings, setSettings] = useState({
@@ -82,11 +86,17 @@ const DetectiveGame = () => {
   const messagesListenerRef = useRef(null);
   const confettiRef = useRef(null);
 
+  const [showIntro, setShowIntro] = useState(true);
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) await SplashScreen.hideAsync();
   }, [fontsLoaded]);
 
-  // Ayarları yükle
+  useEffect(() => {
+    if (!fontsLoaded) return;
+
+    }, [fontsLoaded]);
+
+// Ayarları yükle
   useEffect(() => {
     const loadSettings = async () => {
       try {
@@ -103,7 +113,7 @@ const DetectiveGame = () => {
   
   // Ayarlar değiştiğinde soundManager'ı güncelle
   useEffect(() => {
-    const { updateSoundSettings } = require('./src/shared/utils/soundManager');
+    const { updateSoundSettings } = require('../../../shared/utils/soundManager');
     updateSoundSettings(settings);
   }, [settings]);
 
@@ -228,6 +238,7 @@ const DetectiveGame = () => {
     
     // Mesaj sesi
     await playMessageSound();
+    try { if (settings.vibrationEnabled) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); } catch(e) {}
     
     // Offline cevap ver
     setTimeout(() => {
@@ -256,6 +267,7 @@ const DetectiveGame = () => {
         if (result === 'DOĞRU') {
           // Başarı sesi + confetti
           await playSuccessSound();
+          try { if (settings.vibrationEnabled) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); } catch(e) {}
           if (confettiRef.current) {
             confettiRef.current.start();
           }
@@ -284,6 +296,7 @@ const DetectiveGame = () => {
           setGameState('solved'); 
         } else { 
           await playErrorSound();
+          try { if (settings.vibrationEnabled) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error); } catch(e) {}
           setMessages(curr => [...curr, { type: 'wrong', content: `❌ "${answer}" yanlış cevap.` }]); 
         }
       } catch (error) {
@@ -538,7 +551,8 @@ const DetectiveGame = () => {
       setDifficulty(diff); 
       setCurrentStory(story); 
       setGameMode(mode);
-      setNotes(''); // Notları sıfırla
+      setNotes('');
+      setInputMode('question');
       setQuestionsAsked(0); // Soru sayacını sıfırla
       if (mode === 'reader') { 
         setGameState('reader_playing'); 
@@ -585,50 +599,69 @@ const DetectiveGame = () => {
   if (gameState === 'menu') {
     return (
       <SafeAreaView style={d.container} onLayout={onLayoutRootView}>
-        <ScrollView contentContainerStyle={d.scrollContent}>
-          <View style={d.header}>
-            <MaterialCommunityIcons name="incognito" color="#E0E0E0" size={80} />
-            <Text style={d.title}>Dedektif</Text>
-            <Text style={d.sub}>Gizemli hikayeleri çöz, gerçeği ortaya çıkar.</Text>
-            
-            {/* Ayarlar, İstatistikler ve Başarımlar Butonları */}
-            <View style={{ flexDirection: 'row', gap: 8, marginTop: 20 }}>
-              <TouchableOpacity 
-                style={d.settingsButton} 
-                onPress={() => setGameState('achievements')}
-              >
-                <MaterialCommunityIcons name="trophy" size={20} color="#FFD700" />
-                <Text style={[d.settingsButtonText, {fontSize: 12}]}>Başarılarım</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={d.settingsButton} 
-                onPress={() => setGameState('stats')}
-              >
-                <MaterialCommunityIcons name="chart-line" size={20} color="#B0B0B0" />
-                <Text style={[d.settingsButtonText, {fontSize: 12}]}>İstatistikler</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={d.settingsButton} 
-                onPress={() => setGameState('settings')}
-              >
-                <MaterialCommunityIcons name="cog" size={20} color="#B0B0B0" />
-                <Text style={[d.settingsButtonText, {fontSize: 12}]}>Ayarlar</Text>
-              </TouchableOpacity>
-            </View>
+        <ScrollView contentContainerStyle={{paddingBottom:40}}>
+
+          <View style={{alignItems:'center', paddingTop:48, paddingBottom:32, paddingHorizontal:24}}>
+            <MaterialCommunityIcons name="incognito" color="#E0E0E0" size={72} />
+            <AppText style={{fontFamily:'SpecialElite', fontSize:44, color:'#E0E0E0', marginTop:12, letterSpacing:2}}>Dedektif</AppText>
+            <AppText style={{fontFamily:'serif', fontSize:13, color:'#555', marginTop:6, letterSpacing:1}}>GIZEMLI HIKAYELERI COZ</AppText>
           </View>
-          <View style={d.cardWrapper}>
-            <Text style={d.cardHeader}>OYUN MODU SEÇ</Text>
-            <TouchableOpacity style={d.card} onPress={() => { setGameMode('ai'); setGameState('difficulty'); }}><View style={[d.iconBox, {backgroundColor:'#1A237E'}]}><MaterialCommunityIcons name="robot" size={24} color="#90CAF9" /></View><View style={{ flex: 1, marginLeft: 15 }}><Text style={d.cardTitle}>Tek Oyunculu</Text><Text style={d.cardSub}>Sorular sor, gizemi çöz</Text></View><MaterialCommunityIcons name="chevron-right" size={24} color="#757575" /></TouchableOpacity>
-            <TouchableOpacity style={d.card} onPress={() => { setGameMode('reader'); setGameState('reader_difficulty'); }}><View style={[d.iconBox, {backgroundColor:'#3E2723'}]}><MaterialCommunityIcons name="book-open-page-variant" size={24} color="#FFCC80" /></View><View style={{ flex: 1, marginLeft: 15 }}><Text style={d.cardTitle}>Hikaye Okuyucu</Text><Text style={d.cardSub}>Yüz yüze oyna</Text></View><MaterialCommunityIcons name="chevron-right" size={24} color="#757575" /></TouchableOpacity>
-            <TouchableOpacity style={d.card} onPress={() => setGameState('online_menu')}><View style={[d.iconBox, {backgroundColor:'#1B5E20'}]}><MaterialCommunityIcons name="account-group" size={24} color="#A5D6A7" /></View><View style={{ flex: 1, marginLeft: 15 }}><Text style={d.cardTitle}>Online Çok Oyunculu</Text><Text style={d.cardSub}>Arkadaşla oda aç veya katıl</Text></View><MaterialCommunityIcons name="chevron-right" size={24} color="#757575" /></TouchableOpacity>
+
+          <View style={{paddingHorizontal:20, gap:12}}>
+            <TouchableOpacity onPress={() => { setGameMode('ai'); setGameState('difficulty'); }} style={{backgroundColor:'#1E1E1E', borderRadius:16, padding:20, flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#2a2a2a'}}>
+              <View style={{width:52, height:52, borderRadius:14, backgroundColor:'#0D1757', alignItems:'center', justifyContent:'center'}}>
+                <MaterialCommunityIcons name="magnify" size={28} color="#90CAF9" />
+              </View>
+              <View style={{flex:1, marginLeft:16}}>
+                <AppText style={{fontFamily:'SpecialElite', fontSize:18, color:'#E0E0E0'}}>Tek Oyunculu</AppText>
+                <AppText style={{fontFamily:'serif', fontSize:12, color:'#7986CB', marginTop:3}}>Sorular sor, gizemi coz</AppText>
+              </View>
+              <MaterialCommunityIcons name="chevron-right" size={24} color="#444" />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => { setGameMode('reader'); setGameState('reader_difficulty'); }} style={{backgroundColor:'#1E1E1E', borderRadius:16, padding:20, flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#2a2a2a'}}>
+              <View style={{width:52, height:52, borderRadius:14, backgroundColor:'#2C1810', alignItems:'center', justifyContent:'center'}}>
+                <MaterialCommunityIcons name="book-open-page-variant" size={28} color="#FFCC80" />
+              </View>
+              <View style={{flex:1, marginLeft:16}}>
+                <AppText style={{fontFamily:'SpecialElite', fontSize:18, color:'#E0E0E0'}}>Hikaye Okuyucu</AppText>
+                <AppText style={{fontFamily:'serif', fontSize:12, color:'#A1887F', marginTop:3}}>Yuz yuze oyna, sen anlat</AppText>
+              </View>
+              <MaterialCommunityIcons name="chevron-right" size={24} color="#444" />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setGameState('online_menu')} style={{backgroundColor:'#1E1E1E', borderRadius:16, padding:20, flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#2a2a2a'}}>
+              <View style={{width:52, height:52, borderRadius:14, backgroundColor:'#0A3D0F', alignItems:'center', justifyContent:'center'}}>
+                <MaterialCommunityIcons name="account-group" size={28} color="#A5D6A7" />
+              </View>
+              <View style={{flex:1, marginLeft:16}}>
+                <AppText style={{fontFamily:'SpecialElite', fontSize:18, color:'#E0E0E0'}}>Online Cok Oyunculu</AppText>
+                <AppText style={{fontFamily:'serif', fontSize:12, color:'#66BB6A', marginTop:3}}>Arkadasla oda ac veya katil</AppText>
+              </View>
+              <MaterialCommunityIcons name="chevron-right" size={24} color="#444" />
+            </TouchableOpacity>
           </View>
+
+          <View style={{flexDirection:'row', marginTop:24, paddingHorizontal:20, gap:10}}>
+            <TouchableOpacity onPress={() => setGameState('achievements')} style={{flex:1, backgroundColor:'#1E1E1E', borderRadius:12, padding:14, alignItems:'center', borderWidth:1, borderColor:'#333', gap:6}}>
+              <MaterialCommunityIcons name="trophy" size={22} color="#FFD700" />
+              <AppText style={{fontFamily:'SpecialElite', fontSize:11, color:'#B0B0B0'}}>Basarimlar</AppText>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setGameState('stats')} style={{flex:1, backgroundColor:'#1E1E1E', borderRadius:12, padding:14, alignItems:'center', borderWidth:1, borderColor:'#333', gap:6}}>
+              <MaterialCommunityIcons name="chart-line" size={22} color="#90CAF9" />
+              <AppText style={{fontFamily:'SpecialElite', fontSize:11, color:'#B0B0B0'}}>Istatistikler</AppText>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setGameState('settings')} style={{flex:1, backgroundColor:'#1E1E1E', borderRadius:12, padding:14, alignItems:'center', borderWidth:1, borderColor:'#333', gap:6}}>
+              <MaterialCommunityIcons name="cog" size={22} color="#B0B0B0" />
+              <AppText style={{fontFamily:'SpecialElite', fontSize:11, color:'#B0B0B0'}}>Ayarlar</AppText>
+            </TouchableOpacity>
+          </View>
+
         </ScrollView>
+        {showIntro && <IntroScreen onFinish={() => setShowIntro(false)} />}
       </SafeAreaView>
     );
   }
-
   if (gameState === 'online_menu') {
     const canCreateRoom = playerName.trim() && onlineDifficulty;
     const canJoinRoom = playerName.trim() && inputRoomCode.length === 6 && !isLoading;
@@ -636,11 +669,11 @@ const DetectiveGame = () => {
       <SafeAreaView style={d.container}>
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{flex:1}}>
         <ScrollView contentContainerStyle={d.scrollContent}>
-          <View style={{width:'100%', flexDirection:'row', alignItems:'center', marginBottom:20}}><TouchableOpacity onPress={() => setGameState('menu')} style={{padding:10, marginRight:10}}><MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" /></TouchableOpacity><View style={{alignItems:'center', flex:1, marginRight:38}}><MaterialCommunityIcons name="typewriter" size={40} color="#90CAF9" /><Text style={[d.titleSmall, {color:'#90CAF9', marginTop:5, fontSize:24}]}>Online Mod</Text></View></View>
+          <View style={{width:'100%', flexDirection:'row', alignItems:'center', marginBottom:20}}><TouchableOpacity onPress={() => setGameState('menu')} style={{padding:10, marginRight:10}}><MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" /></TouchableOpacity><View style={{alignItems:'center', flex:1, marginRight:38}}><MaterialCommunityIcons name="typewriter" size={40} color="#90CAF9" /><AppText style={[d.titleSmall, {color:'#90CAF9', marginTop:5, fontSize:24}]}>Online Mod</AppText></View></View>
           <View style={d.cardWrapper}>
-            <Text style={d.vintageLabel}>Adın</Text><TextInput style={d.modernInput} value={playerName} onChangeText={setPlayerName} placeholder="Adını yaz..." placeholderTextColor="#757575" /><View style={d.divider} />
-            <View><View style={{flexDirection:'row', alignItems:'center', gap:8, marginBottom:4}}><MaterialCommunityIcons name="home-outline" size={20} color="#B0B0B0" /><Text style={d.cardHeader}>Oda Oluştur</Text></View><Text style={[d.cardSub, {marginBottom:15}]}>Sen anlatıcı olursun, arkadaşın soru sorar</Text><Text style={[d.vintageLabel, {fontSize:12, color:'#B0B0B0'}]}>Zorluk Seviyesi</Text>
-              <View style={{ flexDirection: 'row', gap: 10, marginBottom: 15 }}>{['kolay', 'orta', 'zor'].map(d_key => (<TouchableOpacity key={d_key} onPress={() => setOnlineDifficulty(d_key)} style={[d.chipBtn, onlineDifficulty === d_key && d.chipBtnActive, d_key==='zor' && onlineDifficulty===d_key && {backgroundColor:'#C62828', borderColor:'#C62828'}, d_key==='orta' && onlineDifficulty===d_key && {backgroundColor:'#F9A825', borderColor:'#F9A825'}, d_key==='kolay' && onlineDifficulty===d_key && {backgroundColor:'#2E7D32', borderColor:'#2E7D32'}]}><View style={[d.dot, {backgroundColor: d_key==='kolay'?'#2E7D32':d_key==='orta'?'#F9A825':'#C62828'}, onlineDifficulty === d_key && {backgroundColor:'white'}]} /><Text style={[d.chipText, onlineDifficulty === d_key && {color:'white'}]}>{d_key.charAt(0).toUpperCase() + d_key.slice(1)}</Text></TouchableOpacity>))}</View>
+            <AppText style={d.vintageLabel}>Adın</AppText><TextInput style={d.modernInput} value={playerName} onChangeText={setPlayerName} placeholder="Adını yaz..." placeholderTextColor="#757575" /><View style={d.divider} />
+            <View><View style={{flexDirection:'row', alignItems:'center', gap:8, marginBottom:4}}><MaterialCommunityIcons name="home-outline" size={20} color="#B0B0B0" /><AppText style={d.cardHeader}>Oda Oluştur</AppText></View><AppText style={[d.cardSub, {marginBottom:15}]}>Sen anlatıcı olursun, arkadaşın soru sorar</AppText><AppText style={[d.vintageLabel, {fontSize:12, color:'#B0B0B0'}]}>Zorluk Seviyesi</AppText>
+              <View style={{ flexDirection: 'row', gap: 10, marginBottom: 15 }}>{['kolay', 'orta', 'zor'].map(d_key => (<TouchableOpacity key={d_key} onPress={() => setOnlineDifficulty(d_key)} style={[d.chipBtn, onlineDifficulty === d_key && d.chipBtnActive, d_key==='zor' && onlineDifficulty===d_key && {backgroundColor:'#C62828', borderColor:'#C62828'}, d_key==='orta' && onlineDifficulty===d_key && {backgroundColor:'#F9A825', borderColor:'#F9A825'}, d_key==='kolay' && onlineDifficulty===d_key && {backgroundColor:'#2E7D32', borderColor:'#2E7D32'}]}><View style={[d.dot, {backgroundColor: d_key==='kolay'?'#2E7D32':d_key==='orta'?'#F9A825':'#C62828'}, onlineDifficulty === d_key && {backgroundColor:'white'}]} /><AppText style={[d.chipText, onlineDifficulty === d_key && {color:'white'}]}>{d_key.charAt(0).toUpperCase() + d_key.slice(1)}</AppText></TouchableOpacity>))}</View>
               <TouchableOpacity
                 style={[
                   d.actionBtn,
@@ -650,10 +683,10 @@ const DetectiveGame = () => {
                 onPress={canCreateRoom ? createRoom : undefined}
                 disabled={!canCreateRoom}
               >
-                <Text style={d.actionBtnText}>Oda Oluştur</Text>
+                <AppText style={d.actionBtnText}>Oda Oluştur</AppText>
               </TouchableOpacity>
             </View><View style={d.divider} />
-            <View><View style={{flexDirection:'row', alignItems:'center', gap:8, marginBottom:4}}><MaterialCommunityIcons name="link-variant" size={20} color="#B0B0B0" /><Text style={d.cardHeader}>Odaya Katıl</Text></View><Text style={[d.cardSub, {marginBottom:15}]}>Arkadaşın oda kodunu yaz</Text><Text style={d.vintageLabel}>Oda Kodu</Text><TextInput style={d.modernInput} value={inputRoomCode} onChangeText={setInputRoomCode} placeholder="123456" placeholderTextColor="#757575" keyboardType="numeric" maxLength={6} /><TouchableOpacity
+            <View><View style={{flexDirection:'row', alignItems:'center', gap:8, marginBottom:4}}><MaterialCommunityIcons name="link-variant" size={20} color="#B0B0B0" /><AppText style={d.cardHeader}>Odaya Katıl</AppText></View><AppText style={[d.cardSub, {marginBottom:15}]}>Arkadaşın oda kodunu yaz</AppText><AppText style={d.vintageLabel}>Oda Kodu</AppText><TextInput style={d.modernInput} value={inputRoomCode} onChangeText={setInputRoomCode} placeholder="123456" placeholderTextColor="#757575" keyboardType="numeric" maxLength={6} /><TouchableOpacity
                 style={[
                   d.actionBtn,
                   { backgroundColor: canJoinRoom ? '#2E7D32' : '#455A64', marginTop:10 },
@@ -662,8 +695,8 @@ const DetectiveGame = () => {
                 onPress={canJoinRoom ? joinRoom : undefined}
                 disabled={!canJoinRoom}
               >
-                <Text style={d.actionBtnText}>{isLoading ? 'Bağlanılıyor...' : 'Odaya Katıl'}</Text>
-              </TouchableOpacity>{joinError ? <Text style={{ color: '#EF9A9A', fontSize: 12, marginTop: 10, textAlign:'center', fontFamily:'SpecialElite' }}>{joinError}</Text> : null}</View>
+                <AppText style={d.actionBtnText}>{isLoading ? 'Bağlanılıyor...' : 'Odaya Katıl'}</AppText>
+              </TouchableOpacity>{joinError ? <AppText style={{ color: '#EF9A9A', fontSize: 12, marginTop: 10, textAlign:'center', fontFamily:'SpecialElite' }}>{joinError}</AppText> : null}</View>
           </View>
         </ScrollView></KeyboardAvoidingView>
       </SafeAreaView>
@@ -674,11 +707,11 @@ const DetectiveGame = () => {
     return (
       <SafeAreaView style={d.container}>
         <View style={d.scrollContent}>
-           <View style={{width:'100%', flexDirection:'row', alignItems:'center', marginBottom:20}}><TouchableOpacity onPress={confirmLeave} style={{padding:10}}><MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" /></TouchableOpacity><Text style={[d.titleSmall, {flex:1, textAlign:'center', marginRight:30}]}>Bekleme Salonu</Text></View>
+           <View style={{width:'100%', flexDirection:'row', alignItems:'center', marginBottom:20}}><TouchableOpacity onPress={confirmLeave} style={{padding:10}}><MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" /></TouchableOpacity><AppText style={[d.titleSmall, {flex:1, textAlign:'center', marginRight:30}]}>Bekleme Salonu</AppText></View>
           <View style={d.cardWrapper}>
-            <Text style={{textAlign:'center', color:'#B0B0B0', marginBottom:5}}>VAKA DOSYASI NO</Text><Text style={[d.titleSmall, {textAlign:'center', fontSize:36, color:'#90CAF9'}]}>{roomCode}</Text><View style={{borderBottomWidth:1, borderColor:'#333', marginVertical:15}} /><Text style={d.vintageLabel}>EKİP ({guestList.length + 1})</Text>
-            <View style={{height: 200}}><ScrollView nestedScrollEnabled><View style={d.playerRow}><MaterialCommunityIcons name="account-tie" size={24} color="#90CAF9" /><Text style={d.playerText}>{roomData?.host || playerName} (Anlatıcı)</Text><MaterialCommunityIcons name="crown" size={16} color="#FFD700" style={{marginLeft:'auto'}} /></View>{guestList.length > 0 ? guestList.map((guest, index) => (<View key={index} style={d.playerRow}><MaterialCommunityIcons name="magnify" size={24} color="#A5D6A7" /><Text style={d.playerText}>{guest.name}</Text></View>)) : (<Text style={{color:'#555', fontStyle:'italic', marginTop:10, textAlign:'center'}}>Dedektifler bekleniyor...</Text>)}</ScrollView></View>
-            {isHost ? (<TouchableOpacity onPress={startOnlineGame} style={[d.actionBtn, { backgroundColor: '#2E7D32', marginTop:20 }]}><Text style={d.actionBtnText}>Vakayı Başlat</Text></TouchableOpacity>) : (<View style={{marginTop:20, padding:10, backgroundColor:'#252525', borderRadius:8}}><Text style={{color:'#B0B0B0', textAlign:'center', fontStyle:'italic'}}>Anlatıcının dosyayı açması bekleniyor...</Text></View>)}
+            <AppText style={{textAlign:'center', color:'#B0B0B0', marginBottom:5}}>VAKA DOSYASI NO</AppText><AppText style={[d.titleSmall, {textAlign:'center', fontSize:36, color:'#90CAF9'}]}>{roomCode}</AppText><View style={{borderBottomWidth:1, borderColor:'#333', marginVertical:15}} /><AppText style={d.vintageLabel}>EKİP ({guestList.length + 1})</AppText>
+            <View style={{height: 200}}><ScrollView nestedScrollEnabled><View style={d.playerRow}><MaterialCommunityIcons name="account-tie" size={24} color="#90CAF9" /><AppText style={d.playerText}>{roomData?.host || playerName} (Anlatıcı)</AppText><MaterialCommunityIcons name="crown" size={16} color="#FFD700" style={{marginLeft:'auto'}} /></View>{guestList.length > 0 ? guestList.map((guest, index) => (<View key={index} style={d.playerRow}><MaterialCommunityIcons name="magnify" size={24} color="#A5D6A7" /><AppText style={d.playerText}>{guest.name}</AppText></View>)) : (<AppText style={{color:'#555', fontStyle:'italic', marginTop:10, textAlign:'center'}}>Dedektifler bekleniyor...</AppText>)}</ScrollView></View>
+            {isHost ? (<TouchableOpacity onPress={startOnlineGame} style={[d.actionBtn, { backgroundColor: '#2E7D32', marginTop:20 }]}><AppText style={d.actionBtnText}>Vakayı Başlat</AppText></TouchableOpacity>) : (<View style={{marginTop:20, padding:10, backgroundColor:'#252525', borderRadius:8}}><AppText style={{color:'#B0B0B0', textAlign:'center', fontStyle:'italic'}}>Anlatıcının dosyayı açması bekleniyor...</AppText></View>)}
           </View>
         </View>
       </SafeAreaView>
@@ -693,75 +726,111 @@ const DetectiveGame = () => {
     return (
       <SafeAreaView style={d.container}>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{flex:1}}>
-            <View style={d.gameHeader}>
-              <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
-                <TouchableOpacity onPress={confirmLeave} style={{padding:5}}>
-                  <MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" />
+            <View style={{backgroundColor:'#1E1E1E', borderBottomWidth:1, borderBottomColor:'#2a2a2a', paddingHorizontal:16, paddingTop:12, paddingBottom:14}}>
+              <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', marginBottom:10}}>
+                <TouchableOpacity onPress={confirmLeave} style={{padding:4, width:70}}>
+                  <MaterialCommunityIcons name="arrow-left" size={26} color="#E0E0E0" />
                 </TouchableOpacity>
-                <Text style={d.gameTitle}>{difficulty?.toUpperCase()} DOSYASI</Text>
-                <View style={{flexDirection:'row', gap:8}}>
-                  <TouchableOpacity onPress={() => setShowHistoryPanel(true)} style={{padding:5}}>
-                    <MaterialCommunityIcons name="history" size={24} color="#90CAF9" />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => setShowNotesPanel(true)} style={{padding:5}}>
-                    <MaterialCommunityIcons name="notebook" size={24} color="#FFCC80" />
+                <View style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'center', gap:6}}>
+                  <View style={{width:7, height:7, borderRadius:4, backgroundColor: difficulty==='kolay'?'#2E7D32':difficulty==='orta'?'#F9A825':'#C62828'}} />
+                  <AppText style={{fontFamily:'SpecialElite', fontSize:11, color:'#757575', letterSpacing:2}}>{difficulty?.toUpperCase()} DOSYASI</AppText>
+                </View>
+                <View style={{flexDirection:'row', gap:6, width:70, justifyContent:'flex-end', alignItems:'center'}}>
+                  <TouchableOpacity onPress={() => setShowNotesPanel(true)} style={{padding:4}}>
+                    <MaterialCommunityIcons name="notebook-outline" size={21} color="#555" />
                   </TouchableOpacity>
                 </View>
               </View>
-              <Text style={d.storyTitle}>{currentStory?.baslik}</Text>
-              {settings.showTimer && <Text style={d.timerText}>{formatTime()}</Text>}
-            </View>
-            <ScrollView ref={scrollViewRef} style={d.chatArea} contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}>{activeMessages.map((msg, idx) => (<View key={idx} style={[d.msgBox, msg.type === 'question' ? d.msgUser : msg.type === 'answer' ? d.msgAi : msg.type === 'hint' ? d.msgHint : msg.type === 'story' ? d.msgStory : d.msgAi]}>{msg.sender && msg.type !== 'story' && <Text style={d.senderName}>{msg.sender}</Text>}<Text style={[d.msgContent, (msg.type === 'question' || msg.type === 'story') && {color: '#E0E0E0'}]}>{msg.content}</Text></View>))}{isLoading && <Text style={{textAlign:'center', fontStyle:'italic', color:'#757575', margin:10, fontFamily:'serif'}}>Dedektif düşünüyor...</Text>}</ScrollView>
-            <View style={d.inputSection}>
-              {gameState === 'online_playing' && isHost ? (
-                <View style={{width: '100%'}}><Text style={{textAlign:'center', marginBottom:5, fontSize:12, color:'#B0B0B0', fontFamily:'SpecialElite'}}>CEVAP VER:</Text><View style={{ flexDirection: 'row', gap: 10 }}><TouchableOpacity onPress={() => sendOnlineAnswer('Evet')} style={[d.stampBtn, { borderColor: '#2E7D32', backgroundColor:'#1B5E20' }]}><Text style={{ color: '#A5D6A7', fontFamily:'SpecialElite' }}>EVET</Text></TouchableOpacity><TouchableOpacity onPress={() => sendOnlineAnswer('Hayır')} style={[d.stampBtn, { borderColor: '#C62828', backgroundColor:'#B71C1C' }]}><Text style={{ color: '#EF9A9A', fontFamily:'SpecialElite' }}>HAYIR</Text></TouchableOpacity><TouchableOpacity onPress={() => sendOnlineAnswer('Alakasız')} style={[d.stampBtn, { borderColor: '#757575', backgroundColor:'#424242' }]}><Text style={{ color: '#BDBDBD', fontFamily:'SpecialElite' }}>A/S</Text></TouchableOpacity></View></View>
-              ) : (
-                <View style={{ width: '100%', gap: 12 }}>
-                  <View style={{ flexDirection: 'row', gap: 10, alignItems:'center' }}>
-                    <TextInput
-                      style={d.largeInput}
-                      value={gameState === 'online_playing' ? onlineQuestionInput : questionInput}
-                      onChangeText={gameState === 'online_playing' ? setOnlineQuestionInput : setQuestionInput}
-                      placeholder="Bir soru sor..."
-                      placeholderTextColor="#757575"
-                    />
-                    <TouchableOpacity
-                      style={[d.sendIconBtn, isLoading && d.disabledButton]}
-                      onPress={gameState === 'online_playing' ? sendOnlineQuestion : askQuestion}
-                      disabled={isLoading}
-                    >
-                      <MaterialCommunityIcons name="send" size={24} color="#121212" />
-                    </TouchableOpacity>
-                  </View>
-                  <View style={{ flexDirection: 'row', gap: 10, alignItems:'center' }}>
-                    <TextInput
-                      style={[d.largeInput, {borderColor: '#2E7D32', backgroundColor:'#1B5E20'}]}
-                      value={gameState === 'online_playing' ? onlineAnswerInput : answerInput}
-                      onChangeText={gameState === 'online_playing' ? setOnlineAnswerInput : setAnswerInput}
-                      placeholder="Cevabı tahmin et..."
-                      placeholderTextColor="#A5D6A7"
-                    />
-                    <TouchableOpacity
-                      style={[d.sendIconBtn, {backgroundColor: '#2E7D32'}, isLoading && d.disabledButton]}
-                      onPress={gameState === 'online_playing' ? checkOnlineAnswer : checkAnswer}
-                      disabled={isLoading}
-                    >
-                      <MaterialCommunityIcons name="check-bold" size={24} color="#121212" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-               {(gameState !== 'online_playing' || isHost) && (
+              <AppText style={{fontFamily:'SpecialElite', fontSize:19, color:'#E0E0E0', textAlign:'center'}} numberOfLines={1}>{currentStory?.baslik}</AppText>
+              <View style={{flexDirection:'row', alignItems:'center', marginTop:4}}>
+                <View style={{width:32}} />
+                <AppText style={{fontFamily:'SpecialElite', fontSize:15, color: settings.showTimer ? '#EF9A9A' : 'transparent', flex:1, textAlign:'center'}}>{formatTime()}</AppText>
                 <TouchableOpacity
                   onPress={gameState === 'online_playing' ? sendOnlineHint : getHint}
                   disabled={noMoreHints}
-                  style={[d.hintButton, noMoreHints && d.hintButtonDisabled]}
+                  style={{width:32, height:32, borderRadius:16, backgroundColor: noMoreHints ? '#1E1E1E' : '#1C1A00', borderWidth:1.5, borderColor: noMoreHints ? '#333' : '#FFC107', alignItems:'center', justifyContent:'center', opacity: noMoreHints ? 0.4 : 1}}
                 >
-                  <MaterialCommunityIcons name="lightbulb-on-outline" size={20} color="#FFCC80" />
-                  <Text style={{color:'#FFCC80', fontFamily:'SpecialElite', marginLeft:5}}>
-                    İpucu Al ({gameState === 'online_playing' ? onlineHintsUsed : hintsUsed}/{currentStory?.ipuclari.length})
-                  </Text>
+                  <MaterialCommunityIcons name="lightbulb-on-outline" size={18} color={noMoreHints ? '#444' : '#FFC107'} />
                 </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{margin:12, marginBottom:4, padding:16, backgroundColor:'#1E1E1E', borderRadius:16, borderWidth:1, borderColor:'#333'}}>
+              <AppText style={{fontFamily:'SpecialElite', fontSize:9, color:'#666', letterSpacing:2, marginBottom:8}}>VAKA OZETI</AppText>
+              <AppText style={{fontFamily:'serif', fontSize:14, color:'#C0C0C0', lineHeight:22, fontStyle:'italic'}}>{currentStory?.baslangic}</AppText>
+            </View>
+            <ScrollView ref={scrollViewRef} style={d.chatArea} contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }} onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}>{activeMessages.filter(msg => msg.type !== 'story').map((msg, idx) => (<View key={idx} style={[d.msgBox, msg.type === 'question' ? d.msgUser : msg.type === 'answer' ? d.msgAi : msg.type === 'hint' ? d.msgHint : d.msgAi]}>{msg.sender && msg.type !== 'story' && <AppText style={d.senderName}>{msg.sender}</AppText>}<AppText style={[d.msgContent, { fontSize: getFontSize(15), lineHeight: getFontSize(22) }, (msg.type === 'question' || msg.type === 'story') && {color: '#E0E0E0'}]}>{msg.content}</AppText></View>))}{isLoading && <AppText style={{textAlign:'center', fontStyle:'italic', color:'#757575', margin:10, fontFamily:'serif'}}>Dedektif düşünüyor...</AppText>}</ScrollView>
+            <View style={{backgroundColor:'#181818', borderTopWidth:1, borderTopColor:'#2a2a2a', padding:12}}>
+              {gameState === 'online_playing' && isHost ? (
+                <View style={{width:'100%'}}>
+                  <AppText style={{textAlign:'center', marginBottom:8, fontSize:11, color:'#B0B0B0', fontFamily:'SpecialElite', letterSpacing:1}}>CEVAP VER</AppText>
+                  <View style={{flexDirection:'row', gap:8}}>
+                    <TouchableOpacity onPress={() => sendOnlineAnswer('Evet')} style={[d.stampBtn, {borderColor:'#2E7D32', backgroundColor:'#1B5E20'}]}>
+                      <AppText style={{color:'#A5D6A7', fontFamily:'SpecialElite'}}>EVET</AppText>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => sendOnlineAnswer('Hayir')} style={[d.stampBtn, {borderColor:'#C62828', backgroundColor:'#B71C1C'}]}>
+                      <AppText style={{color:'#EF9A9A', fontFamily:'SpecialElite'}}>HAYIR</AppText>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => sendOnlineAnswer('Alakasiz')} style={[d.stampBtn, {borderColor:'#757575', backgroundColor:'#424242'}]}>
+                      <AppText style={{color:'#BDBDBD', fontFamily:'SpecialElite'}}>A/S</AppText>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <View style={{gap:10}}>
+                  <View style={{flexDirection:'row', gap:8}}>
+                    <TouchableOpacity
+                      onPress={() => setInputMode('question')}
+                      style={{flex:1, paddingVertical:10, alignItems:'center', borderRadius:10, backgroundColor: inputMode==='question' ? '#1A2744' : '#1E1E1E', borderWidth:1, borderColor: inputMode==='question' ? '#90CAF9' : '#2a3f6a'}}
+                    >
+                      <AppText style={{fontFamily:'SpecialElite', fontSize:12, color: inputMode==='question' ? '#90CAF9' : '#5a8abd', letterSpacing:1}}>SORU SOR</AppText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => setInputMode('answer')}
+                      style={{flex:1, paddingVertical:10, alignItems:'center', borderRadius:10, backgroundColor: inputMode==='answer' ? '#1A2A1A' : '#1E1E1E', borderWidth:1, borderColor: inputMode==='answer' ? '#4CAF50' : '#2a4a2a'}}
+                    >
+                      <AppText style={{fontFamily:'SpecialElite', fontSize:12, color: inputMode==='answer' ? '#4CAF50' : '#4a9a5a', letterSpacing:1}}>CEVAP VER</AppText>
+                    </TouchableOpacity>
+                  </View>
+                  {inputMode === 'question' ? (
+                    <View style={{flexDirection:'row', alignItems:'center', backgroundColor:'#1E1E1E', borderRadius:12, borderWidth:1, borderColor:'#333', paddingHorizontal:12, gap:8}}>
+                      <MaterialCommunityIcons name="comment-question-outline" size={18} color="#555" />
+                      <TextInput
+                        style={{flex:1, height:48, color:'#E0E0E0', fontFamily:'serif', fontSize:15}}
+                        value={gameState === 'online_playing' ? onlineQuestionInput : questionInput}
+                        onChangeText={gameState === 'online_playing' ? setOnlineQuestionInput : setQuestionInput}
+                        placeholder="Soru sor..."
+                        placeholderTextColor="#444"
+                        autoFocus={false}
+                      />
+                      <TouchableOpacity
+                        onPress={gameState === 'online_playing' ? sendOnlineQuestion : askQuestion}
+                        disabled={isLoading}
+                        style={{opacity: isLoading ? 0.4 : 1}}
+                      >
+                        <MaterialCommunityIcons name="send" size={22} color="#90CAF9" />
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <View style={{flexDirection:'row', alignItems:'center', backgroundColor:'#1A2A1A', borderRadius:12, borderWidth:1, borderColor:'#2E7D32', paddingHorizontal:12, gap:8}}>
+                      <MaterialCommunityIcons name="key-outline" size={18} color="#4CAF50" />
+                      <TextInput
+                        style={{flex:1, height:48, color:'#A5D6A7', fontFamily:'serif', fontSize:15}}
+                        value={gameState === 'online_playing' ? onlineAnswerInput : answerInput}
+                        onChangeText={gameState === 'online_playing' ? setOnlineAnswerInput : setAnswerInput}
+                        placeholder="Cevabi tahmin et..."
+                        placeholderTextColor="#2E7D32"
+                        autoFocus={false}
+                      />
+                      <TouchableOpacity
+                        onPress={gameState === 'online_playing' ? checkOnlineAnswer : checkAnswer}
+                        disabled={isLoading}
+                        style={{opacity: isLoading ? 0.4 : 1}}
+                      >
+                        <MaterialCommunityIcons name="arrow-right-circle-outline" size={24} color="#4CAF50" />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
               )}
             </View>
             
@@ -794,11 +863,67 @@ const DetectiveGame = () => {
   }
 
   if (gameState === 'solved' || gameState === 'online_solved') {
-      return (
-        <SafeAreaView style={d.container}>
-            <ScrollView contentContainerStyle={d.scrollContent}><View style={d.cardWrapper}><MaterialCommunityIcons name="checkbox-marked-circle-outline" size={80} color="#2E7D32" style={{alignSelf:'center', marginBottom:10}} /><Text style={[d.titleSmall, {color: '#2E7D32', textAlign:'center'}]}>VAKA ÇÖZÜLDÜ!</Text><Text style={[d.sub, {marginBottom:20}]}>Harika iş çıkardınız dedektif.</Text><View style={{backgroundColor:'#252525', padding:20, borderRadius:12, borderWidth:1, borderColor:'#333333'}}><Text style={d.cardHeader}>📜 Gerçek Hikaye:</Text><Text style={[d.msgContent, {marginTop:5}]}>{currentStory?.cevap}</Text></View><TouchableOpacity onPress={leaveRoom} style={[d.actionBtn, {marginTop:30, backgroundColor:'#1565C0'}]}><Text style={d.actionBtnText}>Dosyayı Kapat</Text></TouchableOpacity></View></ScrollView>
-        </SafeAreaView>
-      );
+    const solveTime = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0;
+    const mins = Math.floor(solveTime / 60);
+    const secs = solveTime % 60;
+    const timeStr = mins > 0 ? mins + 'dk ' + secs + 'sn' : secs + 'sn';
+    const activeHints = gameState === 'online_solved' ? onlineHintsUsed : hintsUsed;
+    return (
+      <SafeAreaView style={d.container}>
+        <ScrollView contentContainerStyle={[d.scrollContent, {justifyContent:'flex-start', paddingTop:40}]}>
+          
+          <View style={{alignItems:'center', marginBottom:32}}>
+            <View style={{width:96, height:96, borderRadius:48, backgroundColor:'#1B5E20', alignItems:'center', justifyContent:'center', marginBottom:16, borderWidth:2, borderColor:'#2E7D32'}}>
+              <MaterialCommunityIcons name="check-bold" size={52} color="#A5D6A7" />
+            </View>
+            <AppText style={{fontFamily:'SpecialElite', fontSize:11, color:'#555', letterSpacing:4, marginBottom:8}}>DOSYA KAPATILDI</AppText>
+            <AppText style={{fontFamily:'SpecialElite', fontSize:30, color:'#E0E0E0', textAlign:'center'}}>{currentStory?.baslik}</AppText>
+            <View style={{flexDirection:'row', alignItems:'center', gap:6, marginTop:10, paddingHorizontal:12, paddingVertical:5, backgroundColor:'#1E1E1E', borderRadius:20, borderWidth:1, borderColor:'#333'}}>
+              <View style={{width:8, height:8, borderRadius:4, backgroundColor: difficulty==='kolay'?'#2E7D32':difficulty==='orta'?'#F9A825':'#C62828'}} />
+              <AppText style={{fontFamily:'SpecialElite', fontSize:12, color:'#B0B0B0'}}>{difficulty?.toUpperCase()}</AppText>
+            </View>
+          </View>
+
+          <View style={{flexDirection:'row', gap:12, marginBottom:24, width:'100%'}}>
+            <View style={{flex:1, backgroundColor:'#1E1E1E', borderRadius:12, padding:16, alignItems:'center', borderWidth:1, borderColor:'#333'}}>
+              <MaterialCommunityIcons name="clock-outline" size={24} color="#90CAF9" />
+              <AppText style={{fontFamily:'SpecialElite', fontSize:20, color:'#E0E0E0', marginTop:6}}>{timeStr}</AppText>
+              <AppText style={{fontFamily:'serif', fontSize:11, color:'#757575', marginTop:2}}>Sure</AppText>
+            </View>
+            <View style={{flex:1, backgroundColor:'#1E1E1E', borderRadius:12, padding:16, alignItems:'center', borderWidth:1, borderColor:'#333'}}>
+              <MaterialCommunityIcons name="lightbulb-outline" size={24} color="#FFCC80" />
+              <AppText style={{fontFamily:'SpecialElite', fontSize:20, color:'#E0E0E0', marginTop:6}}>{activeHints}</AppText>
+              <AppText style={{fontFamily:'serif', fontSize:11, color:'#757575', marginTop:2}}>Ipucu</AppText>
+            </View>
+            <View style={{flex:1, backgroundColor:'#1E1E1E', borderRadius:12, padding:16, alignItems:'center', borderWidth:1, borderColor:'#333'}}>
+              <MaterialCommunityIcons name="comment-question-outline" size={24} color="#A5D6A7" />
+              <AppText style={{fontFamily:'SpecialElite', fontSize:20, color:'#E0E0E0', marginTop:6}}>{questionsAsked}</AppText>
+              <AppText style={{fontFamily:'serif', fontSize:11, color:'#757575', marginTop:2}}>Soru</AppText>
+            </View>
+          </View>
+
+          <View style={{backgroundColor:'#1A2A1A', borderRadius:12, padding:20, width:'100%', borderWidth:1, borderColor:'#2E7D32', marginBottom:32}}>
+            <AppText style={{fontFamily:'SpecialElite', fontSize:12, color:'#4CAF50', letterSpacing:2, marginBottom:10}}>GERCEK HIKAYE</AppText>
+            <AppText style={{fontFamily:'serif', fontSize:15, color:'#C8E6C9', lineHeight:24}}>{currentStory?.cevap}</AppText>
+          </View>
+
+          <TouchableOpacity 
+            onPress={() => startGame(difficulty, gameMode)} 
+            style={{backgroundColor:'#1565C0', borderRadius:12, padding:16, alignItems:'center', width:'100%', marginBottom:12}}
+          >
+            <AppText style={{fontFamily:'SpecialElite', fontSize:16, color:'#E0E0E0'}}>Yeni Vaka</AppText>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            onPress={leaveRoom} 
+            style={{backgroundColor:'#1E1E1E', borderRadius:12, padding:16, alignItems:'center', width:'100%', borderWidth:1, borderColor:'#333'}}
+          >
+            <AppText style={{fontFamily:'SpecialElite', fontSize:16, color:'#B0B0B0'}}>Ana Menu</AppText>
+          </TouchableOpacity>
+
+        </ScrollView>
+        <ConfettiCannon ref={confettiRef} count={200} origin={{x:-10, y:0}} autoStart={false} fadeOut={true} />
+      </SafeAreaView>
+    );
   }
 
   if (gameState === 'reader_playing') {
@@ -812,33 +937,33 @@ const DetectiveGame = () => {
                 >
                   <MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" />
                 </TouchableOpacity>
-                <Text style={[d.titleSmall, {flex:1, textAlign:'center', marginRight:38, fontSize:22}]}>
+                <AppText style={[d.titleSmall, {flex:1, textAlign:'center', marginRight:38, fontSize:22}]}>
                   Hikaye Okuyucu
-                </Text>
+                </AppText>
               </View>
               <View style={d.cardWrapper}>
-                <Text style={d.cardHeader}>📖 {currentStory?.baslik}</Text>
+                <AppText style={d.cardHeader}>📖 {currentStory?.baslik}</AppText>
                 <View style={{flexDirection:'row', alignItems:'center', gap:5, marginBottom:15}}>
                   <View style={[d.dot, {backgroundColor: difficulty==='kolay'?'#2E7D32':difficulty==='orta'?'#F9A825':'#C62828'}]} />
-                  <Text style={d.gameSub}>{difficulty?.toUpperCase()}</Text>
+                  <AppText style={d.gameSub}>{difficulty?.toUpperCase()}</AppText>
                 </View>
                 <View style={{backgroundColor:'#252525', padding:20, borderRadius:12, borderWidth:1, borderColor:'#333333', marginBottom:20}}>
-                  <Text style={[d.msgContent, {fontStyle:'italic', fontSize:16}]}>{currentStory?.baslangic}</Text>
+                  <AppText style={[d.msgContent, {fontStyle:'italic', fontSize:16}]}>{currentStory?.baslangic}</AppText>
                 </View>
                 <View style={{borderTopWidth:1, borderColor:'#333333', paddingTop:20}}>
                   <TouchableOpacity
                     onPress={() => setShowAnswer(!showAnswer)}
                     style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', backgroundColor:'#1E1E1E', padding:10, borderRadius:8}}
                   >
-                    <Text style={d.cardTitle}>🔒 Gizli Cevap</Text>
+                    <AppText style={d.cardTitle}>🔒 Gizli Cevap</AppText>
                     <MaterialCommunityIcons name={showAnswer ? "eye-off" : "eye"} size={24} color="#B0B0B0" />
                   </TouchableOpacity>
                   {showAnswer && (
                     <View style={{marginTop:15, padding:10}}>
-                      <Text style={d.msgContent}>{currentStory?.cevap}</Text>
-                      <Text style={[d.cardHeader, {marginTop:15, fontSize:14}]}>İpuçları:</Text>
+                      <AppText style={d.msgContent}>{currentStory?.cevap}</AppText>
+                      <AppText style={[d.cardHeader, {marginTop:15, fontSize:14}]}>İpuçları:</AppText>
                       {currentStory?.ipuclari.map((hint, i) => (
-                        <Text key={i} style={d.cardSub}>• {hint}</Text>
+                        <AppText key={i} style={d.cardSub}>• {hint}</AppText>
                       ))}
                     </View>
                   )}
@@ -847,7 +972,7 @@ const DetectiveGame = () => {
                   onPress={() => { startGame(difficulty, 'reader'); setShowAnswer(false); }}
                   style={[d.actionBtn, { marginTop:24, backgroundColor:'#1565C0' }]}
                 >
-                  <Text style={d.actionBtnText}>Yeni Hikaye</Text>
+                  <AppText style={d.actionBtnText}>Yeni Hikaye</AppText>
                 </TouchableOpacity>
               </View>
             </ScrollView>
@@ -856,9 +981,44 @@ const DetectiveGame = () => {
   }
 
   if (gameState === 'difficulty' || gameState === 'reader_difficulty') {
+    const diffConfig = {
+      kolay: { color: '#2E7D32', bg: '#1B5E20', icon: 'shield-outline', label: 'Kolay', sub: 'Baslangiç seviyesi', count: '18 vaka' },
+      orta:  { color: '#F9A825', bg: '#F57F17', icon: 'shield-half-full', label: 'Orta', sub: 'Biraz dusunmen gerekecek', count: '10 vaka' },
+      zor:   { color: '#C62828', bg: '#B71C1C', icon: 'shield', label: 'Zor', sub: 'Gercek dedektifler icin', count: '6 vaka' },
+    };
     return (
       <SafeAreaView style={d.container}>
-        <View style={d.scrollContent}><View style={{width:'100%', flexDirection:'row', alignItems:'center', marginBottom:20}}><TouchableOpacity onPress={() => setGameState('menu')} style={{padding:10}}><MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" /></TouchableOpacity><Text style={[d.titleSmall, {flex:1, textAlign:'center', marginRight:30}]}>Zorluk Seç</Text></View>{['kolay', 'orta', 'zor'].map(d_key => (<TouchableOpacity key={d_key} style={d.card} onPress={() => { setDifficulty(d_key); setGameState(gameState === 'reader_difficulty' ? 'reader_story_selection' : 'story_selection'); }}><View style={[d.iconBox, d_key==='kolay' ? {backgroundColor:'#1B5E20'} : d_key==='orta' ? {backgroundColor:'#F57F17'} : {backgroundColor:'#B71C1C'}]}><View style={[d.dot, {width:16, height:16, backgroundColor: d_key==='kolay' ? '#2E7D32' : d_key==='orta' ? '#F9A825' : '#C62828'}]} /></View><View style={{ flex: 1, marginLeft: 15 }}><Text style={d.cardTitle}>{d_key.charAt(0).toUpperCase() + d_key.slice(1)}</Text><Text style={d.cardSub}>{d_key === 'kolay' ? 'Başlangıç seviyesi' : d_key === 'orta' ? 'Biraz düşünmen gerekecek' : 'Gerçek dedektifler için'}</Text></View><MaterialCommunityIcons name="arrow-right" size={24} color="#757575" /></TouchableOpacity>))}</View>
+        <View style={{flex:1, paddingHorizontal:20}}>
+          <View style={{flexDirection:'row', alignItems:'center', paddingTop:20, marginBottom:32}}>
+            <TouchableOpacity onPress={() => setGameState('menu')} style={{padding:8}}>
+              <MaterialCommunityIcons name="arrow-left" size={28} color="#E0E0E0" />
+            </TouchableOpacity>
+            <AppText style={{fontFamily:'SpecialElite', fontSize:22, color:'#E0E0E0', flex:1, textAlign:'center', marginRight:36}}>Zorluk Sec</AppText>
+          </View>
+
+          {['kolay', 'orta', 'zor'].map(d_key => {
+            const cfg = diffConfig[d_key];
+            return (
+              <TouchableOpacity
+                key={d_key}
+                onPress={() => { setDifficulty(d_key); setGameState(gameState === 'reader_difficulty' ? 'reader_story_selection' : 'story_selection'); }}
+                style={{backgroundColor:'#1E1E1E', borderRadius:16, padding:20, flexDirection:'row', alignItems:'center', borderWidth:1, borderColor:'#2a2a2a', marginBottom:12}}
+              >
+                <View style={{width:56, height:56, borderRadius:14, backgroundColor:cfg.bg+'33', alignItems:'center', justifyContent:'center', borderWidth:1, borderColor:cfg.color+'55'}}>
+                  <MaterialCommunityIcons name={cfg.icon} size={28} color={cfg.color} />
+                </View>
+                <View style={{flex:1, marginLeft:16}}>
+                  <AppText style={{fontFamily:'SpecialElite', fontSize:20, color:'#E0E0E0'}}>{cfg.label}</AppText>
+                  <AppText style={{fontFamily:'serif', fontSize:12, color:'#757575', marginTop:3}}>{cfg.sub}</AppText>
+                </View>
+                <View style={{alignItems:'flex-end', gap:6}}>
+                  <AppText style={{fontFamily:'SpecialElite', fontSize:11, color:cfg.color}}>{cfg.count}</AppText>
+                  <MaterialCommunityIcons name="chevron-right" size={22} color="#444" />
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </SafeAreaView>
     );
   }
@@ -957,16 +1117,16 @@ const d = StyleSheet.create({
   timerText: { textAlign:'center', marginTop:5, color:'#EF9A9A', fontFamily:'SpecialElite' },
   chatArea: { flex: 1, padding: 15, backgroundColor:'#121212' },
   msgBox: { padding: 14, borderRadius: 16, marginBottom: 10, maxWidth: '85%' },
-  msgStory: { backgroundColor: '#423716', alignSelf: 'center', width: '100%', borderRadius:8, borderLeftWidth:4, borderLeftColor:'#FFC107' },
-  msgAi: { alignSelf: 'flex-start', backgroundColor: '#1E1E1E', borderBottomLeftRadius:2, borderWidth:1, borderColor:'#333333' },
-  msgUser: { alignSelf: 'flex-end', backgroundColor: '#37474F', borderBottomRightRadius:2 },
-  msgHint: { alignSelf: 'center', backgroundColor: '#1A237E', paddingVertical:8, paddingHorizontal:15, borderRadius:20 },
+  msgStory: { backgroundColor: '#1E1A0E', alignSelf: 'center', width: '100%', borderRadius:12, borderLeftWidth:3, borderLeftColor:'#FFC107', padding:16 },
+  msgAi: { alignSelf: 'flex-start', backgroundColor: '#1E1E1E', borderRadius:12, borderBottomLeftRadius:4, borderWidth:1, borderColor:'#2a2a2a', maxWidth:'80%' },
+  msgUser: { alignSelf: 'flex-end', backgroundColor: '#1A237E', borderRadius:12, borderBottomRightRadius:4, maxWidth:'80%' },
+  msgHint: { alignSelf: 'center', backgroundColor: '#2C1F00', borderRadius:20, borderWidth:1, borderColor:'#FFC107', paddingVertical:8, paddingHorizontal:16 },
   msgContent: { fontSize: 15, lineHeight: 22, fontFamily:'serif', color:'#E0E0E0' },
   senderName: { fontSize: 10, color: '#B0B0B0', marginBottom: 2, fontWeight:'bold', fontFamily:'SpecialElite' },
-  inputSection: { padding: 15, backgroundColor: '#1E1E1E', borderTopWidth: 1, borderTopColor: '#333333', gap:10 },
+  inputSection: { padding: 14, paddingTop:10, backgroundColor: '#181818', borderTopWidth: 1, borderTopColor: '#2a2a2a', gap:8 },
   sendIconBtn: { width: 60, height: 60, backgroundColor: '#E0E0E0', alignItems: 'center', justifyContent: 'center', borderRadius: 12 },
   stampBtn: { flex: 1, height: 45, borderWidth: 2, alignItems: 'center', justifyContent: 'center', borderRadius: 8 },
-  hintButton: { alignSelf:'center', flexDirection:'row', alignItems:'center', padding:10, backgroundColor:'#263238', borderRadius:20, borderWidth:1, borderColor:'#37474F', marginTop:5 },
+  hintButton: { alignSelf:'stretch', flexDirection:'row', alignItems:'center', justifyContent:'center', paddingVertical:10, backgroundColor:'#1C1A00', borderRadius:10, borderWidth:1, borderColor:'#FFC107'+'44' },
   hintButtonDisabled: { opacity: 0.5, borderColor:'#555555' },
   playerRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#333333' },
   playerText: { fontSize: 16, color: '#E0E0E0', fontWeight:'600', fontFamily:'SpecialElite', marginLeft:10 },

@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getAllStoryMetadata } from '../../../data/stories/storyLoader';
+import { getAllStoryMetadata, getAllStoryCounts } from '../../../data/stories/storyLoader';
 import { getAllStoryStats, getCompletedStories, getUserStats } from '../../../shared/utils/storageManager';
 
 const { width } = Dimensions.get('window');
@@ -16,6 +16,8 @@ const StatsScreen = ({ onBack }) => {
   const [completedStories, setCompletedStories] = useState([]);
   const [storyStats, setStoryStats] = useState({});
   const [loading, setLoading] = useState(true);
+  const storyCounts = getAllStoryCounts();
+  const totalStories = storyCounts.kolay + storyCounts.orta + storyCounts.zor;
 
   useEffect(() => {
     loadStats();
@@ -48,18 +50,18 @@ const StatsScreen = ({ onBack }) => {
   };
 
   const getCompletionRate = () => {
-    const totalStories = 20; // Toplam hikaye sayısı
+    
     const completed = completedStories.length;
-    return Math.round((completed / totalStories) * 100);
+    return Math.round(totalStories > 0 ? (completed / totalStories) * 100 : 0);
   };
 
   const getDifficultyBreakdown = () => {
     const breakdown = { kolay: 0, orta: 0, zor: 0 };
     
     completedStories.forEach(id => {
-      if (id >= 101 && id <= 108) breakdown.kolay++;
-      else if (id >= 201 && id <= 206) breakdown.orta++;
-      else if (id >= 301 && id <= 306) breakdown.zor++;
+      if (id >= 101 && id <= 199) breakdown.kolay++;
+      else if (id >= 201 && id <= 299) breakdown.orta++;
+      else if (id >= 301 && id <= 399) breakdown.zor++;
     });
     
     return breakdown;
@@ -130,7 +132,7 @@ const StatsScreen = ({ onBack }) => {
               icon="trophy"
               label="Çözülen Vaka"
               value={completedStories.length}
-              total={20}
+              total={totalStories}
               color="#FFD700"
             />
             <StatCard
@@ -161,7 +163,7 @@ const StatsScreen = ({ onBack }) => {
             <View style={styles.progressHeader}>
               <Text style={styles.progressPercentage}>{completionRate}%</Text>
               <Text style={styles.progressLabel}>
-                {completedStories.length} / 20 vaka çözüldü
+                {completedStories.length} / {totalStories} vaka çözüldü
               </Text>
             </View>
             <View style={styles.progressBarContainer}>
@@ -177,19 +179,19 @@ const StatsScreen = ({ onBack }) => {
             <DifficultyBar
               label="Kolay"
               count={difficultyBreakdown.kolay}
-              total={8}
+              total={storyCounts.kolay}
               color="#2E7D32"
             />
             <DifficultyBar
               label="Orta"
               count={difficultyBreakdown.orta}
-              total={6}
+              total={storyCounts.orta}
               color="#F9A825"
             />
             <DifficultyBar
               label="Zor"
               count={difficultyBreakdown.zor}
-              total={6}
+              total={storyCounts.zor}
               color="#C62828"
             />
           </View>

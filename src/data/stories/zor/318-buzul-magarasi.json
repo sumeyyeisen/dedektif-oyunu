@@ -1,0 +1,59 @@
+{
+  "id": 318,
+  "baslik": "Buzul Mağarası",
+  "baslangic": "İki adam bir mağarada ölü bulundu. İkisinin de kafasında delik vardı ama sadece biri tabancayla vurulmuştu.",
+  "cevap": "İki araştırmacı Antarktika'da tarihi bir keşif yapmıştı ama hangisinin bunu duyuracağı konusunda anlaşamayıp kavga ettiler. Biri diğerini tabancayla vurdu. Ancak silahın sesi, mağaranın tavanından sarkan bir buz sarkıtının düşmesine neden oldu ve sarkıt, ayakta duran diğer kişinin kafasını deldi.",
+  "ipuclari": [
+    "İkisi de aynı şekilde ölmedi",
+    "Bir ses ikinci bir kazaya yol açtı",
+    "Ortam donmuş ve kırılgandı"
+  ],
+  "sorular": {
+    "magara": {
+      "keywords": [
+        "mağara",
+        "buz"
+      ],
+      "answer": "Evet"
+    },
+    "silah": {
+      "keywords": [
+        "silah",
+        "tabanca",
+        "vur"
+      ],
+      "answer": "Evet"
+    },
+    "sarkit": {
+      "keywords": [
+        "sarkıt",
+        "buz parçası",
+        "düş"
+      ],
+      "answer": "Evet"
+    },
+    "kesif": {
+      "keywords": [
+        "keşif",
+        "araştırmacı",
+        "bilim insanı"
+      ],
+      "answer": "Evet"
+    },
+    "kavga": {
+      "keywords": [
+        "kavga",
+        "tartışma"
+      ],
+      "answer": "Evet"
+    },
+    "antartika": {
+      "keywords": [
+        "antarktika",
+        "kutup",
+        "soğuk"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

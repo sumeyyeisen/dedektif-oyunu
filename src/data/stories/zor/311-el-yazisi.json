@@ -1,0 +1,53 @@
+{
+  "id": 311,
+  "baslik": "El Yazısı",
+  "baslangic": "Bir bulmaca dergisi, bir katilin yakalanmasına neden oldu.",
+  "cevap": "Bir çocuğun cesedi eski bir bavul içinde, gazete kağıtlarıyla doldurulmuş halde bulundu. Gazetelerden bazılarında çözülmüş bulmacalar vardı. Polis bunu delil kabul edip binlerce el yazısı örneği topladı ve karşılaştırdı. Aylar süren çalışma sonunda bulmacaları çözen kişi bulunup yakalandı.",
+  "ipuclari": [
+    "Kağıt üzerindeki bir iz suçluyu ele verdi",
+    "El yazısı karşılaştırması yapıldı",
+    "Sabırlı bir araştırma sonuç verdi"
+  ],
+  "sorular": {
+    "bulmaca": {
+      "keywords": [
+        "bulmaca",
+        "çengel"
+      ],
+      "answer": "Evet"
+    },
+    "gazete": {
+      "keywords": [
+        "gazete"
+      ],
+      "answer": "Evet"
+    },
+    "bavul": {
+      "keywords": [
+        "bavul",
+        "çanta"
+      ],
+      "answer": "Evet"
+    },
+    "elYazisi": {
+      "keywords": [
+        "el yazısı",
+        "yazı"
+      ],
+      "answer": "Evet"
+    },
+    "polis": {
+      "keywords": [
+        "polis",
+        "soruşturma"
+      ],
+      "answer": "Evet"
+    },
+    "cocuk": {
+      "keywords": [
+        "çocuk"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

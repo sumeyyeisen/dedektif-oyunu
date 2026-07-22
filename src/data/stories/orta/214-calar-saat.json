@@ -1,0 +1,54 @@
+{
+  "id": 214,
+  "baslik": "Çalar Saat",
+  "baslangic": "Bir kadın yüzmeye gitti, bir ses duydu ve boğuldu.",
+  "cevap": "Kadın kör bir yüzücüydü ve her gece göl kıyısına bir çalar saat koyup on dakika sonra çalmasını ayarlıyordu. Bir gece tam saat çaldığı anda yakınından geçen bir teknenin sesi çalar saatin sesini bastırdı. Kadın sesi duyamayınca tekne yönüne yüzmeye çalıştı ama gücü tükenip boğuldu.",
+  "ipuclari": [
+    "Kadının bir engeli vardı",
+    "Bir ses diğerini bastırdı",
+    "Yön bulma yöntemi işe yaramadı"
+  ],
+  "sorular": {
+    "kor": {
+      "keywords": [
+        "kör",
+        "göremiyor"
+      ],
+      "answer": "Evet"
+    },
+    "calarSaat": {
+      "keywords": [
+        "çalar saat",
+        "alarm"
+      ],
+      "answer": "Evet"
+    },
+    "tekne": {
+      "keywords": [
+        "tekne",
+        "gemi"
+      ],
+      "answer": "Evet"
+    },
+    "gol": {
+      "keywords": [
+        "göl",
+        "su"
+      ],
+      "answer": "Evet"
+    },
+    "bogul": {
+      "keywords": [
+        "boğul"
+      ],
+      "answer": "Evet"
+    },
+    "saldiri": {
+      "keywords": [
+        "saldırı",
+        "cinayet"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

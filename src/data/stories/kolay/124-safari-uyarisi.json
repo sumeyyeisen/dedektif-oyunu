@@ -1,0 +1,54 @@
+{
+  "id": 124,
+  "baslik": "Safari Uyarısı",
+  "baslangic": "Bir turist grubu, yerel rehberin uyarısını dinlemediği için hayatını kaybetti.",
+  "cevap": "Turistler açık bir cipte safari yapıyordu. Rehber, fillerin motor sesinden rahatsız olabileceğini söylemişti. Bir fil sürüsüyle karşılaştıklarında motoru kapatmayı unuttular; genç bir fil sinirlenip aracı devirdi.",
+  "ipuclari": [
+    "Olay bir safaride geçti",
+    "Bir hayvan rahatsız oldu",
+    "Motor sesi tetikleyiciydi"
+  ],
+  "sorular": {
+    "safari": {
+      "keywords": [
+        "safari",
+        "cip",
+        "araç"
+      ],
+      "answer": "Evet"
+    },
+    "fil": {
+      "keywords": [
+        "fil"
+      ],
+      "answer": "Evet"
+    },
+    "motor": {
+      "keywords": [
+        "motor",
+        "ses"
+      ],
+      "answer": "Evet"
+    },
+    "uyari": {
+      "keywords": [
+        "uyar"
+      ],
+      "answer": "Evet"
+    },
+    "devril": {
+      "keywords": [
+        "devril",
+        "dev"
+      ],
+      "answer": "Evet"
+    },
+    "aslan": {
+      "keywords": [
+        "aslan",
+        "kaplan"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

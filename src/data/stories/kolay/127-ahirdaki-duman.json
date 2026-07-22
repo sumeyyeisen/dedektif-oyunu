@@ -1,0 +1,57 @@
+{
+  "id": 127,
+  "baslik": "Ahırdaki Duman",
+  "baslangic": "Bir kadın, oğlunu korumak istedi ama bu yüzden kendisi de hapse girdi.",
+  "cevap": "Oğlu bir sanat hırsızıydı ve çaldığı tabloları annesinin çiftliğindeki ahırda saklıyordu. Oğlu gözaltına alınınca, kanıtları yok etmek için tabloları ateşe verdi. Ancak yükselen duman komşuların dikkatini çekti, itfaiye geldi ve kalıntılar ele geçirildi.",
+  "ipuclari": [
+    "Yok etmeye çalıştığı şey değerliydi",
+    "Bir yangın dikkat çekti",
+    "Amacı delilleri gizlemekti"
+  ],
+  "sorular": {
+    "tablo": {
+      "keywords": [
+        "tablo",
+        "sanat",
+        "eser"
+      ],
+      "answer": "Evet"
+    },
+    "yangin": {
+      "keywords": [
+        "yangın",
+        "ateş",
+        "duman"
+      ],
+      "answer": "Evet"
+    },
+    "hirsiz": {
+      "keywords": [
+        "hırsız",
+        "çal"
+      ],
+      "answer": "Evet"
+    },
+    "anne": {
+      "keywords": [
+        "anne",
+        "kadın"
+      ],
+      "answer": "Evet"
+    },
+    "itfaiye": {
+      "keywords": [
+        "itfaiye",
+        "komşu"
+      ],
+      "answer": "Evet"
+    },
+    "koruma": {
+      "keywords": [
+        "koru",
+        "sakla"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

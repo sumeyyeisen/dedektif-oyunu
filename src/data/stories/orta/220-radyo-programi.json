@@ -1,0 +1,55 @@
+{
+  "id": 220,
+  "baslik": "Radyo Programı",
+  "baslangic": "Bir adam arabasını sürerken radyoyu açtı, birkaç dakika dinledi ve eşinden ayrılmaya karar verdi.",
+  "cevap": "Radyoda rastgele dinleyicileri arayıp soru sordukları bir programdı. Sunucu bir sonraki arayacağı kişi olarak adamın eşinin adını ve şehrini söyledi. Telefon çalınca hattı bir erkek sesi açtı. Adam bu şekilde eşinin bir ilişkisi olduğunu anladı.",
+  "ipuclari": [
+    "Bir program canlı yayındaydı",
+    "Beklenmeyen bir ses telefonu açtı",
+    "Adam bir gerçeği tesadüfen öğrendi"
+  ],
+  "sorular": {
+    "radyo": {
+      "keywords": [
+        "radyo"
+      ],
+      "answer": "Evet"
+    },
+    "es": {
+      "keywords": [
+        "eş",
+        "karı",
+        "ilişki"
+      ],
+      "answer": "Evet"
+    },
+    "telefon": {
+      "keywords": [
+        "telefon",
+        "ara"
+      ],
+      "answer": "Evet"
+    },
+    "aldatma": {
+      "keywords": [
+        "aldat",
+        "ilişki",
+        "sadakatsiz"
+      ],
+      "answer": "Evet"
+    },
+    "ayrilma": {
+      "keywords": [
+        "ayrıl",
+        "boşan"
+      ],
+      "answer": "Evet"
+    },
+    "kaza": {
+      "keywords": [
+        "kaza"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

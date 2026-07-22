@@ -1,0 +1,58 @@
+{
+  "id": 312,
+  "baslik": "Güleryüzlü Yabancı",
+  "baslangic": "Şehrin en sevilen sokak eğlendiricisi tutuklandığında herkes şoke oldu. Onu tanıyanlar hiçbir zaman şüphelenmemişti.",
+  "cevap": "Adam, çocukları ve aileleri festivallerde güldüren tanınmış bir kostümlü eğlendiriciydi. Ancak gerçekte uzun süredir çok sayıda kişiye zarar veren bir suçluydu. Yıllarca sürdürdüğü ikili hayatı bir soruşturma sonucu ortaya çıkınca tutuklandı ve tarihe geçen bir dava ile hüküm giydi.",
+  "ipuclari": [
+    "Herkesin tanıdığı bir görüntüsü vardı",
+    "Gerçek kimliği çok farklıydı",
+    "Uzun süre fark edilmeden yaşadı"
+  ],
+  "sorular": {
+    "kostum": {
+      "keywords": [
+        "kostüm",
+        "eğlendirici",
+        "gösteri"
+      ],
+      "answer": "Evet"
+    },
+    "cifteHayat": {
+      "keywords": [
+        "çifte hayat",
+        "gizli",
+        "ikiyüzlü"
+      ],
+      "answer": "Evet"
+    },
+    "tutuklanma": {
+      "keywords": [
+        "tutukla",
+        "yakalan",
+        "hüküm"
+      ],
+      "answer": "Evet"
+    },
+    "cocuk": {
+      "keywords": [
+        "çocuk"
+      ],
+      "answer": "Alakasız"
+    },
+    "sevilen": {
+      "keywords": [
+        "sevil",
+        "tanın",
+        "ünlü"
+      ],
+      "answer": "Evet"
+    },
+    "suc": {
+      "keywords": [
+        "suç",
+        "zarar"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": 314,
+  "baslik": "Geç Gelen Haber",
+  "baslangic": "Bir kadın çok sağlıklı olduğunu öğrendikten kısa süre sonra hayatını kaybetti.",
+  "cevap": "Kadına rutin bir kontrolde ağır bir hastalık teşhisi konmuştu. Acı çekmek istemeyen kadın, bir üçüncü kişiden yardım istemişti. Ancak sonraki testte örneklerin karıştığı ve hasta olmadığı ortaya çıktı; haber ona ulaşana kadar çok geç kalınmıştı.",
+  "ipuclari": [
+    "Bir teşhis yanlış çıktı",
+    "Kadın acele bir karar vermişti",
+    "Doğru haber bir adım geç geldi"
+  ],
+  "sorular": {
+    "hastalik": {
+      "keywords": [
+        "hastalık",
+        "teşhis"
+      ],
+      "answer": "Evet"
+    },
+    "yanlisTeshis": {
+      "keywords": [
+        "yanlış",
+        "karış",
+        "hata"
+      ],
+      "answer": "Evet"
+    },
+    "suikastci": {
+      "keywords": [
+        "suikastçı",
+        "katil kirala"
+      ],
+      "answer": "Evet"
+    },
+    "gec": {
+      "keywords": [
+        "geç",
+        "zamanlama"
+      ],
+      "answer": "Evet"
+    },
+    "kanOrnegi": {
+      "keywords": [
+        "kan örneği",
+        "test",
+        "tahlil"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

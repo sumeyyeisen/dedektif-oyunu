@@ -1,0 +1,55 @@
+{
+  "id": 315,
+  "baslik": "Elindeki Çiçek",
+  "baslangic": "Olay yerinde iki kişi bulundu, bir mektup ve bir çiçek vardı. İkisi de birbirine aşıktı ama hiç birlikte olamadılar.",
+  "cevap": "Bir adam yıllarca bir kadına platonik aşıktı. Duygularını itiraf ettikten yıllar sonra kadın da ona karşı hislerinin olduğunu fark etti. Elinde bir çiçekle adamın evine gittiğinde her şey için çok geç kalmıştı: adam bir hafta önce bir not bırakarak hayatına son vermişti ve yalnız yaşadığı için kimse fark etmemişti. Notu okuyan kadın da acısına dayanamadı.",
+  "ipuclari": [
+    "Uzun süredir karşılıksız bir duygu vardı",
+    "Bir mektup gerçeği ortaya çıkardı",
+    "Zamanlama çok geç kalmıştı"
+  ],
+  "sorular": {
+    "ask": {
+      "keywords": [
+        "aşk",
+        "sev"
+      ],
+      "answer": "Evet"
+    },
+    "cicek": {
+      "keywords": [
+        "çiçek",
+        "gül"
+      ],
+      "answer": "Evet"
+    },
+    "mektup": {
+      "keywords": [
+        "mektup",
+        "not"
+      ],
+      "answer": "Evet"
+    },
+    "yalniz": {
+      "keywords": [
+        "yalnız",
+        "tek başına"
+      ],
+      "answer": "Evet"
+    },
+    "gecKalma": {
+      "keywords": [
+        "geç kal",
+        "zamanlama"
+      ],
+      "answer": "Evet"
+    },
+    "cinayet": {
+      "keywords": [
+        "cinayet",
+        "öldürül"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

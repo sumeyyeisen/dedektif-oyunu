@@ -1,0 +1,57 @@
+{
+  "id": 126,
+  "baslik": "Sipariş",
+  "baslangic": "Bir mahallede bir hafta içinde onlarca kişi hayatını kaybetti. Hepsinin ölümü aynı nedene bağlıydı ama kimse birbirini tanımıyordu.",
+  "cevap": "Ölenlerin hepsi aynı restorandan yemek sipariş etmişti. Restoranın kuryesi, dağıttığı siparişlere zehir katarak müşterileri öldürüyordu.",
+  "ipuclari": [
+    "Ortak nokta bir yiyecekti",
+    "Aynı işten biri sorumluydu",
+    "Teslimat bir tehlike taşıyordu"
+  ],
+  "sorular": {
+    "yemek": {
+      "keywords": [
+        "yemek",
+        "sipariş",
+        "restoran"
+      ],
+      "answer": "Evet"
+    },
+    "kurye": {
+      "keywords": [
+        "kurye",
+        "teslimat"
+      ],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": [
+        "zehir"
+      ],
+      "answer": "Evet"
+    },
+    "hastalik": {
+      "keywords": [
+        "hastalık",
+        "salgın",
+        "virüs"
+      ],
+      "answer": "Hayır"
+    },
+    "su": {
+      "keywords": [
+        "su",
+        "içme suyu"
+      ],
+      "answer": "Hayır"
+    },
+    "kasitli": {
+      "keywords": [
+        "kasıt",
+        "bilerek",
+        "cinayet"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "id": 319,
+  "baslik": "Aynadaki Not",
+  "baslangic": "Bir adam bir sabah uyandı, tuvalete gitti, aynaya baktı ve hemen ölüm vasiyetini yazmaya başladı.",
+  "cevap": "Adam bir gece önce bir kulüpte tanıştığı biriyle birlikte olmuştu. Sabah uyandığında o kişinin gittiğini fark etti. Banyoya gidince aynada, ona ölümcül ve bulaşıcı bir hastalık bulaştırdığını söyleyen bir not gördü.",
+  "ipuclari": [
+    "Bir gece önce tanıdığı biri ortadan kaybolmuştu",
+    "Ayna üzerinde bir mesaj vardı",
+    "Haber çok ağırdı"
+  ],
+  "sorular": {
+    "ayna": {
+      "keywords": [
+        "ayna"
+      ],
+      "answer": "Evet"
+    },
+    "kulup": {
+      "keywords": [
+        "kulüp",
+        "gece"
+      ],
+      "answer": "Evet"
+    },
+    "not": {
+      "keywords": [
+        "not",
+        "yazı",
+        "mesaj"
+      ],
+      "answer": "Evet"
+    },
+    "hastalik": {
+      "keywords": [
+        "hastalık",
+        "bulaşıcı"
+      ],
+      "answer": "Evet"
+    },
+    "vasiyet": {
+      "keywords": [
+        "vasiyet"
+      ],
+      "answer": "Evet"
+    },
+    "yabanci": {
+      "keywords": [
+        "yabancı",
+        "tanımadığı"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

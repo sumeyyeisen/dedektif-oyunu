@@ -1,0 +1,56 @@
+{
+  "id": 217,
+  "baslik": "Duvarın Ardından Gelen Ses",
+  "baslangic": "Bir adamın hayali zengin ve yalnız yaşamaktı. Ama hayaline ulaşmasına ramak kala küçük bir hayvan yüzünden her şey ortaya çıktı.",
+  "cevap": "Adam zengin eşini öldürüp cesedini bodrum katına koyarak duvar ördürmüştü. Ancak kedisini içeride unutmuştu. Evi arayan polisler duvardan gelen kedi miyavlamasını fark edip duvarı yıktılar ve cesedi buldular.",
+  "ipuclari": [
+    "Adamın bir planı vardı ama küçük bir detayı unuttu",
+    "Bir ses onu ele verdi",
+    "Duvarın ardında bir şey saklıydı"
+  ],
+  "sorular": {
+    "kedi": {
+      "keywords": [
+        "kedi"
+      ],
+      "answer": "Evet"
+    },
+    "duvar": {
+      "keywords": [
+        "duvar",
+        "örül"
+      ],
+      "answer": "Evet"
+    },
+    "ceset": {
+      "keywords": [
+        "ceset",
+        "öl"
+      ],
+      "answer": "Evet"
+    },
+    "polis": {
+      "keywords": [
+        "polis",
+        "arama"
+      ],
+      "answer": "Evet"
+    },
+    "es": {
+      "keywords": [
+        "eş",
+        "karı",
+        "evli"
+      ],
+      "answer": "Evet"
+    },
+    "para": {
+      "keywords": [
+        "para",
+        "miras",
+        "zengin"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

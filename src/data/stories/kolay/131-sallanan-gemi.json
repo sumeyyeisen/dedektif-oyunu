@@ -1,0 +1,48 @@
+{
+  "id": 131,
+  "baslik": "Sallanan Gemi",
+  "baslangic": "Bir restoranda, o akşam yemek yiyen herkes kusmuştu. Ama yemekler zehirli değildi.",
+  "cevap": "Restoran aslında bir gemi restoranıydı. Yemekten sonra deniz şiddetli dalgalanmaya başladı. Sarsıntılar yüzünden müşterilerin midesi bulandı ve kusmak zorunda kaldılar.",
+  "ipuclari": [
+    "Restoran normal bir binada değildi",
+    "Hareket eden bir zemin vardı",
+    "Deniz tutması söz konusuydu"
+  ],
+  "sorular": {
+    "gemi": {
+      "keywords": [
+        "gemi",
+        "tekne"
+      ],
+      "answer": "Evet"
+    },
+    "restoran": {
+      "keywords": [
+        "restoran",
+        "yemek"
+      ],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": [
+        "zehir"
+      ],
+      "answer": "Hayır"
+    },
+    "dalga": {
+      "keywords": [
+        "dalga",
+        "sars",
+        "fırtına"
+      ],
+      "answer": "Evet"
+    },
+    "denizTutmasi": {
+      "keywords": [
+        "deniz tutması",
+        "bulantı"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

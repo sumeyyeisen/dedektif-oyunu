@@ -1,0 +1,55 @@
+{
+  "id": 122,
+  "baslik": "Meraklı Dev",
+  "baslangic": "Bir tekne turundaki turistler renkli kıyafetler giymişti. Kısa süre sonra bazıları hayatını kaybetti, ama saldırgan onları yemedi.",
+  "cevap": "Turistler bir balina izleme turundaydı. Genç ve meraklı bir balina, renkli kıyafetli turistleri merak edip tekneye yaklaştı, kuyruğuyla vurup tekneyi batırdı. Bazı yolcular kurtarılamadı.",
+  "ipuclari": [
+    "Olay denizde geçti",
+    "Saldırgan sadece meraklıydı, saldırgan değildi",
+    "Dev bir deniz canlısıydı"
+  ],
+  "sorular": {
+    "balina": {
+      "keywords": [
+        "balina",
+        "deniz canlısı"
+      ],
+      "answer": "Evet"
+    },
+    "tekne": {
+      "keywords": [
+        "tekne",
+        "gemi",
+        "bot"
+      ],
+      "answer": "Evet"
+    },
+    "batma": {
+      "keywords": [
+        "bat",
+        "devril"
+      ],
+      "answer": "Evet"
+    },
+    "kopekbaligi": {
+      "keywords": [
+        "köpekbalığı"
+      ],
+      "answer": "Hayır"
+    },
+    "merak": {
+      "keywords": [
+        "merak",
+        "yaklaş"
+      ],
+      "answer": "Evet"
+    },
+    "kiyafet": {
+      "keywords": [
+        "kıyafet",
+        "renkli"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

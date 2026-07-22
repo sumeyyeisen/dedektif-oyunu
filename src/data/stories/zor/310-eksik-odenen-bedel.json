@@ -1,0 +1,57 @@
+{
+  "id": 310,
+  "baslik": "Eksik Ödenen Bedel",
+  "baslangic": "Bir adam metroda tek kollu birine rastladı. O adam silah çekip onu vurdu. Aralarında önceden bir anlaşma vardı.",
+  "cevap": "İkisi, diğer birkaç kişiyle birlikte ıssız bir adada gemi kazası geçirmiş ve açlıktan hayatta kalabilmek için kollarını kesip yemeye karar vermişlerdi. Kurtarılmadan önce sıra son adama gelmişti ama kurtarma ekibi yetişince kolunu kesmeden kaçmıştı. Yıllar sonra metroda anlaşmaya uyan diğer adamla karşılaşınca, sözünü tutmayan bu adamı öldürdü.",
+  "ipuclari": [
+    "Geçmişte zorlu bir hayatta kalma durumu yaşanmıştı",
+    "Bir anlaşmaya uyulmamıştı",
+    "Vücutlarında ortak bir eksiklik vardı"
+  ],
+  "sorular": {
+    "ada": {
+      "keywords": [
+        "ada",
+        "gemi kazası"
+      ],
+      "answer": "Evet"
+    },
+    "kol": {
+      "keywords": [
+        "kol",
+        "uzuv"
+      ],
+      "answer": "Evet"
+    },
+    "anlasma": {
+      "keywords": [
+        "anlaşma",
+        "söz",
+        "sözleşme"
+      ],
+      "answer": "Evet"
+    },
+    "aclık": {
+      "keywords": [
+        "açlık",
+        "yiyecek",
+        "aç"
+      ],
+      "answer": "Evet"
+    },
+    "metro": {
+      "keywords": [
+        "metro",
+        "tren"
+      ],
+      "answer": "Evet"
+    },
+    "intikam": {
+      "keywords": [
+        "intikam",
+        "öç"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

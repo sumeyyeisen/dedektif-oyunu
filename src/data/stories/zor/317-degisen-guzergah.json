@@ -1,0 +1,56 @@
+{
+  "id": 317,
+  "baslik": "Değişen Güzergah",
+  "baslangic": "Bir ülkenin veliahtı ve eşi bir şehir ziyaretindeydi. O gün o araçta olup, o yola sapmasalardı, büyük bir savaş hiç başlamayabilirdi.",
+  "cevap": "Ziyaret sırasında bir suikastçı bombayla saldırdı ama sadece birkaç kişi yaralandı. Veliaht güzergahı değiştirmek istedi, ancak konvoy yanlışlıkla eski güzergaha döndü. Tam o sırada bir başka suikastçı çifti hedef alıp öldürdü. Bu olay büyük bir uluslararası krize, ardından da devasa bir savaşa yol açtı.",
+  "ipuclari": [
+    "Küçük bir yön hatası büyük sonuçlar doğurdu",
+    "Bir suikast girişimi ilk seferde başarısız oldu",
+    "Sonucu tüm dünyayı etkiledi"
+  ],
+  "sorular": {
+    "suikast": {
+      "keywords": [
+        "suikast",
+        "saldırı"
+      ],
+      "answer": "Evet"
+    },
+    "guzergah": {
+      "keywords": [
+        "güzergah",
+        "yol",
+        "rota"
+      ],
+      "answer": "Evet"
+    },
+    "savas": {
+      "keywords": [
+        "savaş"
+      ],
+      "answer": "Evet"
+    },
+    "veliaht": {
+      "keywords": [
+        "veliaht",
+        "prens",
+        "lider"
+      ],
+      "answer": "Evet"
+    },
+    "bomba": {
+      "keywords": [
+        "bomba",
+        "patlama"
+      ],
+      "answer": "Evet"
+    },
+    "tesadufi": {
+      "keywords": [
+        "tesadüf",
+        "yanlışlıkla"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

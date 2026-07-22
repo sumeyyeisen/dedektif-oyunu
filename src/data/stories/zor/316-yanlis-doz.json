@@ -1,0 +1,56 @@
+{
+  "id": 316,
+  "baslik": "Yanlış Doz",
+  "baslangic": "Bir doktor art arda birkaç gün aynı haberi okudu, bir gerçeği fark etti ve büyük bir üzüntü yaşadı.",
+  "cevap": "Bir klinikte kullanılan bir ilaç daha ucuz bir alternatifle değiştirilmişti. Doktor, art arda okuduğu haberlerdeki kişilerin hepsinin kendi hastası olduğunu fark etti. İlacı incelediğinde dozun çok daha yüksek verilmesi gerektiğini anladı ve hastalarını yanlış dozla tehlikeye sürüklediğini fark ederek derin bir vicdan azabı yaşadı.",
+  "ipuclari": [
+    "Bir ilaç değişikliği zincirleme bir soruna yol açtı",
+    "Doktor kendi hatasını fark etti",
+    "Sorumluluk ağır bastı"
+  ],
+  "sorular": {
+    "ilac": {
+      "keywords": [
+        "ilaç",
+        "reçete",
+        "doz"
+      ],
+      "answer": "Evet"
+    },
+    "doktor": {
+      "keywords": [
+        "doktor",
+        "psikiyatr"
+      ],
+      "answer": "Evet"
+    },
+    "hasta": {
+      "keywords": [
+        "hasta"
+      ],
+      "answer": "Evet"
+    },
+    "gazete": {
+      "keywords": [
+        "gazete",
+        "haber"
+      ],
+      "answer": "Evet"
+    },
+    "hata": {
+      "keywords": [
+        "hata",
+        "yanlış"
+      ],
+      "answer": "Evet"
+    },
+    "vicdan": {
+      "keywords": [
+        "vicdan",
+        "suçluluk",
+        "pişman"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

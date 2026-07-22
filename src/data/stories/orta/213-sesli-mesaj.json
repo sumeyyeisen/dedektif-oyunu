@@ -1,0 +1,55 @@
+{
+  "id": 213,
+  "baslik": "Sesli Mesaj",
+  "baslangic": "Bir adam uyanır, aracını/aracını çalıştırır ve kısa süre sonra birini öldürdüğünü fark eder. Aralarında hiç konuşma olmamıştı.",
+  "cevap": "Adam bir gemi kaptanıydı ve dinlenmek için uyumuştu. O sırada bir tayfa, rutin bakım yapmak isteyip kaptanı uyandırmamak için ona sesli mesaj bıraktı. Pervane bakımı için suya dalan bir teknisyen, kaptan mesajı dinlemeden gemiyi çalıştırınca hayatını kaybetti.",
+  "ipuclari": [
+    "Olay bir gemide geçti",
+    "Bir mesaj zamanında dinlenmedi",
+    "Su altında biri vardı"
+  ],
+  "sorular": {
+    "gemi": {
+      "keywords": [
+        "gemi",
+        "tekne"
+      ],
+      "answer": "Evet"
+    },
+    "kaptan": {
+      "keywords": [
+        "kaptan"
+      ],
+      "answer": "Evet"
+    },
+    "sesliMesaj": {
+      "keywords": [
+        "sesli mesaj",
+        "mesaj"
+      ],
+      "answer": "Evet"
+    },
+    "dalgic": {
+      "keywords": [
+        "dalgıç",
+        "teknisyen",
+        "pervane"
+      ],
+      "answer": "Evet"
+    },
+    "uyku": {
+      "keywords": [
+        "uyku",
+        "uyu"
+      ],
+      "answer": "Evet"
+    },
+    "kasit": {
+      "keywords": [
+        "kasıt",
+        "bilerek"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

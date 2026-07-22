@@ -1,0 +1,57 @@
+{
+  "id": 120,
+  "baslik": "Karavan Tatili",
+  "baslangic": "Bir aile karavanla tatildeydi. Sabah olduğunda tüm aile üyeleri hayatını kaybetmiş halde bulundu. Dışarıdan hiçbir saldırı belirtisi yoktu.",
+  "cevap": "Karavandaki ocağın gaz tüpü sızıntı yapıyordu. Aile geceleyin uyurken zehirli gazı teneffüs ederek hayatlarını kaybetti.",
+  "ipuclari": [
+    "Olay bir tatil aracında geçti",
+    "Görünmeyen bir şey öldürdü",
+    "Mutfak aletiyle ilgili bir sorundu"
+  ],
+  "sorular": {
+    "gaz": {
+      "keywords": [
+        "gaz",
+        "tüp",
+        "sızıntı"
+      ],
+      "answer": "Evet"
+    },
+    "karavan": {
+      "keywords": [
+        "karavan",
+        "araç"
+      ],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": [
+        "zehir"
+      ],
+      "answer": "Hayır"
+    },
+    "ocak": {
+      "keywords": [
+        "ocak",
+        "mutfak",
+        "tüp"
+      ],
+      "answer": "Evet"
+    },
+    "saldiri": {
+      "keywords": [
+        "saldırı",
+        "cinayet",
+        "katil"
+      ],
+      "answer": "Hayır"
+    },
+    "uyku": {
+      "keywords": [
+        "uyku",
+        "uyu"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

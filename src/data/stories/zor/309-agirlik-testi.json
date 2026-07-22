@@ -1,0 +1,57 @@
+{
+  "id": 309,
+  "baslik": "Ağırlık Testi",
+  "baslangic": "Bir kadın, sadece kilolu ve belirli bir ülkeden olduğu için hayatını kaybetti.",
+  "cevap": "Bir suç örgütü, yasa dışı bir maddeyi sınırdan geçirmenin yeni bir yolunu deniyordu: maddeyi, o ülkeden kilolu kadın cesetlerinin içine yerleştirmeyi planlıyorlardı. Bu yöntemin ne kadar madde taşıyabileceğini test etmek için kadın bu deneyde kurban edildi.",
+  "ipuclari": [
+    "Kadının fiziksel özelliği bir 'kriter'di",
+    "Bir kaçakçılık yöntemi test ediliyordu",
+    "Sınır ötesi bir suç örgütü vardı"
+  ],
+  "sorular": {
+    "kacakcilik": {
+      "keywords": [
+        "kaçak",
+        "uyuşturucu",
+        "madde"
+      ],
+      "answer": "Evet"
+    },
+    "sinir": {
+      "keywords": [
+        "sınır",
+        "ülke"
+      ],
+      "answer": "Evet"
+    },
+    "kilo": {
+      "keywords": [
+        "kilolu",
+        "ağırlık",
+        "şişman"
+      ],
+      "answer": "Evet"
+    },
+    "test": {
+      "keywords": [
+        "test",
+        "deney"
+      ],
+      "answer": "Evet"
+    },
+    "sucOrgutu": {
+      "keywords": [
+        "örgüt",
+        "çete",
+        "kartel"
+      ],
+      "answer": "Evet"
+    },
+    "hastalik": {
+      "keywords": [
+        "hastalık"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

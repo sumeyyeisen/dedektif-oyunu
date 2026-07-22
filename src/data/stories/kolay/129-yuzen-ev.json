@@ -1,0 +1,49 @@
+{
+  "id": 129,
+  "baslik": "Yüzen Ev",
+  "baslangic": "Bir kadın kendi evinde susuzluktan hayatını kaybetti.",
+  "cevap": "Kadının evi, denizde uzun bir yolculuk yapan bir yattı. Yolculuk sırasında içme suyu tükendi ve kadın susuzluktan hayatını kaybetti.",
+  "ipuclari": [
+    "Ev normal bir ev değildi",
+    "Ev hareket edebiliyordu",
+    "Su kaynağı yoktu"
+  ],
+  "sorular": {
+    "yat": {
+      "keywords": [
+        "yat",
+        "tekne",
+        "gemi"
+      ],
+      "answer": "Evet"
+    },
+    "deniz": {
+      "keywords": [
+        "deniz",
+        "su"
+      ],
+      "answer": "Evet"
+    },
+    "susuz": {
+      "keywords": [
+        "susuz",
+        "su"
+      ],
+      "answer": "Evet"
+    },
+    "ev": {
+      "keywords": [
+        "ev",
+        "bina"
+      ],
+      "answer": "Hayır"
+    },
+    "yolculuk": {
+      "keywords": [
+        "yolculuk",
+        "seyahat"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

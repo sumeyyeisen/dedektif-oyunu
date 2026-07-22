@@ -1,0 +1,53 @@
+{
+  "id": 211,
+  "baslik": "Ertelenen Uçuş",
+  "baslangic": "Bir kadın tatildeydi. Uçuş saati bir gün öne alındığı için hayatını kaybetti.",
+  "cevap": "Kadın dalış eğitimi alıyordu. Son dalışıyla uçuş arasında en az bir gün ara verilmesi gerekiyordu. Uçuş saati öne alınınca bu kurala uyamadan uçağa bindi ve hızlı basınç değişimi nedeniyle dolaşım çöküşü yaşayıp öldü.",
+  "ipuclari": [
+    "Kadın su altı bir aktivite yapıyordu",
+    "Vücudunun dinlenmeye ihtiyacı vardı",
+    "Basınç değişimi tehlikeliydi"
+  ],
+  "sorular": {
+    "dalis": {
+      "keywords": [
+        "dalış",
+        "dalgıç"
+      ],
+      "answer": "Evet"
+    },
+    "ucak": {
+      "keywords": [
+        "uçak",
+        "uçuş"
+      ],
+      "answer": "Evet"
+    },
+    "basinc": {
+      "keywords": [
+        "basınç"
+      ],
+      "answer": "Evet"
+    },
+    "vurgun": {
+      "keywords": [
+        "vurgun"
+      ],
+      "answer": "Evet"
+    },
+    "tatil": {
+      "keywords": [
+        "tatil",
+        "seyahat"
+      ],
+      "answer": "Evet"
+    },
+    "kaza": {
+      "keywords": [
+        "kaza",
+        "düş"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

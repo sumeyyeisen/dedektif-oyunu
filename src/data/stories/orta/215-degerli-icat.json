@@ -1,0 +1,56 @@
+{
+  "id": 215,
+  "baslik": "Değerli İcat",
+  "baslangic": "Bir kadın, resmi bir kuruma giderken öldürüldü.",
+  "cevap": "Kadın su ile çalışan bir motor icat etmişti ve patentini almaya gidiyordu. Büyük petrol şirketleri icadını bırakması için ona büyük para teklif etmiş, o da reddetmişti. Şirketler bunun üzerine onu öldürttü.",
+  "ipuclari": [
+    "Kadının bir icadı vardı",
+    "Bazı büyük şirketler bundan rahatsızdı",
+    "Parayı reddetmesi bedeline mal oldu"
+  ],
+  "sorular": {
+    "icat": {
+      "keywords": [
+        "icat",
+        "buluş"
+      ],
+      "answer": "Evet"
+    },
+    "patent": {
+      "keywords": [
+        "patent",
+        "resmi kurum"
+      ],
+      "answer": "Evet"
+    },
+    "petrol": {
+      "keywords": [
+        "petrol",
+        "şirket"
+      ],
+      "answer": "Evet"
+    },
+    "su": {
+      "keywords": [
+        "su",
+        "motor"
+      ],
+      "answer": "Evet"
+    },
+    "para": {
+      "keywords": [
+        "para",
+        "teklif",
+        "rüşvet"
+      ],
+      "answer": "Evet"
+    },
+    "kiskanclik": {
+      "keywords": [
+        "kıskanç",
+        "aşk"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

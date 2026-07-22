@@ -1,0 +1,55 @@
+{
+  "id": 212,
+  "baslik": "Görünmeyen Işık",
+  "baslangic": "Bir motosiklet sürücüsü kaza yaptı. Bir tavşan ve bir çanta bu kazadan sorumluydu.",
+  "cevap": "Sürücünün eşi arkada uzun bir bez çanta taşıyordu ve çanta motorun stop lambasını kapatıyordu. Yola aniden bir tavşan çıkınca sürücü ani fren yaptı. Arkadan gelen araç, lambası yanmayan motoru geç fark etti ve çarptı.",
+  "ipuclari": [
+    "Bir eşya görüşü/görünürlüğü engelliyordu",
+    "Küçük bir hayvan olayı tetikledi",
+    "Arkadan gelen sürücü zamanında tepki veremedi"
+  ],
+  "sorular": {
+    "motosiklet": {
+      "keywords": [
+        "motosiklet",
+        "motor"
+      ],
+      "answer": "Evet"
+    },
+    "canta": {
+      "keywords": [
+        "çanta",
+        "bagaj"
+      ],
+      "answer": "Evet"
+    },
+    "tavsan": {
+      "keywords": [
+        "tavşan",
+        "hayvan"
+      ],
+      "answer": "Evet"
+    },
+    "lamba": {
+      "keywords": [
+        "lamba",
+        "stop",
+        "ışık"
+      ],
+      "answer": "Evet"
+    },
+    "carpma": {
+      "keywords": [
+        "çarp",
+        "kaza"
+      ],
+      "answer": "Evet"
+    },
+    "fren": {
+      "keywords": [
+        "fren"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

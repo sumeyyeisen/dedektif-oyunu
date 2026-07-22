@@ -1,0 +1,58 @@
+{
+  "id": 308,
+  "baslik": "Ağır Yük",
+  "baslangic": "Bir adam arabasında uyuyakaldı ve boğularak öldü. Ama araba suya batmadı.",
+  "cevap": "Bir beton mikser şoförü karısı tarafından aldatılıyordu. Bir gece, metresinin evinin önünde eşinin arabasını tekrar görünce, arabanın içinde uyuyan adamı fark etti ve öfkeyle tüm beton yükünü arabanın içine boşalttı. Adam betonun altında kalarak boğuldu.",
+  "ipuclari": [
+    "Adam bir işçi aracının yükü altında kaldı",
+    "Kıskançlık bir intikama dönüştü",
+    "Boğulma su yüzünden değildi"
+  ],
+  "sorular": {
+    "beton": {
+      "keywords": [
+        "beton",
+        "mikser"
+      ],
+      "answer": "Evet"
+    },
+    "aldatma": {
+      "keywords": [
+        "aldat",
+        "sadakatsiz",
+        "ilişki"
+      ],
+      "answer": "Evet"
+    },
+    "uyku": {
+      "keywords": [
+        "uyku",
+        "uyu"
+      ],
+      "answer": "Evet"
+    },
+    "su": {
+      "keywords": [
+        "su",
+        "boğul",
+        "deniz"
+      ],
+      "answer": "Hayır"
+    },
+    "kiskanclik": {
+      "keywords": [
+        "kıskanç",
+        "öfke",
+        "intikam"
+      ],
+      "answer": "Evet"
+    },
+    "araba": {
+      "keywords": [
+        "araba",
+        "araç"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

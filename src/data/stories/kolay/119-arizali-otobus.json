@@ -1,0 +1,58 @@
+{
+  "id": 119,
+  "baslik": "Arızalı Otobüs",
+  "baslangic": "Bir turist grubu, otobüsleri arızalandığı için ünlü bir meydanı gezmeye geç kaldı. Bu gecikme onlarca kişinin hayatını kurtardı. Nasıl?",
+  "cevap": "Grup, meydana varmadan önce orada bir terör saldırısı gerçekleşti. Otobüs arızası yüzünden geç kalan tur grubu, saldırı anında meydanda değildi ve böylece hayatta kaldılar.",
+  "ipuclari": [
+    "Gecikme kötü bir şey gibi görünüyordu ama iyi sonuçlandı",
+    "Meydanda kötü bir olay yaşandı",
+    "Zamanlama hayat kurtardı"
+  ],
+  "sorular": {
+    "otobus": {
+      "keywords": [
+        "otobüs",
+        "araç",
+        "arıza"
+      ],
+      "answer": "Evet"
+    },
+    "kaza": {
+      "keywords": [
+        "kaza",
+        "çarp"
+      ],
+      "answer": "Hayır"
+    },
+    "saldiri": {
+      "keywords": [
+        "saldırı",
+        "terör",
+        "bomba",
+        "patlama"
+      ],
+      "answer": "Evet"
+    },
+    "meydan": {
+      "keywords": [
+        "meydan",
+        "şehir merkezi"
+      ],
+      "answer": "Evet"
+    },
+    "gecikme": {
+      "keywords": [
+        "gecik",
+        "geç kal"
+      ],
+      "answer": "Evet"
+    },
+    "olum": {
+      "keywords": [
+        "öl",
+        "yaralan"
+      ],
+      "answer": "Alakasız"
+    }
+  }
+}

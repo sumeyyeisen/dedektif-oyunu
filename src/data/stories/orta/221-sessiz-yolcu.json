@@ -1,0 +1,55 @@
+{
+  "id": 221,
+  "baslik": "Sessiz Yolcu",
+  "baslangic": "On kişi bir araca bindi. Araçtan inerken bir kişinin eksildiğini fark ettiler ama kimse ne olduğunu anlamadı.",
+  "cevap": "Turistler bir gezi denizaltısındaydı, pencereden dışarı bakıp kulaklıklarla kaptanın açıklamalarını dinliyorlardı. İç aydınlatma kapalıydı. Arkada yalnız oturan bir yolcu sessizce kalp krizi geçirip koltukla pencere arasına düştü ve fark edilmeden hayatını kaybetti.",
+  "ipuclari": [
+    "Araç su altındaydı",
+    "Karanlık bir ortamda kimse fark etmedi",
+    "Sağlık sorunu sessizce gelişti"
+  ],
+  "sorular": {
+    "denizalti": {
+      "keywords": [
+        "denizaltı",
+        "su altı"
+      ],
+      "answer": "Evet"
+    },
+    "karanlik": {
+      "keywords": [
+        "karanlık",
+        "ışık kapalı"
+      ],
+      "answer": "Evet"
+    },
+    "kalpKrizi": {
+      "keywords": [
+        "kalp krizi",
+        "kalp"
+      ],
+      "answer": "Evet"
+    },
+    "saldiri": {
+      "keywords": [
+        "saldırı",
+        "cinayet"
+      ],
+      "answer": "Hayır"
+    },
+    "turist": {
+      "keywords": [
+        "turist",
+        "gezi"
+      ],
+      "answer": "Evet"
+    },
+    "sessiz": {
+      "keywords": [
+        "sessiz",
+        "fark edilme"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

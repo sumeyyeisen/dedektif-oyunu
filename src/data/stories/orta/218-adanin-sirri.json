@@ -1,0 +1,53 @@
+{
+  "id": 218,
+  "baslik": "Adanın Sırrı",
+  "baslangic": "Bir adam tatile gitti. Eğer tatilde bir suç işlemeseydi hayatını kaybedecekti.",
+  "cevap": "Adam, volkanik patlama riski olan güzel bir adaya tatile gitmişti. Barda bir kavgaya karıştı ve karşısındakini öldürdü. Adanın hapishanesi olmadığı için polis onu ana karaya götürüp hapse attı. Ertesi sabah adada beklenmedik bir volkanik patlama oldu ve adada kalan herkes hayatını kaybetti.",
+  "ipuclari": [
+    "Bir doğa olayı adayı vurdu",
+    "Suçu onu adadan uzaklaştırdı",
+    "Cezalandırılması aslında onu kurtardı"
+  ],
+  "sorular": {
+    "ada": {
+      "keywords": [
+        "ada"
+      ],
+      "answer": "Evet"
+    },
+    "volkan": {
+      "keywords": [
+        "volkan",
+        "patlama"
+      ],
+      "answer": "Evet"
+    },
+    "kavga": {
+      "keywords": [
+        "kavga",
+        "tartışma"
+      ],
+      "answer": "Evet"
+    },
+    "hapis": {
+      "keywords": [
+        "hapis",
+        "tutukla"
+      ],
+      "answer": "Evet"
+    },
+    "cinayet": {
+      "keywords": [
+        "cinayet",
+        "öldür"
+      ],
+      "answer": "Evet"
+    },
+    "kurtulma": {
+      "keywords": [
+        "kurtul"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "id": 121,
+  "baslik": "Yeni Koku",
+  "baslangic": "Bir adam, eşinin doğum günü hediyesi olan yeni bir koku sürdü ve dışarı çıktı. Kısa süre sonra öldürüldü.",
+  "cevap": "Adam bir arıcıydı. Arılar onun her zamanki kokusunu tanıyordu ama yeni parfüm kokusunu tanımadıkları için onu yabancı sanıp topluca saldırdılar.",
+  "ipuclari": [
+    "Adamın mesleği hayvanlarla ilgiliydi",
+    "Saldıranlar insan değildi",
+    "Koku değişikliği ölümcül oldu"
+  ],
+  "sorular": {
+    "koku": {
+      "keywords": [
+        "koku",
+        "parfüm",
+        "kolonya"
+      ],
+      "answer": "Evet"
+    },
+    "ari": {
+      "keywords": [
+        "arı",
+        "kovan"
+      ],
+      "answer": "Evet"
+    },
+    "meslek": {
+      "keywords": [
+        "arıcı",
+        "meslek",
+        "iş"
+      ],
+      "answer": "Evet"
+    },
+    "insan": {
+      "keywords": [
+        "insan",
+        "kişi",
+        "cinayet"
+      ],
+      "answer": "Hayır"
+    },
+    "saldiri": {
+      "keywords": [
+        "saldır",
+        "sok"
+      ],
+      "answer": "Evet"
+    },
+    "hayvan": {
+      "keywords": [
+        "hayvan",
+        "böcek"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

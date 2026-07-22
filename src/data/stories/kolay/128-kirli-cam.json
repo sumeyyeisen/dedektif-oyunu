@@ -1,0 +1,55 @@
+{
+  "id": 128,
+  "baslik": "Kirli Cam",
+  "baslangic": "Bir kadın yolda araba sürüyordu. Camını temizlediği için hayatını kaybetti.",
+  "cevap": "Kötü niyetli bir kişi kadının camına yumurta attı. Kadın camı temizlemek için sileceklerini çalıştırdı ama yumurta akı daha fazla yayılıp görüşünü tamamen kapattı. Önünü göremeyen kadın bariyerlere çarparak hayatını kaybetti.",
+  "ipuclari": [
+    "Bir şey camı kirletti",
+    "Temizlemeye çalışmak durumu kötüleştirdi",
+    "Görüş kaybı ölümcül oldu"
+  ],
+  "sorular": {
+    "yumurta": {
+      "keywords": [
+        "yumurta"
+      ],
+      "answer": "Evet"
+    },
+    "silecek": {
+      "keywords": [
+        "silecek",
+        "cam"
+      ],
+      "answer": "Evet"
+    },
+    "kaza": {
+      "keywords": [
+        "kaza",
+        "çarp",
+        "bariyer"
+      ],
+      "answer": "Evet"
+    },
+    "hirsiz": {
+      "keywords": [
+        "hırsız",
+        "kötü niyet"
+      ],
+      "answer": "Evet"
+    },
+    "goru": {
+      "keywords": [
+        "gör",
+        "görüş"
+      ],
+      "answer": "Evet"
+    },
+    "araba": {
+      "keywords": [
+        "araba",
+        "araç"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

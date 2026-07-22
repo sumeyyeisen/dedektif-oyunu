@@ -1,0 +1,55 @@
+{
+  "id": 219,
+  "baslik": "Dikiz Aynası",
+  "baslangic": "Bir adam bir taksiye bindi, dikiz aynasına baktı ve kendi hayatına son verdi.",
+  "cevap": "Adam bir ormanda birini öldürüp gömmüştü. Eve dönerken bindiği taksinin şoförüne dikiz aynasından baktığında, öldürdüğü kişiyi gördüğünü sandı ve delirdiğini düşünerek kendini öldürdü. Aslında taksi şoförü, öldürdüğü kişinin ikiz kardeşiydi.",
+  "ipuclari": [
+    "Adam yakın zamanda kötü bir şey yapmıştı",
+    "Gördüğü yüz tanıdıktı ama açıklaması farklıydı",
+    "Bir tesadüf her şeyi değiştirdi"
+  ],
+  "sorular": {
+    "taksi": {
+      "keywords": [
+        "taksi",
+        "şoför"
+      ],
+      "answer": "Evet"
+    },
+    "cinayet": {
+      "keywords": [
+        "cinayet",
+        "öldür"
+      ],
+      "answer": "Evet"
+    },
+    "ikiz": {
+      "keywords": [
+        "ikiz",
+        "kardeş"
+      ],
+      "answer": "Evet"
+    },
+    "hayalet": {
+      "keywords": [
+        "hayalet",
+        "ruh"
+      ],
+      "answer": "Hayır"
+    },
+    "aynasi": {
+      "keywords": [
+        "ayna",
+        "dikiz"
+      ],
+      "answer": "Evet"
+    },
+    "orman": {
+      "keywords": [
+        "orman",
+        "göm"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

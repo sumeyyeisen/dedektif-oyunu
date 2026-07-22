@@ -1,0 +1,53 @@
+{
+  "id": 216,
+  "baslik": "Çekilen Ses",
+  "baslangic": "Bir avcı, kasetçalarını çalıştırdıktan birkaç dakika sonra öldü.",
+  "cevap": "Avcı, kuşları avlamak için kasetçalarda kuş sesleri çalıyordu. Ancak yakınlarda bir yırtıcı hayvan vardı ve kuş sesi onu da adama doğru çekti. Bölgede kuş bulamayan yırtıcı, avcıya saldırıp onu öldürdü.",
+  "ipuclari": [
+    "Bir ses hayvanları çekmek içindi",
+    "Yanlış bir hayvan da bu sese geldi",
+    "Avcı bu sefer avlanan taraf oldu"
+  ],
+  "sorular": {
+    "avci": {
+      "keywords": [
+        "avcı",
+        "avlan"
+      ],
+      "answer": "Evet"
+    },
+    "kasetcalar": {
+      "keywords": [
+        "kasetçalar",
+        "ses cihazı"
+      ],
+      "answer": "Evet"
+    },
+    "kus": {
+      "keywords": [
+        "kuş"
+      ],
+      "answer": "Evet"
+    },
+    "yirtici": {
+      "keywords": [
+        "yırtıcı",
+        "vahşi hayvan"
+      ],
+      "answer": "Evet"
+    },
+    "saldiri": {
+      "keywords": [
+        "saldır"
+      ],
+      "answer": "Evet"
+    },
+    "silah": {
+      "keywords": [
+        "silah",
+        "tabanca"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

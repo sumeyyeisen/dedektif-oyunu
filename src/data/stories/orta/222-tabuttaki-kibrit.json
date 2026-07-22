@@ -1,0 +1,56 @@
+{
+  "id": 222,
+  "baslik": "Tabuttaki Kibrit",
+  "baslangic": "Bir mahkum, bir kibrit yaktı, bir ceset gördü ve artık asla özgür olamayacağını anladı.",
+  "cevap": "Mahkum, para karşılığında bir cenaze işçisiyle kaçış planı yapmıştı: bir sonraki cenaze töreninde cesetle birlikte tabuta gizlenecek, cenaze işçisi geceleyin mezarlıkta onu kurtaracaktı. Ancak cenaze günü cenaze işçisini bulamayıp yine de tabuta girdi. İçeride kibrit yaktığında, yanındaki cesedin cenaze işçisine ait olduğunu fark etti.",
+  "ipuclari": [
+    "Bir kaçış planı vardı",
+    "Ortağı beklenmedik şekilde ortadan kayboldu",
+    "Işık gerçeği ortaya çıkardı"
+  ],
+  "sorular": {
+    "mahkum": {
+      "keywords": [
+        "mahkum",
+        "hapishane",
+        "kaçış"
+      ],
+      "answer": "Evet"
+    },
+    "tabut": {
+      "keywords": [
+        "tabut",
+        "cenaze"
+      ],
+      "answer": "Evet"
+    },
+    "kibrit": {
+      "keywords": [
+        "kibrit",
+        "ışık"
+      ],
+      "answer": "Evet"
+    },
+    "ceset": {
+      "keywords": [
+        "ceset",
+        "ölü"
+      ],
+      "answer": "Evet"
+    },
+    "plan": {
+      "keywords": [
+        "plan",
+        "anlaşma"
+      ],
+      "answer": "Evet"
+    },
+    "kacis": {
+      "keywords": [
+        "kaç",
+        "özgür"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

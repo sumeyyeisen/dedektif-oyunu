@@ -1,0 +1,57 @@
+{
+  "id": 307,
+  "baslik": "Günlük Rutin",
+  "baslangic": "Yaşlı bir adam, günlük rutinini her zamanki gibi yaptı ve öldü. Doktor kalp durmasını teşhis etti.",
+  "cevap": "Adamın oğlu, mirasa konmak için babasının takma dişlerini koyduğu suya zehir katmıştı. Yaşlı adam takma dişini kullanmadan katı gıda yiyemediği için her gün bu rutini tekrarlamak zorundaydı ve sonunda zehirden öldü.",
+  "ipuclari": [
+    "Günlük bir alışkanlık ölümcül hale geldi",
+    "Ağızla ilgili bir eşya vardı",
+    "Bir aile üyesi bundan çıkar sağladı"
+  ],
+  "sorular": {
+    "takmaDis": {
+      "keywords": [
+        "takma diş",
+        "diş"
+      ],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": [
+        "zehir"
+      ],
+      "answer": "Evet"
+    },
+    "ogul": {
+      "keywords": [
+        "oğul",
+        "evlat",
+        "çocuk"
+      ],
+      "answer": "Evet"
+    },
+    "miras": {
+      "keywords": [
+        "miras",
+        "servet",
+        "para"
+      ],
+      "answer": "Evet"
+    },
+    "kalpKrizi": {
+      "keywords": [
+        "kalp",
+        "doğal ölüm"
+      ],
+      "answer": "Alakasız"
+    },
+    "rutin": {
+      "keywords": [
+        "rutin",
+        "her gün",
+        "alışkanlık"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

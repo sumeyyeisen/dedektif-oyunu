@@ -1,0 +1,54 @@
+{
+  "id": 313,
+  "baslik": "Kürsüdeki İtiraf",
+  "baslangic": "Bir rahip cenazede konuşma yaptı. Konuşmasının sonuna doğru belediye başkanı da orada konuştu ama sözleri bitmeden polisler tarafından tutuklandı.",
+  "cevap": "Rahip yeni göreve başlamıştı ve konuşmasında, ölen kişinin bir cinayete kurban gittiğinden bahsedip göreve başladığı ilk gün günah çıkarmaya gelen ilk kişinin katil olduğunu söyledi. Konuşmanın başını kaçıran belediye başkanı, kendi konuşmasında rahibin ilk gününde günah çıkaran ilk kişinin kendisi olduğunu övünerek belirtti. Bu itiraf üzerine polisler onu tutukladı.",
+  "ipuclari": [
+    "Bir sır yanlışlıkla ifşa oldu",
+    "Konuşmanın başını kaçırmak önemliydi",
+    "İtiraf gizli kalması gereken bir şeydi"
+  ],
+  "sorular": {
+    "rahip": {
+      "keywords": [
+        "rahip",
+        "kilise"
+      ],
+      "answer": "Evet"
+    },
+    "cenaze": {
+      "keywords": [
+        "cenaze"
+      ],
+      "answer": "Evet"
+    },
+    "belediyeBaskani": {
+      "keywords": [
+        "belediye başkanı",
+        "başkan"
+      ],
+      "answer": "Evet"
+    },
+    "gunahCikarma": {
+      "keywords": [
+        "günah çıkar",
+        "itiraf"
+      ],
+      "answer": "Evet"
+    },
+    "cinayet": {
+      "keywords": [
+        "cinayet",
+        "katil"
+      ],
+      "answer": "Evet"
+    },
+    "tutuklanma": {
+      "keywords": [
+        "tutukla",
+        "polis"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

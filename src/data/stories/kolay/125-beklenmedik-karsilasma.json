@@ -1,0 +1,58 @@
+{
+  "id": 125,
+  "baslik": "Beklenmedik Karşılaşma",
+  "baslangic": "Genç bir tıp öğrencisi, uzun zamandır görmediği bir akrabasını gördüğünde şoke oldu. Akraba ona hiçbir şey söylemedi.",
+  "cevap": "Öğrenci, anatomi dersinde ceset üzerinde çalışması gerekiyordu. Masadaki cesedin, yıllar önce kaybettiği akrabası olduğunu fark edince şok yaşadı.",
+  "ipuclari": [
+    "Olay bir sınıfta/laboratuvarda geçti",
+    "Akraba konuşamıyordu",
+    "Öğrenci bir ders için oradaydı"
+  ],
+  "sorular": {
+    "tip": {
+      "keywords": [
+        "tıp",
+        "öğrenci",
+        "üniversite"
+      ],
+      "answer": "Evet"
+    },
+    "ceset": {
+      "keywords": [
+        "ceset",
+        "ölü"
+      ],
+      "answer": "Evet"
+    },
+    "anatomi": {
+      "keywords": [
+        "anatomi",
+        "ders",
+        "laboratuvar"
+      ],
+      "answer": "Evet"
+    },
+    "akraba": {
+      "keywords": [
+        "akraba",
+        "amca",
+        "aile"
+      ],
+      "answer": "Evet"
+    },
+    "konustu": {
+      "keywords": [
+        "konuş",
+        "sesle"
+      ],
+      "answer": "Hayır"
+    },
+    "hayalet": {
+      "keywords": [
+        "hayalet",
+        "ruh"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

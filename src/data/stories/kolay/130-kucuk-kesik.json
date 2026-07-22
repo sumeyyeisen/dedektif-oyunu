@@ -1,0 +1,47 @@
+{
+  "id": 130,
+  "baslik": "Küçük Kesik",
+  "baslangic": "Bir dalgıcın elinde küçük bir kesik oluştu. Bu küçük yaralanma onun ölümüne neden oldu.",
+  "cevap": "Dalgıç bir mercan resifini araştırırken eli mercan tarafından kesildi. Kesikten yayılan kan kokusu köpekbalıklarını yanına çekti ve dalgıç köpekbalıkları tarafından öldürüldü.",
+  "ipuclari": [
+    "Olay su altında geçti",
+    "Kan bir şeyi çekti",
+    "Küçük bir yara büyük bir tehlikeye yol açtı"
+  ],
+  "sorular": {
+    "dalgic": {
+      "keywords": [
+        "dalgıç",
+        "dalış"
+      ],
+      "answer": "Evet"
+    },
+    "mercan": {
+      "keywords": [
+        "mercan",
+        "resif"
+      ],
+      "answer": "Evet"
+    },
+    "kan": {
+      "keywords": [
+        "kan",
+        "kesik",
+        "yara"
+      ],
+      "answer": "Evet"
+    },
+    "kopekbaligi": {
+      "keywords": [
+        "köpekbalığı"
+      ],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": [
+        "zehir"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

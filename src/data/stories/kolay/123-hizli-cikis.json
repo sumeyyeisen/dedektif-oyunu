@@ -1,0 +1,55 @@
+{
+  "id": 123,
+  "baslik": "Hızlı Çıkış",
+  "baslangic": "Profesyonel bir dalgıç, işini iyi yaptığı için değil, tam tersine paniklediği için hayatını kaybetti.",
+  "cevap": "Dalgıç, denizin derinliklerinde kaçak bir kimyasal drenajını incelerken zehirli maddelerin kendine zarar verebileceğinden korktu. Panikle çok hızlı yüzeye çıkmaya çalıştı ve vurgun (dekompresyon hastalığı) nedeniyle öldü.",
+  "ipuclari": [
+    "Olay su altında geçti",
+    "Panik ölümcül oldu",
+    "Vücudundaki basınç değişimi öldürdü"
+  ],
+  "sorular": {
+    "dalgic": {
+      "keywords": [
+        "dalgıç",
+        "dalış"
+      ],
+      "answer": "Evet"
+    },
+    "vurgun": {
+      "keywords": [
+        "vurgun",
+        "basınç"
+      ],
+      "answer": "Evet"
+    },
+    "zehir": {
+      "keywords": [
+        "zehir",
+        "kimyasal"
+      ],
+      "answer": "Alakasız"
+    },
+    "panik": {
+      "keywords": [
+        "panik",
+        "korku"
+      ],
+      "answer": "Evet"
+    },
+    "hizli": {
+      "keywords": [
+        "hızlı",
+        "acele"
+      ],
+      "answer": "Evet"
+    },
+    "kopekbaligi": {
+      "keywords": [
+        "köpekbalığı",
+        "hayvan"
+      ],
+      "answer": "Hayır"
+    }
+  }
+}

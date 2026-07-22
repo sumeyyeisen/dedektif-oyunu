@@ -1,0 +1,54 @@
+{
+  "id": 320,
+  "baslik": "Cenazedeki Bakış",
+  "baslangic": "Bir kadın, annesinin cenazesinde tanımadığı bir adamı gördü. Birkaç gün sonra kız kardeşi hayatını kaybetti.",
+  "cevap": "Kadın cenazede adamdan çok hoşlanmıştı ama cenazeden sonra ondan haber alamamıştı. Adamın tekrar bir cenazeye geleceğini düşünerek, onu yeniden görebilmek için kendi kız kardeşini öldürdü.",
+  "ipuclari": [
+    "Kadının aklında sabit bir fikir vardı",
+    "Bir cenaze onun için fırsat haline geldi",
+    "Amacı adamı tekrar görmekti"
+  ],
+  "sorular": {
+    "cenaze": {
+      "keywords": [
+        "cenaze"
+      ],
+      "answer": "Evet"
+    },
+    "adam": {
+      "keywords": [
+        "adam",
+        "yabancı"
+      ],
+      "answer": "Evet"
+    },
+    "kizKardes": {
+      "keywords": [
+        "kız kardeş",
+        "kardeş"
+      ],
+      "answer": "Evet"
+    },
+    "cinayet": {
+      "keywords": [
+        "cinayet",
+        "öldür"
+      ],
+      "answer": "Evet"
+    },
+    "asik": {
+      "keywords": [
+        "aşık",
+        "hoşlan"
+      ],
+      "answer": "Evet"
+    },
+    "tekrarGorme": {
+      "keywords": [
+        "tekrar gör",
+        "yeniden"
+      ],
+      "answer": "Evet"
+    }
+  }
+}

@@ -2,6 +2,10 @@
 
 Gizemli hikayeleri çöz, gerçeği ortaya çıkar! Lateral düşünme bulmacaları ile dolu bir dedektiflik oyunu.
 
+## Ekran Görüntüleri
+
+<img src="docs/ana-menu.png" width="260" alt="Ana menü: oyun modu seçimi">
+
 ## 📱 Özellikler
 
 - **Tek Oyunculu Mod**: Sorular sor, ipuçları al, gizemi çöz
